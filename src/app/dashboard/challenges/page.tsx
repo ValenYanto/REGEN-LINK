@@ -1,10 +1,8 @@
 import { redirect } from "next/navigation";
 import {
     Activity,
-    CalendarDays,
     CheckCircle2,
     Flame,
-    Leaf,
     Trophy,
     Users,
 } from "lucide-react";
@@ -34,7 +32,7 @@ const statusLabels: Record<string, string> = {
 const statusClassNames: Record<string, string> = {
     JOINED: "bg-slate-100 text-slate-700 hover:bg-slate-100",
     IN_PROGRESS: "bg-amber-100 text-amber-800 hover:bg-amber-100",
-    COMPLETED: "bg-emerald-950 text-emerald-50 hover:bg-emerald-950",
+    COMPLETED: "bg-emerald-950 text-emerald-50 hover:bg-emerald-950 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200",
     DROPPED: "bg-red-100 text-red-700 hover:bg-red-100",
 };
 
@@ -122,60 +120,60 @@ export default async function ChallengesPage() {
 
     return (
         <div className="w-full min-w-0 space-y-6 overflow-x-hidden">
-            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[2rem] md:p-8">
-                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
-                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:p-5 md:rounded-[2rem] md:p-8">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl dark:bg-emerald-500/10" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl dark:bg-lime-500/10" />
 
                 <div className="relative grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)] lg:items-end">
                     <div className="min-w-0">
-                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 dark:border-white/10 dark:bg-white/10 dark:text-emerald-200 dark:shadow-none text-xs font-medium text-emerald-800 shadow-sm">
                             <Trophy className="mr-1.5 size-3.5 shrink-0" />
                             <span className="truncate">Cross-City Climate Challenge</span>
                         </div>
 
-                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-5xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50 sm:text-3xl md:text-5xl">
                             Pusat Tantangan
                         </h1>
 
-                        <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 md:text-base">
+                        <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400 md:text-base">
                             Ikuti tantangan energi, limbah, dan aksi sirkular untuk
                             mengubah kontribusi individu menjadi gerakan kolektif lintas kota.
                         </p>
 
                         <div className="mt-4 flex flex-wrap gap-2">
-                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200">
                                 {participants.length} tantangan diikuti
                             </Badge>
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                 {completedCount} selesai
                             </Badge>
-                            <Badge variant="outline">
+                            <Badge variant="outline" className="dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                 Auto progress sync
                             </Badge>
                         </div>
                     </div>
 
-                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
-                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                             Tantangan Diikuti
                         </p>
-                        <p className="mt-2 break-words text-3xl font-semibold text-emerald-950">
+                        <p className="mt-2 break-words text-3xl font-semibold text-emerald-950 dark:text-emerald-50">
                             {participants.length}
                         </p>
-                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                        <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
                             {completedCount} tantangan selesai.
                         </p>
 
-                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100">
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                             <div
-                                className="h-full rounded-full bg-emerald-950"
+                                className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
                                 style={{
                                     width: `${averageProgress}%`,
                                 }}
                             />
                         </div>
 
-                        <p className="mt-2 text-xs text-muted-foreground">
+                        <p className="mt-2 text-xs text-muted-foreground dark:text-slate-400">
                             Rata-rata progress: {averageProgress}%.
                         </p>
                     </div>
@@ -215,15 +213,15 @@ export default async function ChallengesPage() {
             <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
                 <div className="min-w-0 space-y-4">
                     {challenges.length === 0 ? (
-                        <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                        <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                             <CardContent className="p-8 text-center sm:p-10">
                                 <div className="mx-auto flex size-14 items-center justify-center rounded-3xl bg-emerald-50 text-emerald-800">
                                     <Trophy className="size-6" />
                                 </div>
-                                <h2 className="mt-5 text-xl font-semibold text-emerald-950">
+                                <h2 className="mt-5 text-xl font-semibold text-emerald-950 dark:text-emerald-50">
                                     Belum ada tantangan.
                                 </h2>
-                                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+                                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground dark:text-slate-400">
                                     Tantangan akan muncul setelah data seed atau admin
                                     menambahkan challenge baru.
                                 </p>
@@ -248,12 +246,12 @@ export default async function ChallengesPage() {
                             return (
                                 <Card
                                     key={challenge.id}
-                                    className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm"
+                                    className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none"
                                 >
-                                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] px-4 py-4 sm:px-6">
                                         <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                                             <div className="flex min-w-0 gap-3">
-                                                <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                                <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                                                     <Trophy className="size-5" />
                                                 </div>
 
@@ -262,7 +260,7 @@ export default async function ChallengesPage() {
                                                         <CardTitle className="line-clamp-2 text-base sm:text-lg">
                                                             {challenge.name}
                                                         </CardTitle>
-                                                        <Badge variant="secondary" className="w-fit shrink-0">
+                                                        <Badge variant="secondary" className="w-fit shrink-0 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                                             {typeLabels[challenge.type] ?? challenge.type}
                                                         </Badge>
                                                     </div>
@@ -286,7 +284,7 @@ export default async function ChallengesPage() {
                                                         participant.progressStatus}
                                                 </Badge>
                                             ) : (
-                                                <Badge variant="outline" className="w-fit shrink-0">
+                                                <Badge variant="outline" className="w-fit shrink-0 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                                     Belum Bergabung
                                                 </Badge>
                                             )}
@@ -295,31 +293,31 @@ export default async function ChallengesPage() {
 
                                     <CardContent className="min-w-0 space-y-5 px-4 pt-5 pb-4 sm:px-6">
                                         <div className="grid min-w-0 gap-3 md:grid-cols-3">
-                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
-                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                                     Timeline
                                                 </p>
-                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950">
+                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950 dark:text-emerald-50">
                                                     {formatDate(challenge.startDate)} —{" "}
                                                     {formatDate(challenge.endDate)}
                                                 </p>
                                             </div>
 
-                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4">
-                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                                     Target
                                                 </p>
-                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950">
+                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950 dark:text-emerald-50">
                                                     {challenge.targetValue.toLocaleString("id-ID")}{" "}
                                                     {getChallengeProgressLabel(challenge.type)}
                                                 </p>
                                             </div>
 
-                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4">
-                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                                     Progress Kamu
                                                 </p>
-                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950">
+                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950 dark:text-emerald-50">
                                                     {formatNumber(progressValue)}{" "}
                                                     {getChallengeProgressLabel(challenge.type)}
                                                 </p>
@@ -327,19 +325,19 @@ export default async function ChallengesPage() {
                                         </div>
 
                                         <div className="min-w-0">
-                                            <div className="mb-2 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                                            <div className="mb-2 flex items-center justify-between gap-3 text-xs text-muted-foreground dark:text-slate-400">
                                                 <span>Progress</span>
                                                 <span>{progressPercentage}%</span>
                                             </div>
-                                            <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
+                                            <div className="h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                                                 <div
-                                                    className="h-full rounded-full bg-emerald-950 transition-all"
+                                                    className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300 transition-all dark:bg-emerald-300"
                                                     style={{
                                                         width: `${progressPercentage}%`,
                                                     }}
                                                 />
                                             </div>
-                                            <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                                            <p className="mt-2 text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                 Progress dihitung otomatis dari aksi selesai
                                                 yang relevan dengan tipe challenge.
                                             </p>
@@ -396,14 +394,14 @@ export default async function ChallengesPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
                             <CardTitle className="text-base">Auto Progress Sync</CardTitle>
                             <CardDescription>
                                 Progress diperbarui otomatis saat halaman dibuka.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
+                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground dark:text-slate-400">
                             <p>
                                 Sistem membaca aksi yang sudah selesai, mengambil estimasi
                                 dampaknya, lalu menghitung progress challenge tanpa tombol
@@ -412,11 +410,11 @@ export default async function ChallengesPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
                             <CardTitle className="text-base">Cara Kerja</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
+                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground dark:text-slate-400">
                             <p>1. Gabung ke challenge yang ingin kamu ikuti.</p>
                             <p>2. Generate rekomendasi di Pusat Dampak.</p>
                             <p>3. Selesaikan aksi di Pusat Aksi.</p>

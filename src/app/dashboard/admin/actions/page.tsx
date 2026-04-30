@@ -52,34 +52,34 @@ function formatDate(value: Date) {
 
 function getCategoryClass(category: string) {
     if (category === "ENERGY") {
-        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100";
+        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100 dark:bg-emerald-300/15 dark:text-emerald-200 dark:hover:bg-emerald-300/15";
     }
 
     if (category === "WASTE") {
-        return "bg-lime-100 text-lime-800 hover:bg-lime-100";
+        return "bg-lime-100 text-lime-800 hover:bg-lime-100 dark:bg-lime-300/15 dark:text-lime-200 dark:hover:bg-lime-300/15";
     }
 
     if (category === "CIRCULAR") {
-        return "bg-teal-100 text-teal-800 hover:bg-teal-100";
+        return "bg-teal-100 text-teal-800 hover:bg-teal-100 dark:bg-teal-300/15 dark:text-teal-200 dark:hover:bg-teal-300/15";
     }
 
     if (category === "COMMUNITY") {
-        return "bg-amber-100 text-amber-800 hover:bg-amber-100";
+        return "bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-300/15 dark:text-amber-200 dark:hover:bg-amber-300/15";
     }
 
-    return "bg-slate-100 text-slate-700 hover:bg-slate-100";
+    return "bg-slate-100 text-slate-700 hover:bg-slate-100 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/10";
 }
 
 function getDifficultyClass(difficulty: string) {
     if (difficulty === "EASY") {
-        return "bg-emerald-50 text-emerald-800 hover:bg-emerald-50";
+        return "bg-emerald-50 text-emerald-800 hover:bg-emerald-50 dark:bg-emerald-300/15 dark:text-emerald-200 dark:hover:bg-emerald-300/15";
     }
 
     if (difficulty === "MEDIUM") {
-        return "bg-amber-50 text-amber-800 hover:bg-amber-50";
+        return "bg-amber-50 text-amber-800 hover:bg-amber-50 dark:bg-amber-300/15 dark:text-amber-200 dark:hover:bg-amber-300/15";
     }
 
-    return "bg-red-50 text-red-700 hover:bg-red-50";
+    return "bg-red-50 text-red-700 hover:bg-red-50 dark:bg-red-300/15 dark:text-red-200 dark:hover:bg-red-300/15";
 }
 
 export default async function AdminActionsPage() {
@@ -130,7 +130,7 @@ export default async function AdminActionsPage() {
 
     return (
         <main className="w-full min-w-0 space-y-6 overflow-x-hidden">
-            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_52%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 sm:p-5 md:rounded-[2rem] md:p-7">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_52%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 dark:border-white/10 sm:p-5 md:rounded-[2rem] md:p-7">
                 <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                     <div className="min-w-0">
                         <Button
@@ -212,12 +212,12 @@ export default async function AdminActionsPage() {
             </section>
 
             <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
-                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm">
-                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
-                        <CardTitle className="text-base sm:text-lg">
+                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 transition-colors dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] sm:px-6">
+                        <CardTitle className="text-base text-emerald-950 dark:text-emerald-50 sm:text-lg">
                             Action Directory
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="dark:text-slate-400">
                             Daftar action master yang dipakai untuk rekomendasi,
                             progress, score, dan challenge.
                         </CardDescription>
@@ -226,15 +226,15 @@ export default async function AdminActionsPage() {
                     <CardContent className="p-0">
                         {actions.length === 0 ? (
                             <div className="p-8 text-center">
-                                <p className="text-sm font-medium text-emerald-950">
+                                <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                     Belum ada action master.
                                 </p>
-                                <p className="mt-1 text-xs text-muted-foreground">
+                                <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                                     Tambahkan action pertama melalui form di samping.
                                 </p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-emerald-900/10">
+                            <div className="divide-y divide-emerald-900/10 dark:divide-white/10">
                                 {actions.map((action) => {
                                     const userActionCount = action.userActions.length;
                                     const recommendationCount =
@@ -243,22 +243,22 @@ export default async function AdminActionsPage() {
                                     return (
                                         <article
                                             key={action.id}
-                                            className="bg-white px-4 py-5 transition hover:bg-emerald-50/30 sm:px-5"
+                                            className="bg-white px-4 py-5 transition hover:bg-emerald-50/30 dark:bg-transparent dark:hover:bg-white/[0.04] sm:px-5"
                                         >
                                             <div className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_260px] 2xl:items-start">
                                                 <div className="min-w-0">
                                                     <div className="flex min-w-0 items-start gap-3">
-                                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                                                             <Flame className="size-4" />
                                                         </div>
 
                                                         <div className="min-w-0 flex-1">
                                                             <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                                                                 <div className="min-w-0">
-                                                                    <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-emerald-950 sm:text-base">
+                                                                    <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-emerald-950 dark:text-emerald-50 sm:text-base">
                                                                         {action.name}
                                                                     </h3>
-                                                                    <p className="mt-1 line-clamp-2 max-w-2xl text-xs leading-5 text-muted-foreground">
+                                                                    <p className="mt-1 line-clamp-2 max-w-2xl text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                                         {action.description}
                                                                     </p>
                                                                 </div>
@@ -280,10 +280,8 @@ export default async function AdminActionsPage() {
                                                                         )}
                                                                     >
                                                                         {difficultyLabels[
-                                                                            action
-                                                                                .difficultyLevel
-                                                                        ] ??
-                                                                            action.difficultyLevel}
+                                                                            action.difficultyLevel
+                                                                        ] ?? action.difficultyLevel}
                                                                     </Badge>
                                                                 </div>
                                                             </div>
@@ -322,7 +320,7 @@ export default async function AdminActionsPage() {
                                                     </div>
                                                 </div>
 
-                                                <div className="flex min-w-0 flex-col gap-2 rounded-2xl border border-emerald-900/10 bg-slate-50/70 p-3 sm:flex-row sm:items-center sm:justify-end 2xl:flex-col 2xl:items-stretch">
+                                                <div className="flex min-w-0 flex-col gap-2 rounded-2xl border border-emerald-900/10 bg-slate-50/70 p-3 transition-colors dark:border-white/10 dark:bg-white/[0.04] sm:flex-row sm:items-center sm:justify-end 2xl:flex-col 2xl:items-stretch">
                                                     <ActionEditDialog
                                                         action={{
                                                             id: action.id,
@@ -359,16 +357,16 @@ export default async function AdminActionsPage() {
                 <aside className="min-w-0 space-y-5">
                     <ActionCreateForm />
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-base">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 transition-colors dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                            <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
                                 Action Master Rules
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="dark:text-slate-400">
                                 Catatan penggunaan action dalam REGEN-LINK.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
+                        <CardContent className="space-y-3 pt-5 text-sm leading-6 text-muted-foreground dark:text-slate-400">
                             <p>
                                 1. Nama action harus unik agar recommendation engine tidak
                                 membuat duplikasi aksi.
@@ -405,21 +403,21 @@ function AdminActionStatCard({
     icon: React.ReactNode;
 }) {
     return (
-        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm">
+        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                 <div className="min-w-0">
-                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                         {label}
                     </p>
-                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950">
+                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                         {value}
                     </p>
-                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                    <p className="mt-1 truncate text-xs text-muted-foreground dark:text-slate-400">
                         {caption}
                     </p>
                 </div>
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                     {icon}
                 </div>
             </CardContent>
@@ -437,15 +435,15 @@ function ActionInfoBox({
     helper?: string;
 }) {
     return (
-        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white px-3 py-3">
-            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white px-3 py-3 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
                 {label}
             </p>
-            <p className="mt-1 truncate text-sm font-semibold text-emerald-950">
+            <p className="mt-1 truncate text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                 {value}
             </p>
             {helper ? (
-                <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                <p className="mt-0.5 truncate text-[11px] text-muted-foreground dark:text-slate-400">
                     {helper}
                 </p>
             ) : null}

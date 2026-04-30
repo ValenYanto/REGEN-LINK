@@ -82,10 +82,10 @@ export function BadgeCreateForm() {
     }
 
     return (
-        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                         <Award className="size-5" />
                     </div>
                     <div className="min-w-0">
@@ -103,7 +103,7 @@ export function BadgeCreateForm() {
             <CardContent className="px-4 pt-5 pb-4 sm:px-6">
                 <form onSubmit={onSubmit} className="grid min-w-0 gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -111,31 +111,31 @@ export function BadgeCreateForm() {
                     ) : null}
 
                     <div className="grid min-w-0 gap-2">
-                        <Label htmlFor="name">Nama Badge</Label>
+                        <Label className="dark:text-slate-200" htmlFor="name">Nama Badge</Label>
                         <Input
                             id="name"
                             name="name"
                             placeholder="Contoh: Pejuang Minim Sampah"
-                            className="w-full min-w-0"
+                            className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                             required
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.name[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid min-w-0 gap-2">
-                        <Label htmlFor="description">Deskripsi</Label>
+                        <Label className="dark:text-slate-200" htmlFor="description">Deskripsi</Label>
                         <Textarea
                             id="description"
                             name="description"
                             placeholder="Jelaskan makna badge dan kontribusi yang dicapai..."
                             rows={4}
-                            className="min-h-28 resize-none"
+                            className="min-h-28 resize-none dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                             required
                         />
                         {errors.description ? (
-                            <p className="text-xs text-red-600">
+                            <p className="text-xs text-red-600 dark:text-red-300">
                                 {errors.description[0]}
                             </p>
                         ) : null}
@@ -143,9 +143,9 @@ export function BadgeCreateForm() {
 
                     <div className="grid min-w-0 gap-4 sm:grid-cols-2">
                         <div className="grid min-w-0 gap-2">
-                            <Label>Kategori</Label>
+                            <Label className="dark:text-slate-200">Kategori</Label>
                             <Select name="category" required>
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger className="w-full dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih kategori" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -158,14 +158,14 @@ export function BadgeCreateForm() {
                                 </SelectContent>
                             </Select>
                             {errors.category ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.category[0]}
                                 </p>
                             ) : null}
                         </div>
 
                         <div className="grid min-w-0 gap-2">
-                            <Label htmlFor="requiredScore">Required Score</Label>
+                            <Label className="dark:text-slate-200" htmlFor="requiredScore">Required Score</Label>
                             <Input
                                 id="requiredScore"
                                 name="requiredScore"
@@ -173,11 +173,11 @@ export function BadgeCreateForm() {
                                 min="0"
                                 step="1"
                                 placeholder="Contoh: 100"
-                                className="w-full min-w-0"
+                                className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                                 required
                             />
                             {errors.requiredScore ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.requiredScore[0]}
                                 </p>
                             ) : null}
@@ -187,7 +187,7 @@ export function BadgeCreateForm() {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />

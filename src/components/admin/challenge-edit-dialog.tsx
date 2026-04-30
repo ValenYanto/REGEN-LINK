@@ -43,6 +43,9 @@ function toDateInputValue(date: Date) {
     return date.toISOString().slice(0, 10);
 }
 
+const inputClassName =
+    "dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500";
+
 export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
     const router = useRouter();
     const [open, setOpen] = useState(false);
@@ -113,17 +116,19 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-8 border-emerald-900/15 text-emerald-950 hover:bg-emerald-50"
+                    className="h-8 w-full justify-center border-emerald-900/15 bg-white text-emerald-950 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.06] dark:text-emerald-50 dark:hover:bg-white/10 sm:w-auto 2xl:w-full"
                 >
                     <Edit3 className="mr-2 size-3.5" />
                     Edit
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+            <DialogContent className="max-h-[90vh] overflow-y-auto border-emerald-900/10 bg-white text-slate-950 dark:border-white/10 dark:bg-slate-950 dark:text-slate-50 sm:max-w-2xl">
                 <DialogHeader>
-                    <DialogTitle>Edit Challenge</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-emerald-950 dark:text-emerald-50">
+                        Edit Challenge
+                    </DialogTitle>
+                    <DialogDescription className="dark:text-slate-400">
                         Perubahan challenge akan memengaruhi target, timeline, dan
                         perhitungan progress participant.
                     </DialogDescription>
@@ -131,7 +136,7 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
 
                 <form onSubmit={onSubmit} className="grid gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -139,20 +144,31 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                     ) : null}
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`name-${challenge.id}`}>Nama Challenge</Label>
+                        <Label
+                            className="dark:text-slate-200"
+                            htmlFor={`name-${challenge.id}`}
+                        >
+                            Nama Challenge
+                        </Label>
                         <Input
                             id={`name-${challenge.id}`}
                             name="name"
                             defaultValue={challenge.name}
                             required
+                            className={inputClassName}
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">
+                                {errors.name[0]}
+                            </p>
                         ) : null}
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`description-${challenge.id}`}>
+                        <Label
+                            className="dark:text-slate-200"
+                            htmlFor={`description-${challenge.id}`}
+                        >
                             Deskripsi
                         </Label>
                         <Textarea
@@ -160,11 +176,11 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                             name="description"
                             defaultValue={challenge.description}
                             rows={5}
-                            className="min-h-32 resize-none"
+                            className={`min-h-32 resize-none ${inputClassName}`}
                             required
                         />
                         {errors.description ? (
-                            <p className="text-xs text-red-600">
+                            <p className="text-xs text-red-600 dark:text-red-300">
                                 {errors.description[0]}
                             </p>
                         ) : null}
@@ -172,9 +188,11 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label>Tipe Challenge</Label>
+                            <Label className="dark:text-slate-200">
+                                Tipe Challenge
+                            </Label>
                             <Select name="type" defaultValue={challenge.type} required>
-                                <SelectTrigger>
+                                <SelectTrigger className={inputClassName}>
                                     <SelectValue placeholder="Pilih tipe" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -186,12 +204,17 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                                 </SelectContent>
                             </Select>
                             {errors.type ? (
-                                <p className="text-xs text-red-600">{errors.type[0]}</p>
+                                <p className="text-xs text-red-600 dark:text-red-300">
+                                    {errors.type[0]}
+                                </p>
                             ) : null}
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor={`targetValue-${challenge.id}`}>
+                            <Label
+                                className="dark:text-slate-200"
+                                htmlFor={`targetValue-${challenge.id}`}
+                            >
                                 Target Value
                             </Label>
                             <Input
@@ -202,9 +225,10 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                                 step="0.01"
                                 defaultValue={challenge.targetValue}
                                 required
+                                className={inputClassName}
                             />
                             {errors.targetValue ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.targetValue[0]}
                                 </p>
                             ) : null}
@@ -213,7 +237,10 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label htmlFor={`startDate-${challenge.id}`}>
+                            <Label
+                                className="dark:text-slate-200"
+                                htmlFor={`startDate-${challenge.id}`}
+                            >
                                 Tanggal Mulai
                             </Label>
                             <Input
@@ -222,16 +249,20 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                                 type="date"
                                 defaultValue={toDateInputValue(challenge.startDate)}
                                 required
+                                className={inputClassName}
                             />
                             {errors.startDate ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.startDate[0]}
                                 </p>
                             ) : null}
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor={`endDate-${challenge.id}`}>
+                            <Label
+                                className="dark:text-slate-200"
+                                htmlFor={`endDate-${challenge.id}`}
+                            >
                                 Tanggal Selesai
                             </Label>
                             <Input
@@ -240,9 +271,10 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                                 type="date"
                                 defaultValue={toDateInputValue(challenge.endDate)}
                                 required
+                                className={inputClassName}
                             />
                             {errors.endDate ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.endDate[0]}
                                 </p>
                             ) : null}
@@ -252,7 +284,7 @@ export function ChallengeEditDialog({ challenge }: ChallengeEditDialogProps) {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />

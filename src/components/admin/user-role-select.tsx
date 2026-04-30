@@ -95,7 +95,7 @@ export function UserRoleSelect({
             </div>
 
             {message ? (
-                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                     <AlertDescription className="text-xs leading-5">
                         {message}
                     </AlertDescription>

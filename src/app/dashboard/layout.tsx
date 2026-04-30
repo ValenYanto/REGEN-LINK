@@ -14,7 +14,7 @@ export default async function DashboardLayout({
 }) {
     const session = await auth();
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
         redirect("/login");
     }
 
@@ -34,7 +34,7 @@ export default async function DashboardLayout({
 
     return (
         <>
-            <MobileDashboardNav />
+            <MobileDashboardNav role={user.role} />
 
             <DashboardShell
                 sidebar={<AppSidebar role={user.role} />}

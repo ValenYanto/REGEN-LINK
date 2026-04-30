@@ -73,7 +73,7 @@ export function CommunityMemberRemoveButton({
             </Button>
 
             {message ? (
-                <Alert className="border-red-200 bg-red-50 text-red-800">
+                <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                     <AlertDescription className="text-xs leading-5">
                         {message}
                     </AlertDescription>

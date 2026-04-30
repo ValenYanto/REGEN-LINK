@@ -203,7 +203,9 @@ export default async function DashboardPage() {
                         total +
                         Math.min(
                             Math.round(
-                                (item.progressValue / item.challenge.targetValue) * 100
+                                (item.progressValue /
+                                    item.challenge.targetValue) *
+                                100
                             ),
                             100
                         )
@@ -215,20 +217,16 @@ export default async function DashboardPage() {
     const latestEnergy = energyRecords[0];
     const latestWaste = wasteRecords[0];
 
-    const energyChartData = [...energyRecords]
-        .reverse()
-        .map((record) => ({
-            date: formatDate(record.recordDate),
-            kwh: Number(record.monthlyKwh.toFixed(2)),
-        }));
+    const energyChartData = [...energyRecords].reverse().map((record) => ({
+        date: formatDate(record.recordDate),
+        kwh: Number(record.monthlyKwh.toFixed(2)),
+    }));
 
-    const wasteChartData = [...wasteRecords]
-        .reverse()
-        .map((record) => ({
-            date: formatDate(record.recordDate),
-            kg: Number(record.weightKg.toFixed(2)),
-            type: record.wasteType,
-        }));
+    const wasteChartData = [...wasteRecords].reverse().map((record) => ({
+        date: formatDate(record.recordDate),
+        kg: Number(record.weightKg.toFixed(2)),
+        type: record.wasteType,
+    }));
 
     const impactBreakdownData = [
         {
@@ -250,56 +248,66 @@ export default async function DashboardPage() {
 
     return (
         <div className="min-w-0 space-y-5">
-            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[1.75rem] md:p-6">
-                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
-                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:p-5 md:rounded-[1.75rem] md:p-6">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl dark:bg-emerald-500/10" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl dark:bg-lime-500/10" />
 
                 <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:items-center">
                     <div className="min-w-0">
-                        <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                        <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm transition-colors dark:border-white/10 dark:bg-white/10 dark:text-emerald-200">
                             <Leaf className="mr-1.5 size-3.5" />
                             REGEN-LINK Climate Command Center
                         </div>
 
-                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-4xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50 sm:text-3xl md:text-4xl">
                             Selamat datang, {user?.name ?? "Climate Actor"}
                         </h1>
 
-                        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
                             Pantau input energi, limbah, rekomendasi AI, action, badge,
                             challenge, dan estimasi dampak dalam satu dashboard ringkas.
                         </p>
 
                         <div className="mt-4 flex flex-wrap gap-2">
-                            <Badge variant="secondary">
+                            <Badge
+                                variant="secondary"
+                                className="dark:bg-white/10 dark:text-slate-200"
+                            >
                                 {user?.city?.name ?? "No City Node"}
                             </Badge>
-                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-300">
                                 {level}
                             </Badge>
-                            <Badge variant="outline">{score} pts</Badge>
+                            <Badge
+                                variant="outline"
+                                className="dark:border-white/10 dark:text-slate-200"
+                            >
+                                {score} pts
+                            </Badge>
                         </div>
                     </div>
 
-                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
-                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur transition-colors dark:border-white/10 dark:bg-white/[0.07] dark:shadow-none">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                             Regenerative Score
                         </p>
-                        <p className="mt-2 text-3xl font-semibold text-emerald-950">
+                        <p className="mt-2 text-3xl font-semibold text-emerald-950 dark:text-emerald-50">
                             {score}
                         </p>
-                        <p className="mt-1 text-sm text-slate-600">{level}</p>
+                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                            {level}
+                        </p>
 
-                        <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100">
+                        <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                             <div
-                                className="h-full rounded-full bg-emerald-950"
+                                className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
                                 style={{
                                     width: `${scoreProgress}%`,
                                 }}
                             />
                         </div>
 
-                        <p className="mt-2 text-xs text-muted-foreground">
+                        <p className="mt-2 text-xs text-muted-foreground dark:text-slate-400">
                             {scoreProgress}% menuju Juara Regeneratif.
                         </p>
                     </div>
@@ -396,7 +404,11 @@ export default async function DashboardPage() {
                             caption={`${activeActions.length} action masih perlu diselesaikan.`}
                             progress={
                                 userActions.length > 0
-                                    ? Math.round((completedActions.length / userActions.length) * 100)
+                                    ? Math.round(
+                                        (completedActions.length /
+                                            userActions.length) *
+                                        100
+                                    )
                                     : 0
                             }
                             icon={<Flame className="size-5" />}
@@ -414,25 +426,27 @@ export default async function DashboardPage() {
 
                     <LatestRecommendationCard recommendation={latestRecommendation} />
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
-                        <CardHeader>
-                            <CardTitle>Latest Records</CardTitle>
-                            <CardDescription>
+                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                            <CardTitle className="text-emerald-950 dark:text-emerald-50">
+                                Latest Records
+                            </CardTitle>
+                            <CardDescription className="dark:text-slate-400">
                                 Aktivitas input data terbaru dari Energy dan Waste Center.
                             </CardDescription>
                         </CardHeader>
 
-                        <CardContent className="grid gap-3 md:grid-cols-2">
-                            <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/40 p-4">
+                        <CardContent className="grid gap-3 pt-5 md:grid-cols-2">
+                            <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/40 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
                                 <div className="flex items-center gap-3">
-                                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                                         <Zap className="size-5" />
                                     </div>
-                                    <div>
-                                        <p className="font-semibold text-emerald-950">
+                                    <div className="min-w-0">
+                                        <p className="font-semibold text-emerald-950 dark:text-emerald-50">
                                             Latest Energy
                                         </p>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-xs text-muted-foreground dark:text-slate-400">
                                             {latestEnergy
                                                 ? formatDate(latestEnergy.recordDate)
                                                 : "No data"}
@@ -440,38 +454,44 @@ export default async function DashboardPage() {
                                     </div>
                                 </div>
 
-                                <p className="mt-4 text-2xl font-semibold text-emerald-950">
+                                <p className="mt-4 text-2xl font-semibold text-emerald-950 dark:text-emerald-50">
                                     {latestEnergy
-                                        ? `${latestEnergy.monthlyKwh.toLocaleString("id-ID")} kWh`
+                                        ? `${latestEnergy.monthlyKwh.toLocaleString(
+                                            "id-ID"
+                                        )} kWh`
                                         : "—"}
                                 </p>
-                                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground dark:text-slate-400">
                                     {latestEnergy?.dominantDevices ??
                                         "Tambahkan data energi untuk memulai analisis."}
                                 </p>
                             </div>
 
-                            <div className="rounded-2xl border border-emerald-900/10 bg-lime-50/40 p-4">
+                            <div className="rounded-2xl border border-emerald-900/10 bg-lime-50/40 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
                                 <div className="flex items-center gap-3">
-                                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                                         <Recycle className="size-5" />
                                     </div>
-                                    <div>
-                                        <p className="font-semibold text-emerald-950">
+                                    <div className="min-w-0">
+                                        <p className="font-semibold text-emerald-950 dark:text-emerald-50">
                                             Latest Waste
                                         </p>
-                                        <p className="text-xs text-muted-foreground">
-                                            {latestWaste ? formatDate(latestWaste.recordDate) : "No data"}
+                                        <p className="text-xs text-muted-foreground dark:text-slate-400">
+                                            {latestWaste
+                                                ? formatDate(latestWaste.recordDate)
+                                                : "No data"}
                                         </p>
                                     </div>
                                 </div>
 
-                                <p className="mt-4 text-2xl font-semibold text-emerald-950">
+                                <p className="mt-4 text-2xl font-semibold text-emerald-950 dark:text-emerald-50">
                                     {latestWaste
-                                        ? `${latestWaste.weightKg.toLocaleString("id-ID")} kg`
+                                        ? `${latestWaste.weightKg.toLocaleString(
+                                            "id-ID"
+                                        )} kg`
                                         : "—"}
                                 </p>
-                                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground dark:text-slate-400">
                                     {latestWaste
                                         ? `${latestWaste.wasteType} • ${latestWaste.managementStatus}`
                                         : "Tambahkan data limbah untuk memulai circular action."}
@@ -482,13 +502,15 @@ export default async function DashboardPage() {
                 </div>
 
                 <aside className="min-w-0 space-y-5">
-                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
+                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm dark:border-white/10 dark:bg-emerald-950/80">
                         <CardHeader>
                             <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
                                 <BrainCircuit className="mr-1.5 size-3" />
                                 MVP Intelligence
                             </Badge>
-                            <CardTitle className="text-white">Next Best Action</CardTitle>
+                            <CardTitle className="text-white">
+                                Next Best Action
+                            </CardTitle>
                             <CardDescription className="text-emerald-50/70">
                                 Lanjutkan alur dari input data sampai aksi selesai.
                             </CardDescription>
@@ -499,7 +521,9 @@ export default async function DashboardPage() {
                                 asChild
                                 className="w-full bg-emerald-300 text-emerald-950 hover:bg-emerald-200"
                             >
-                                <Link href="/dashboard/impact">Generate Recommendation</Link>
+                                <Link href="/dashboard/impact">
+                                    Generate Recommendation
+                                </Link>
                             </Button>
 
                             <Button
@@ -520,21 +544,23 @@ export default async function DashboardPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
-                            <CardTitle className="text-base">Unlocked Badges</CardTitle>
-                            <CardDescription>
+                            <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
+                                Unlocked Badges
+                            </CardTitle>
+                            <CardDescription className="dark:text-slate-400">
                                 Badge terbaru berdasarkan regenerative score.
                             </CardDescription>
                         </CardHeader>
 
                         <CardContent>
                             {userBadges.length === 0 ? (
-                                <div className="rounded-2xl border border-dashed bg-emerald-50/40 p-6 text-center">
-                                    <p className="text-sm font-medium text-emerald-950">
+                                <div className="rounded-2xl border border-dashed border-emerald-900/15 bg-emerald-50/40 p-6 text-center dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                         Belum ada badge.
                                     </p>
-                                    <p className="mt-1 text-xs text-muted-foreground">
+                                    <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                                         Selesaikan action untuk membuka badge.
                                     </p>
                                 </div>
@@ -543,17 +569,17 @@ export default async function DashboardPage() {
                                     {userBadges.map((userBadge) => (
                                         <div
                                             key={userBadge.id}
-                                            className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4"
+                                            className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]"
                                         >
                                             <div className="flex items-start gap-3">
-                                                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-950 text-emerald-300">
+                                                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                                                     <BadgeCheck className="size-4" />
                                                 </div>
-                                                <div>
-                                                    <p className="text-sm font-semibold text-emerald-950">
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                                                         {userBadge.badge.name}
                                                     </p>
-                                                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                                                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                         {userBadge.badge.description}
                                                     </p>
                                                 </div>
@@ -565,17 +591,19 @@ export default async function DashboardPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
-                            <CardTitle className="text-base">Active Challenges</CardTitle>
-                            <CardDescription>
+                            <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
+                                Active Challenges
+                            </CardTitle>
+                            <CardDescription className="dark:text-slate-400">
                                 Challenge yang sedang kamu ikuti.
                             </CardDescription>
                         </CardHeader>
 
                         <CardContent>
                             {challengeParticipants.length === 0 ? (
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground dark:text-slate-400">
                                     Belum mengikuti challenge.
                                 </p>
                             ) : (
@@ -593,27 +621,30 @@ export default async function DashboardPage() {
                                         return (
                                             <div
                                                 key={participant.id}
-                                                className="rounded-2xl border border-emerald-900/10 bg-white p-4"
+                                                className="rounded-2xl border border-emerald-900/10 bg-white p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]"
                                             >
                                                 <div className="flex items-start justify-between gap-3">
-                                                    <p className="text-sm font-semibold text-emerald-950">
+                                                    <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                                                         {participant.challenge.name}
                                                     </p>
-                                                    <Badge variant="secondary">
+                                                    <Badge
+                                                        variant="secondary"
+                                                        className="dark:bg-white/10 dark:text-slate-200"
+                                                    >
                                                         {participant.progressStatus}
                                                     </Badge>
                                                 </div>
 
-                                                <div className="mt-3 h-2 overflow-hidden rounded-full bg-emerald-100">
+                                                <div className="mt-3 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                                                     <div
-                                                        className="h-full rounded-full bg-emerald-950"
+                                                        className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
                                                         style={{
                                                             width: `${progress}%`,
                                                         }}
                                                     />
                                                 </div>
 
-                                                <p className="mt-2 text-xs text-muted-foreground">
+                                                <p className="mt-2 text-xs text-muted-foreground dark:text-slate-400">
                                                     {progress}% completed
                                                 </p>
                                             </div>

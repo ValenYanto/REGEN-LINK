@@ -25,8 +25,11 @@ import { Badge } from "@/components/ui/badge";
 type NavigationItem = {
     title: string;
     href: string;
-    icon: React.ElementType;
+    icon: React.ComponentType<{
+        className?: string;
+    }>;
     status: "active" | "soon";
+    adminOnly?: boolean;
 };
 
 const navigationItems: NavigationItem[] = [
@@ -90,32 +93,33 @@ const navigationItems: NavigationItem[] = [
         icon: UserCircle,
         status: "active",
     },
-];
-
-const adminNavigationItems: NavigationItem[] = [
     {
-        title: "Admin Center",
+        title: "Admin",
         href: "/dashboard/admin",
         icon: ShieldCheck,
         status: "active",
+        adminOnly: true,
     },
 ];
 
 type AppSidebarProps = {
-    role?: string | null;
+    role?: string;
 };
 
 export function AppSidebar({ role }: AppSidebarProps) {
     const pathname = usePathname();
-    const isAdmin = role === "ADMIN";
 
-    const items = isAdmin
-        ? [...navigationItems, ...adminNavigationItems]
-        : navigationItems;
+    const visibleNavigationItems = navigationItems.filter((item) => {
+        if (item.adminOnly) {
+            return role === "ADMIN";
+        }
+
+        return true;
+    });
 
     return (
-        <aside className="hidden min-h-screen w-72 border-r border-emerald-900/10 bg-white/85 px-4 py-5 backdrop-blur-xl lg:block">
-            <div className="flex items-center gap-3 rounded-3xl border border-emerald-900/10 bg-emerald-50/70 p-3">
+        <aside className="hidden min-h-screen w-72 border-r border-emerald-900/10 bg-white/85 px-4 py-5 backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-slate-950/90 lg:block">
+            <div className="flex items-center gap-3 rounded-3xl border border-emerald-900/10 bg-emerald-50/70 p-3 transition-colors dark:border-white/10 dark:bg-white/10">
                 <Image
                     src="/logo.png"
                     alt="REGEN-LINK"
@@ -124,23 +128,24 @@ export function AppSidebar({ role }: AppSidebarProps) {
                     className="rounded-2xl"
                 />
                 <div>
-                    <p className="text-sm font-bold tracking-tight text-emerald-950">
+                    <p className="text-sm font-bold tracking-tight text-emerald-950 dark:text-emerald-50">
                         REGEN-LINK
                     </p>
-                    <p className="text-[11px] uppercase tracking-[0.24em] text-emerald-700">
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-emerald-700 dark:text-emerald-300">
                         Climate Node
                     </p>
                 </div>
             </div>
 
             <nav className="mt-6 space-y-1">
-                {items.map((item) => {
+                {visibleNavigationItems.map((item) => {
                     const Icon = item.icon;
 
                     const isActive =
                         item.href === "/dashboard"
                             ? pathname === "/dashboard"
-                            : pathname === item.href || pathname.startsWith(`${item.href}/`);
+                            : pathname === item.href ||
+                            pathname.startsWith(`${item.href}/`);
 
                     const isSoon = item.status === "soon";
 
@@ -168,10 +173,8 @@ export function AppSidebar({ role }: AppSidebarProps) {
                             className={cn(
                                 "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition",
                                 isActive
-                                    ? "bg-emerald-950 text-emerald-50 shadow-sm"
-                                    : item.href.startsWith("/dashboard/admin")
-                                        ? "text-emerald-800 hover:bg-emerald-50 hover:text-emerald-950"
-                                        : "text-emerald-950/70 hover:bg-emerald-50 hover:text-emerald-950"
+                                    ? "bg-emerald-950 text-emerald-50 shadow-sm dark:bg-emerald-400 dark:text-emerald-950"
+                                    : "text-emerald-950/70 hover:bg-emerald-50 hover:text-emerald-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-emerald-50"
                             )}
                         >
                             <Icon className="size-4" />
@@ -181,17 +184,17 @@ export function AppSidebar({ role }: AppSidebarProps) {
                 })}
             </nav>
 
-            <div className="mt-8 rounded-3xl border border-emerald-900/10 bg-gradient-to-br from-emerald-950 to-lime-900 p-4 text-white">
+            <div className="mt-8 rounded-3xl border border-emerald-900/10 bg-gradient-to-br from-emerald-950 to-lime-900 p-4 text-white dark:border-white/10">
                 <div className="flex items-center gap-2">
                     <Leaf className="size-4 text-lime-300" />
-                    <p className="text-sm font-semibold">Phase 11 Active</p>
+                    <p className="text-sm font-semibold">Phase 12 Active</p>
                 </div>
                 <p className="mt-2 text-xs leading-5 text-emerald-50/75">
-                    Admin control center is now being added for platform management.
+                    Dark mode and light mode foundation are now connected.
                 </p>
             </div>
 
-            <div className="mt-4 flex items-center gap-2 px-2 text-xs text-muted-foreground">
+            <div className="mt-4 flex items-center gap-2 px-2 text-xs text-muted-foreground dark:text-slate-400">
                 <Settings className="size-3.5" />
                 <span>System protocol: MVP Build</span>
             </div>

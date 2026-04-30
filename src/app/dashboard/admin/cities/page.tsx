@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
     ArrowLeft,
     Building2,
-    Globe2,
     MapPin,
     ShieldCheck,
     Users,
@@ -182,12 +181,12 @@ export default async function AdminCitiesPage() {
             </section>
 
             <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
-                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm">
-                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
-                        <CardTitle className="text-base sm:text-lg">
+                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] sm:px-6">
+                        <CardTitle className="text-base text-emerald-950 dark:text-emerald-50 sm:text-lg">
                             City Directory
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="dark:text-slate-400">
                             Daftar kota beserta jumlah user, komunitas, score, dan aktivitas
                             kontribusinya.
                         </CardDescription>
@@ -196,16 +195,16 @@ export default async function AdminCitiesPage() {
                     <CardContent className="p-0">
                         {cities.length === 0 ? (
                             <div className="p-8 text-center">
-                                <p className="text-sm font-medium text-emerald-950">
+                                <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                     Belum ada city node.
                                 </p>
-                                <p className="mt-1 text-xs text-muted-foreground">
+                                <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                                     Tambahkan city node pertama melalui form di samping.
                                 </p>
                             </div>
                         ) : (
                             <div className="min-w-0">
-                                <div className="hidden grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_90px_110px_110px_110px] border-b border-emerald-900/10 bg-emerald-50/40 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground lg:grid">
+                                <div className="hidden grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_90px_110px_110px_110px] border-b border-emerald-900/10 bg-emerald-50/40 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400 lg:grid">
                                     <div>City</div>
                                     <div>Province</div>
                                     <div className="text-right">Users</div>
@@ -214,7 +213,7 @@ export default async function AdminCitiesPage() {
                                     <div className="text-right">Created</div>
                                 </div>
 
-                                <div className="divide-y divide-emerald-900/10">
+                                <div className="divide-y divide-emerald-900/10 dark:divide-white/10">
                                     {cities.map((city) => {
                                         const cityScore = city.users.reduce(
                                             (sum, user) =>
@@ -226,19 +225,19 @@ export default async function AdminCitiesPage() {
                                         return (
                                             <div
                                                 key={city.id}
-                                                className="bg-white px-4 py-4"
+                                                className="bg-white px-4 py-4 transition-colors dark:bg-transparent dark:hover:bg-white/[0.04]"
                                             >
                                                 <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_90px_110px_110px_110px] lg:items-center">
                                                     <div className="min-w-0">
                                                         <div className="flex min-w-0 items-center gap-2">
-                                                            <div className="flex size-9 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                                                            <div className="flex size-9 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                                                                 <Building2 className="size-4" />
                                                             </div>
                                                             <div className="min-w-0">
-                                                                <p className="truncate font-semibold text-emerald-950">
+                                                                <p className="truncate font-semibold text-emerald-950 dark:text-emerald-50">
                                                                     {city.name}
                                                                 </p>
-                                                                <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                                                                <p className="mt-0.5 truncate text-xs text-muted-foreground dark:text-slate-400">
                                                                     {city.country}
                                                                 </p>
                                                             </div>
@@ -257,7 +256,9 @@ export default async function AdminCitiesPage() {
 
                                                     <CompactCityMetric
                                                         label="Community"
-                                                        value={formatNumber(city.communities.length)}
+                                                        value={formatNumber(
+                                                            city.communities.length
+                                                        )}
                                                     />
 
                                                     <CompactCityMetric
@@ -282,29 +283,23 @@ export default async function AdminCitiesPage() {
                 <aside className="min-w-0 space-y-5">
                     <CityCreateForm />
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
-                            <CardTitle className="text-base">
+                            <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
                                 City Node Rules
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="dark:text-slate-400">
                                 Catatan struktur city dalam REGEN-LINK.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
-                            <p>
-                                1. Kombinasi nama kota dan provinsi harus unik.
-                            </p>
-                            <p>
-                                2. User dapat terhubung ke satu city node.
-                            </p>
+                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground dark:text-slate-400">
+                            <p>1. Kombinasi nama kota dan provinsi harus unik.</p>
+                            <p>2. User dapat terhubung ke satu city node.</p>
                             <p>
                                 3. City Insights dihitung dari akumulasi user, score,
                                 action, energy, dan waste.
                             </p>
-                            <p>
-                                4. Community dapat dikelompokkan berdasarkan city node.
-                            </p>
+                            <p>4. Community dapat dikelompokkan berdasarkan city node.</p>
                         </CardContent>
                     </Card>
                 </aside>
@@ -325,21 +320,21 @@ function AdminCityStatCard({
     icon: React.ReactNode;
 }) {
     return (
-        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm">
+        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                 <div className="min-w-0">
-                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                         {label}
                     </p>
-                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950">
+                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                         {value}
                     </p>
-                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                    <p className="mt-1 truncate text-xs text-muted-foreground dark:text-slate-400">
                         {caption}
                     </p>
                 </div>
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                     {icon}
                 </div>
             </CardContent>
@@ -347,38 +342,28 @@ function AdminCityStatCard({
     );
 }
 
-function CompactCityInfo({
-    label,
-    value,
-}: {
-    label: string;
-    value: string;
-}) {
+function CompactCityInfo({ label, value }: { label: string; value: string }) {
     return (
-        <div className="flex items-center justify-between rounded-2xl bg-white px-3 py-2 ring-1 ring-emerald-900/10 lg:block lg:bg-transparent lg:p-0 lg:ring-0">
-            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground lg:hidden">
+        <div className="flex items-center justify-between rounded-2xl bg-white px-3 py-2 ring-1 ring-emerald-900/10 transition-colors dark:bg-white/[0.04] dark:ring-white/10 lg:block lg:bg-transparent lg:p-0 lg:ring-0">
+            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400 lg:hidden">
                 {label}
             </span>
-            <span className="truncate text-sm text-muted-foreground">
+            <span className="truncate text-sm text-muted-foreground dark:text-slate-400">
                 {value}
             </span>
         </div>
     );
 }
 
-function CompactCityMetric({
-    label,
-    value,
-}: {
-    label: string;
-    value: string;
-}) {
+function CompactCityMetric({ label, value }: { label: string; value: string }) {
     return (
-        <div className="flex items-center justify-between rounded-2xl bg-white px-3 py-2 ring-1 ring-emerald-900/10 lg:block lg:bg-transparent lg:p-0 lg:text-right lg:ring-0">
-            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground lg:hidden">
+        <div className="flex items-center justify-between rounded-2xl bg-white px-3 py-2 ring-1 ring-emerald-900/10 transition-colors dark:bg-white/[0.04] dark:ring-white/10 lg:block lg:bg-transparent lg:p-0 lg:text-right lg:ring-0">
+            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400 lg:hidden">
                 {label}
             </span>
-            <span className="font-semibold text-emerald-950">{value}</span>
+            <span className="font-semibold text-emerald-950 dark:text-emerald-50">
+                {value}
+            </span>
         </div>
     );
 }

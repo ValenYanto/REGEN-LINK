@@ -88,10 +88,10 @@ export function CommunityCreateForm({ cities }: CommunityCreateFormProps) {
     }
 
     return (
-        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                         <UsersRound className="size-5" />
                     </div>
                     <div className="min-w-0">
@@ -109,7 +109,7 @@ export function CommunityCreateForm({ cities }: CommunityCreateFormProps) {
             <CardContent className="px-4 pt-5 pb-4 sm:px-6">
                 <form onSubmit={onSubmit} className="grid min-w-0 gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -117,23 +117,23 @@ export function CommunityCreateForm({ cities }: CommunityCreateFormProps) {
                     ) : null}
 
                     <div className="grid min-w-0 gap-2">
-                        <Label htmlFor="name">Nama Community</Label>
+                        <Label className="dark:text-slate-200" htmlFor="name">Nama Community</Label>
                         <Input
                             id="name"
                             name="name"
                             placeholder="Contoh: Green Campus IPB"
-                            className="w-full min-w-0"
+                            className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                             required
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.name[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid min-w-0 gap-2">
-                        <Label>Tipe Community</Label>
+                        <Label className="dark:text-slate-200">Tipe Community</Label>
                         <Select name="type" required>
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger className="w-full dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                 <SelectValue placeholder="Pilih tipe community" />
                             </SelectTrigger>
                             <SelectContent>
@@ -150,14 +150,14 @@ export function CommunityCreateForm({ cities }: CommunityCreateFormProps) {
                             </SelectContent>
                         </Select>
                         {errors.type ? (
-                            <p className="text-xs text-red-600">{errors.type[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.type[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid min-w-0 gap-2">
-                        <Label>City Node</Label>
+                        <Label className="dark:text-slate-200">City Node</Label>
                         <Select name="cityId" required>
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger className="w-full dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                 <SelectValue placeholder="Pilih city node" />
                             </SelectTrigger>
                             <SelectContent>
@@ -169,14 +169,14 @@ export function CommunityCreateForm({ cities }: CommunityCreateFormProps) {
                             </SelectContent>
                         </Select>
                         {errors.cityId ? (
-                            <p className="text-xs text-red-600">{errors.cityId[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.cityId[0]}</p>
                         ) : null}
                     </div>
 
                     <Button
                         type="submit"
                         disabled={isPending || cities.length === 0}
-                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />
@@ -187,7 +187,7 @@ export function CommunityCreateForm({ cities }: CommunityCreateFormProps) {
                     </Button>
 
                     {cities.length === 0 ? (
-                        <p className="text-xs leading-5 text-muted-foreground">
+                        <p className="text-xs leading-5 text-muted-foreground dark:text-slate-400">
                             Tambahkan city node terlebih dahulu sebelum membuat community.
                         </p>
                     ) : null}

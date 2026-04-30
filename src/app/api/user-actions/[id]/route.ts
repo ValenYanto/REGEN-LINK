@@ -81,7 +81,7 @@ export async function PATCH(req: Request, { params }: RouteContext) {
 
         let scoreIncrement = 0;
 
-        let awardedBadges: any = [];
+        let awardedBadges: Awaited<ReturnType<typeof awardEligibleBadges>> = [];
 
         if (!wasCompleted && willBeCompleted) {
             scoreIncrement = getActionCompletionScore({

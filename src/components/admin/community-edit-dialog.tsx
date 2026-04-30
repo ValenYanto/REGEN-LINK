@@ -110,14 +110,14 @@ export function CommunityEditDialog({
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-8 border-emerald-900/15 text-emerald-950 hover:bg-emerald-50"
+                    className="h-8 border-emerald-900/15 text-emerald-950 dark:text-emerald-50 hover:bg-emerald-50"
                 >
                     <Edit3 className="mr-2 size-3.5" />
                     Edit
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl dark:border-white/10 dark:bg-slate-950 dark:text-slate-50">
                 <DialogHeader>
                     <DialogTitle>Edit Community</DialogTitle>
                     <DialogDescription>
@@ -128,7 +128,7 @@ export function CommunityEditDialog({
 
                 <form onSubmit={onSubmit} className="grid gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -136,7 +136,7 @@ export function CommunityEditDialog({
                     ) : null}
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`name-${community.id}`}>
+                        <Label className="dark:text-slate-200" htmlFor={`name-${community.id}`}>
                             Nama Community
                         </Label>
                         <Input
@@ -146,19 +146,19 @@ export function CommunityEditDialog({
                             required
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.name[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label>Tipe Community</Label>
+                            <Label className="dark:text-slate-200">Tipe Community</Label>
                             <Select
                                 name="type"
                                 defaultValue={community.type}
                                 required
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className="dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih tipe community" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -175,20 +175,20 @@ export function CommunityEditDialog({
                                 </SelectContent>
                             </Select>
                             {errors.type ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.type[0]}
                                 </p>
                             ) : null}
                         </div>
 
                         <div className="grid gap-2">
-                            <Label>City Node</Label>
+                            <Label className="dark:text-slate-200">City Node</Label>
                             <Select
                                 name="cityId"
                                 defaultValue={community.cityId}
                                 required
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className="dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih city node" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -200,7 +200,7 @@ export function CommunityEditDialog({
                                 </SelectContent>
                             </Select>
                             {errors.cityId ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.cityId[0]}
                                 </p>
                             ) : null}

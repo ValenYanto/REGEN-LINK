@@ -84,10 +84,10 @@ export function ChallengeCreateForm() {
     }
 
     return (
-        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                         <Trophy className="size-5" />
                     </div>
                     <div className="min-w-0">
@@ -105,7 +105,7 @@ export function ChallengeCreateForm() {
             <CardContent className="px-4 pt-5 pb-4 sm:px-6">
                 <form onSubmit={onSubmit} className="grid min-w-0 gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -113,31 +113,31 @@ export function ChallengeCreateForm() {
                     ) : null}
 
                     <div className="grid min-w-0 gap-2">
-                        <Label htmlFor="name">Nama Challenge</Label>
+                        <Label className="dark:text-slate-200" htmlFor="name">Nama Challenge</Label>
                         <Input
                             id="name"
                             name="name"
                             placeholder="Contoh: 7 Hari Hemat Energi"
-                            className="w-full min-w-0"
+                            className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                             required
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.name[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid min-w-0 gap-2">
-                        <Label htmlFor="description">Deskripsi</Label>
+                        <Label className="dark:text-slate-200" htmlFor="description">Deskripsi</Label>
                         <Textarea
                             id="description"
                             name="description"
                             placeholder="Jelaskan tujuan challenge dan aksi yang dihitung..."
                             rows={4}
-                            className="min-h-28 resize-none"
+                            className="min-h-28 resize-none dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                             required
                         />
                         {errors.description ? (
-                            <p className="text-xs text-red-600">
+                            <p className="text-xs text-red-600 dark:text-red-300">
                                 {errors.description[0]}
                             </p>
                         ) : null}
@@ -145,9 +145,9 @@ export function ChallengeCreateForm() {
 
                     <div className="grid min-w-0 gap-4 sm:grid-cols-2">
                         <div className="grid min-w-0 gap-2">
-                            <Label>Tipe Challenge</Label>
+                            <Label className="dark:text-slate-200">Tipe Challenge</Label>
                             <Select name="type" required>
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger className="w-full dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih tipe" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -159,12 +159,12 @@ export function ChallengeCreateForm() {
                                 </SelectContent>
                             </Select>
                             {errors.type ? (
-                                <p className="text-xs text-red-600">{errors.type[0]}</p>
+                                <p className="text-xs text-red-600 dark:text-red-300">{errors.type[0]}</p>
                             ) : null}
                         </div>
 
                         <div className="grid min-w-0 gap-2">
-                            <Label htmlFor="targetValue">Target Value</Label>
+                            <Label className="dark:text-slate-200" htmlFor="targetValue">Target Value</Label>
                             <Input
                                 id="targetValue"
                                 name="targetValue"
@@ -172,11 +172,11 @@ export function ChallengeCreateForm() {
                                 min="1"
                                 step="0.01"
                                 placeholder="Contoh: 50"
-                                className="w-full min-w-0"
+                                className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                                 required
                             />
                             {errors.targetValue ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.targetValue[0]}
                                 </p>
                             ) : null}
@@ -185,32 +185,32 @@ export function ChallengeCreateForm() {
 
                     <div className="grid min-w-0 gap-4 sm:grid-cols-2">
                         <div className="grid min-w-0 gap-2">
-                            <Label htmlFor="startDate">Tanggal Mulai</Label>
+                            <Label className="dark:text-slate-200" htmlFor="startDate">Tanggal Mulai</Label>
                             <Input
                                 id="startDate"
                                 name="startDate"
                                 type="date"
-                                className="w-full min-w-0"
+                                className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                                 required
                             />
                             {errors.startDate ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.startDate[0]}
                                 </p>
                             ) : null}
                         </div>
 
                         <div className="grid min-w-0 gap-2">
-                            <Label htmlFor="endDate">Tanggal Selesai</Label>
+                            <Label className="dark:text-slate-200" htmlFor="endDate">Tanggal Selesai</Label>
                             <Input
                                 id="endDate"
                                 name="endDate"
                                 type="date"
-                                className="w-full min-w-0"
+                                className="w-full min-w-0 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500"
                                 required
                             />
                             {errors.endDate ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.endDate[0]}
                                 </p>
                             ) : null}
@@ -220,7 +220,7 @@ export function ChallengeCreateForm() {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />

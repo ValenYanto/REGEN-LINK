@@ -74,17 +74,19 @@ export function ChallengeDeleteDialog({
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-8 border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"
+                    className="h-8 w-full justify-center border-red-200 bg-white text-red-700 hover:bg-red-50 hover:text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-300 dark:hover:bg-red-400/15 sm:w-auto 2xl:w-full"
                 >
                     <Trash2 className="mr-2 size-3.5" />
                     Delete
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="border-emerald-900/10 bg-white text-slate-950 dark:border-white/10 dark:bg-slate-950 dark:text-slate-50 sm:max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>Hapus Challenge?</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-emerald-950 dark:text-emerald-50">
+                        Hapus Challenge?
+                    </DialogTitle>
+                    <DialogDescription className="dark:text-slate-400">
                         Challenge yang sudah diikuti participant tidak bisa dihapus untuk
                         menjaga histori progress user.
                     </DialogDescription>
@@ -92,33 +94,33 @@ export function ChallengeDeleteDialog({
 
                 <div className="space-y-4">
                     {message ? (
-                        <Alert className="border-red-200 bg-red-50 text-red-800">
+                        <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
                         </Alert>
                     ) : null}
 
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                             Challenge
                         </p>
-                        <p className="mt-2 font-semibold text-slate-950">
+                        <p className="mt-2 font-semibold text-slate-950 dark:text-emerald-50">
                             {challenge.name}
                         </p>
 
-                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-slate-200">
-                            <p className="text-xs text-muted-foreground">
+                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                            <p className="text-xs text-muted-foreground dark:text-slate-400">
                                 Participants
                             </p>
-                            <p className="mt-1 text-lg font-semibold text-slate-950">
+                            <p className="mt-1 text-lg font-semibold text-slate-950 dark:text-emerald-50">
                                 {challenge.participantCount}
                             </p>
                         </div>
                     </div>
 
                     {isUsed ? (
-                        <Alert className="border-amber-200 bg-amber-50 text-amber-900">
+                        <Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-300/20 dark:bg-amber-400/10 dark:text-amber-100">
                             <AlertDescription className="text-sm leading-6">
                                 Challenge ini sudah memiliki participant, jadi tidak bisa
                                 dihapus. Gunakan edit jika ingin memperbarui nama, deskripsi,
@@ -126,7 +128,7 @@ export function ChallengeDeleteDialog({
                             </AlertDescription>
                         </Alert>
                     ) : (
-                        <Alert className="border-red-200 bg-red-50 text-red-800">
+                        <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                             <AlertDescription className="text-sm leading-6">
                                 Challenge ini belum memiliki participant. Menghapus challenge
                                 akan menghilangkannya dari daftar challenge user.
@@ -140,6 +142,7 @@ export function ChallengeDeleteDialog({
                             variant="outline"
                             onClick={() => setOpen(false)}
                             disabled={isPending}
+                            className="dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-100 dark:hover:bg-white/10"
                         >
                             Batal
                         </Button>
@@ -148,7 +151,7 @@ export function ChallengeDeleteDialog({
                             type="button"
                             onClick={handleDelete}
                             disabled={isPending || isUsed}
-                            className="bg-red-700 text-white hover:bg-red-800"
+                            className="bg-red-700 text-white hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-red-500 dark:hover:bg-red-400"
                         >
                             {isPending ? (
                                 <Loader2 className="mr-2 size-4 animate-spin" />

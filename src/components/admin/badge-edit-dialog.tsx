@@ -105,14 +105,14 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-8 border-emerald-900/15 text-emerald-950 hover:bg-emerald-50"
+                    className="h-8 border-emerald-900/15 text-emerald-950 dark:text-emerald-50 hover:bg-emerald-50"
                 >
                     <Edit3 className="mr-2 size-3.5" />
                     Edit
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl dark:border-white/10 dark:bg-slate-950 dark:text-slate-50">
                 <DialogHeader>
                     <DialogTitle>Edit Badge</DialogTitle>
                     <DialogDescription>
@@ -123,7 +123,7 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
 
                 <form onSubmit={onSubmit} className="grid gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -131,7 +131,7 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
                     ) : null}
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`name-${badge.id}`}>Nama Badge</Label>
+                        <Label className="dark:text-slate-200" htmlFor={`name-${badge.id}`}>Nama Badge</Label>
                         <Input
                             id={`name-${badge.id}`}
                             name="name"
@@ -139,12 +139,12 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
                             required
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.name[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`description-${badge.id}`}>Deskripsi</Label>
+                        <Label className="dark:text-slate-200" htmlFor={`description-${badge.id}`}>Deskripsi</Label>
                         <Textarea
                             id={`description-${badge.id}`}
                             name="description"
@@ -154,7 +154,7 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
                             required
                         />
                         {errors.description ? (
-                            <p className="text-xs text-red-600">
+                            <p className="text-xs text-red-600 dark:text-red-300">
                                 {errors.description[0]}
                             </p>
                         ) : null}
@@ -162,9 +162,9 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label>Kategori</Label>
+                            <Label className="dark:text-slate-200">Kategori</Label>
                             <Select name="category" defaultValue={badge.category} required>
-                                <SelectTrigger>
+                                <SelectTrigger className="dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih kategori" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -177,14 +177,14 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
                                 </SelectContent>
                             </Select>
                             {errors.category ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.category[0]}
                                 </p>
                             ) : null}
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor={`requiredScore-${badge.id}`}>
+                            <Label className="dark:text-slate-200" htmlFor={`requiredScore-${badge.id}`}>
                                 Required Score
                             </Label>
                             <Input
@@ -197,7 +197,7 @@ export function BadgeEditDialog({ badge }: BadgeEditDialogProps) {
                                 required
                             />
                             {errors.requiredScore ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.requiredScore[0]}
                                 </p>
                             ) : null}

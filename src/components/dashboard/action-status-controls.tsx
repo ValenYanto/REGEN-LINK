@@ -73,7 +73,7 @@ export function ActionStatusControls({
     return (
         <div className="min-w-0 space-y-3">
             {message ? (
-                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                     <AlertDescription className="text-sm leading-6">
                         {message}
                     </AlertDescription>
@@ -87,7 +87,7 @@ export function ActionStatusControls({
                         onClick={() => updateStatus("IN_PROGRESS")}
                         disabled={isPending}
                         variant="outline"
-                        className="w-full border-emerald-900/20 text-emerald-950 hover:bg-emerald-50 sm:w-fit"
+                        className="w-full border-emerald-900/20 text-emerald-950 dark:text-emerald-50 hover:bg-emerald-50 sm:w-fit"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />

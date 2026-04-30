@@ -81,7 +81,7 @@ export function CommunityDeleteDialog({
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg dark:border-white/10 dark:bg-slate-950 dark:text-slate-50">
                 <DialogHeader>
                     <DialogTitle>Hapus Community?</DialogTitle>
                     <DialogDescription>
@@ -92,33 +92,33 @@ export function CommunityDeleteDialog({
 
                 <div className="space-y-4">
                     {message ? (
-                        <Alert className="border-red-200 bg-red-50 text-red-800">
+                        <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
                         </Alert>
                     ) : null}
 
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                             Community
                         </p>
-                        <p className="mt-2 font-semibold text-slate-950">
+                        <p className="mt-2 font-semibold text-slate-950 dark:text-emerald-50">
                             {community.name}
                         </p>
 
-                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-slate-200">
-                            <p className="text-xs text-muted-foreground">
+                        <div className="mt-4 rounded-xl bg-white p-3 dark:bg-white/[0.04] ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                            <p className="text-xs text-muted-foreground dark:text-slate-400">
                                 Members
                             </p>
-                            <p className="mt-1 text-lg font-semibold text-slate-950">
+                            <p className="mt-1 text-lg font-semibold text-slate-950 dark:text-emerald-50">
                                 {community.memberCount}
                             </p>
                         </div>
                     </div>
 
                     {isUsed ? (
-                        <Alert className="border-amber-200 bg-amber-50 text-amber-900">
+                        <Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-300/20 dark:bg-amber-400/10 dark:text-amber-100">
                             <AlertDescription className="text-sm leading-6">
                                 Community ini sudah memiliki member, jadi tidak bisa
                                 dihapus. Gunakan edit jika ingin memperbarui nama, tipe,
@@ -126,7 +126,7 @@ export function CommunityDeleteDialog({
                             </AlertDescription>
                         </Alert>
                     ) : (
-                        <Alert className="border-red-200 bg-red-50 text-red-800">
+                        <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                             <AlertDescription className="text-sm leading-6">
                                 Community ini belum memiliki member. Menghapus community
                                 akan menghilangkannya dari directory community.

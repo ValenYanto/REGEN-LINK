@@ -81,7 +81,7 @@ export function ActionDeleteDialog({ action }: ActionDeleteDialogProps) {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg dark:border-white/10 dark:bg-slate-950 dark:text-slate-50">
                 <DialogHeader>
                     <DialogTitle>Hapus Action Master?</DialogTitle>
                     <DialogDescription>
@@ -92,36 +92,36 @@ export function ActionDeleteDialog({ action }: ActionDeleteDialogProps) {
 
                 <div className="space-y-4">
                     {message ? (
-                        <Alert className="border-red-200 bg-red-50 text-red-800">
+                        <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
                         </Alert>
                     ) : null}
 
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                             Action
                         </p>
-                        <p className="mt-2 font-semibold text-slate-950">
+                        <p className="mt-2 font-semibold text-slate-950 dark:text-emerald-50">
                             {action.name}
                         </p>
 
                         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                            <div className="rounded-xl bg-white p-3 ring-1 ring-slate-200">
-                                <p className="text-xs text-muted-foreground">
+                            <div className="rounded-xl bg-white p-3 dark:bg-white/[0.04] ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                                <p className="text-xs text-muted-foreground dark:text-slate-400">
                                     User Actions
                                 </p>
-                                <p className="mt-1 text-lg font-semibold text-slate-950">
+                                <p className="mt-1 text-lg font-semibold text-slate-950 dark:text-emerald-50">
                                     {action.userActionCount}
                                 </p>
                             </div>
 
-                            <div className="rounded-xl bg-white p-3 ring-1 ring-slate-200">
-                                <p className="text-xs text-muted-foreground">
+                            <div className="rounded-xl bg-white p-3 dark:bg-white/[0.04] ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                                <p className="text-xs text-muted-foreground dark:text-slate-400">
                                     AI Recommendations
                                 </p>
-                                <p className="mt-1 text-lg font-semibold text-slate-950">
+                                <p className="mt-1 text-lg font-semibold text-slate-950 dark:text-emerald-50">
                                     {action.recommendationCount}
                                 </p>
                             </div>
@@ -129,14 +129,14 @@ export function ActionDeleteDialog({ action }: ActionDeleteDialogProps) {
                     </div>
 
                     {isUsed ? (
-                        <Alert className="border-amber-200 bg-amber-50 text-amber-900">
+                        <Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-300/20 dark:bg-amber-400/10 dark:text-amber-100">
                             <AlertDescription className="text-sm leading-6">
                                 Action ini sudah dipakai, jadi tidak bisa dihapus. Gunakan edit
                                 jika ingin memperbarui nama, deskripsi, kategori, atau score.
                             </AlertDescription>
                         </Alert>
                     ) : (
-                        <Alert className="border-red-200 bg-red-50 text-red-800">
+                        <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-200">
                             <AlertDescription className="text-sm leading-6">
                                 Action ini belum dipakai. Menghapus action akan menghilangkan
                                 template ini dari sistem rekomendasi.

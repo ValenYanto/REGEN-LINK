@@ -21,7 +21,6 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/admin";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -56,7 +55,6 @@ export default async function AdminOverviewPage() {
     const [
         totalUsers,
         totalCities,
-        totalCommunities,
         totalEnergyRecords,
         totalWasteRecords,
         totalActions,
@@ -76,7 +74,6 @@ export default async function AdminOverviewPage() {
     ] = await Promise.all([
         prisma.user.count(),
         prisma.city.count(),
-        prisma.community.count(),
         prisma.energyRecord.count(),
         prisma.wasteRecord.count(),
         prisma.action.count(),
@@ -291,17 +288,17 @@ export default async function AdminOverviewPage() {
                     return (
                         <Card
                             key={item.label}
-                            className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm"
+                            className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none"
                         >
                             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                                 <div className="min-w-0">
-                                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                         {item.label}
                                     </p>
-                                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950">
+                                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                                         {item.value}
                                     </p>
-                                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                                    <p className="mt-1 truncate text-xs text-muted-foreground dark:text-slate-400">
                                         {item.caption}
                                     </p>
                                 </div>
@@ -322,17 +319,17 @@ export default async function AdminOverviewPage() {
                     return (
                         <Card
                             key={item.label}
-                            className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm"
+                            className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none"
                         >
                             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                                 <div className="min-w-0">
-                                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                         {item.label}
                                     </p>
-                                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950">
+                                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                                         {item.value}
                                     </p>
-                                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                                    <p className="mt-1 truncate text-xs text-muted-foreground dark:text-slate-400">
                                         {item.caption}
                                     </p>
                                 </div>
@@ -347,7 +344,7 @@ export default async function AdminOverviewPage() {
             </section>
 
             <section className="grid min-w-0 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
-                <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm">
+                <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                     <CardHeader className="px-4 py-4 sm:px-6">
                         <CardTitle className="text-base sm:text-lg">
                             Modul Admin Berikutnya
@@ -475,18 +472,18 @@ function AdminNextLink({
     return (
         <Link
             href={href}
-            className="group min-w-0 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"
+            className="group min-w-0 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04] transition hover:border-emerald-300 hover:bg-emerald-50"
         >
             <div className="flex items-center justify-between gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-none">
                     {icon}
                 </div>
                 <span className="text-xs font-medium text-emerald-700 opacity-0 transition group-hover:opacity-100">
                     Soon
                 </span>
             </div>
-            <p className="mt-4 font-medium text-slate-950">{title}</p>
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            <p className="mt-4 font-medium text-slate-950 dark:text-emerald-50">{title}</p>
+            <p className="mt-1 text-sm leading-6 text-muted-foreground dark:text-slate-400">
                 {description}
             </p>
         </Link>

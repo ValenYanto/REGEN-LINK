@@ -117,60 +117,60 @@ export default async function ImpactPage() {
 
     return (
         <div className="w-full min-w-0 space-y-6 overflow-x-hidden">
-            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[2rem] md:p-8">
-                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
-                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:p-5 md:rounded-[2rem] md:p-8">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl dark:bg-emerald-500/10" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl dark:bg-lime-500/10" />
 
                 <div className="relative grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)] lg:items-end">
                     <div className="min-w-0">
-                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 dark:border-white/10 dark:bg-white/10 dark:text-emerald-200 dark:shadow-none text-xs font-medium text-emerald-800 shadow-sm">
                             <BrainCircuit className="mr-1.5 size-3.5 shrink-0" />
                             <span className="truncate">AI Impact Intelligence</span>
                         </div>
 
-                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-5xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50 sm:text-3xl md:text-5xl">
                             Pusat Dampak
                         </h1>
 
-                        <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 md:text-base">
+                        <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400 md:text-base">
                             Ubah data energi dan limbah menjadi rekomendasi aksi, estimasi
                             dampak lingkungan, penghematan biaya, dan regenerative score.
                         </p>
 
                         <div className="mt-4 flex flex-wrap gap-2">
-                            <Badge className="max-w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                            <Badge className="max-w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-950 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200">
                                 <span className="truncate">{level}</span>
                             </Badge>
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                 {score.toLocaleString("id-ID")} pts
                             </Badge>
-                            <Badge variant="outline">
+                            <Badge variant="outline" className="dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                 Rule-Based AI MVP
                             </Badge>
                         </div>
                     </div>
 
-                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
-                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                             Regenerative Score
                         </p>
-                        <p className="mt-2 break-words text-3xl font-semibold text-emerald-950">
+                        <p className="mt-2 break-words text-3xl font-semibold text-emerald-950 dark:text-emerald-50">
                             {score.toLocaleString("id-ID")}
                         </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-slate-500">
+                        <p className="mt-1 truncate text-xs leading-5 text-slate-500 dark:text-slate-400">
                             Level: {level}
                         </p>
 
-                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100">
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                             <div
-                                className="h-full rounded-full bg-emerald-950"
+                                className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
                                 style={{
                                     width: `${progress}%`,
                                 }}
                             />
                         </div>
 
-                        <p className="mt-2 text-xs text-muted-foreground">
+                        <p className="mt-2 text-xs text-muted-foreground dark:text-slate-400">
                             {Math.round(progress)}% menuju Juara Regeneratif.
                         </p>
                     </div>
@@ -209,10 +209,10 @@ export default async function ImpactPage() {
 
             <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
                 <div className="min-w-0 space-y-6">
-                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] px-4 py-4 sm:px-6">
                             <div className="flex min-w-0 items-start gap-3">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                                     <Sparkles className="size-5" />
                                 </div>
                                 <div className="min-w-0">
@@ -229,36 +229,36 @@ export default async function ImpactPage() {
 
                         <CardContent className="min-w-0 space-y-5 px-4 pt-5 pb-4 sm:px-6">
                             <div className="grid min-w-0 gap-4 md:grid-cols-2">
-                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
-                                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground dark:text-slate-400">
                                         Data Energi Terbaru
                                     </p>
-                                    <p className="mt-2 break-words text-2xl font-semibold text-emerald-950">
+                                    <p className="mt-2 break-words text-2xl font-semibold text-emerald-950 dark:text-emerald-50">
                                         {latestEnergyRecord
                                             ? `${latestEnergyRecord.monthlyKwh.toLocaleString(
                                                 "id-ID"
                                             )} kWh`
                                             : "Belum ada data"}
                                     </p>
-                                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground dark:text-slate-400">
                                         {latestEnergyRecord
                                             ? latestEnergyRecord.dominantDevices
                                             : "Isi catatan energi terlebih dahulu agar rekomendasi lebih akurat."}
                                     </p>
                                 </div>
 
-                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4">
-                                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground dark:text-slate-400">
                                         Data Limbah Terbaru
                                     </p>
-                                    <p className="mt-2 break-words text-2xl font-semibold text-emerald-950">
+                                    <p className="mt-2 break-words text-2xl font-semibold text-emerald-950 dark:text-emerald-50">
                                         {latestWasteRecord
                                             ? `${latestWasteRecord.weightKg.toLocaleString(
                                                 "id-ID"
                                             )} kg`
                                             : "Belum ada data"}
                                     </p>
-                                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground dark:text-slate-400">
                                         {latestWasteRecord
                                             ? `${latestWasteRecord.wasteType} • ${latestWasteRecord.managementStatus}`
                                             : "Isi catatan limbah terlebih dahulu agar rekomendasi lebih relevan."}
@@ -270,7 +270,7 @@ export default async function ImpactPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader className="px-4 py-4 sm:px-6">
                             <CardTitle className="text-base sm:text-lg">
                                 Hasil Rekomendasi AI
@@ -283,12 +283,12 @@ export default async function ImpactPage() {
 
                         <CardContent className="px-4 pb-4 sm:px-6">
                             {recommendations.length === 0 ? (
-                                <div className="rounded-2xl border border-dashed border-emerald-900/15 bg-emerald-50/40 p-6 text-center sm:p-8">
+                                <div className="rounded-2xl border border-dashed border-emerald-900/15 bg-emerald-50/40 p-6 dark:border-white/10 dark:bg-white/[0.04] text-center sm:p-8">
                                     <BrainCircuit className="mx-auto size-9 text-emerald-800" />
-                                    <p className="mt-3 text-sm font-medium text-emerald-950">
+                                    <p className="mt-3 text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                         Belum ada rekomendasi.
                                     </p>
-                                    <p className="mx-auto mt-1 max-w-md text-xs leading-5 text-muted-foreground">
+                                    <p className="mx-auto mt-1 max-w-md text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                         Klik tombol generate untuk membuat rekomendasi pertama.
                                         Pastikan data energi atau limbah sudah diisi agar hasilnya
                                         lebih relevan.
@@ -299,19 +299,19 @@ export default async function ImpactPage() {
                                     {recommendations.map((recommendation) => (
                                         <div
                                             key={recommendation.id}
-                                            className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4"
+                                            className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.04]"
                                         >
                                             <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                                 <div className="min-w-0">
-                                                    <p className="truncate font-semibold text-emerald-950">
+                                                    <p className="truncate font-semibold text-emerald-950 dark:text-emerald-50">
                                                         {recommendation.action.name}
                                                     </p>
-                                                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                                                    <p className="mt-1 text-sm leading-6 text-muted-foreground dark:text-slate-400">
                                                         {recommendation.recommendationReason}
                                                     </p>
                                                 </div>
 
-                                                <Badge className="w-fit shrink-0 bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                                                <Badge className="w-fit shrink-0 bg-emerald-950 text-emerald-50 hover:bg-emerald-950 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200">
                                                     {Math.round(
                                                         Number(recommendation.confidenceScore) * 100
                                                     )}
@@ -366,7 +366,7 @@ export default async function ImpactPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
                             <CardTitle className="text-base">Aksi yang Dibuat</CardTitle>
                             <CardDescription>
@@ -376,11 +376,11 @@ export default async function ImpactPage() {
 
                         <CardContent>
                             {userActions.length === 0 ? (
-                                <div className="rounded-2xl border border-dashed border-emerald-900/15 bg-emerald-50/40 p-5 text-center">
-                                    <p className="text-sm font-medium text-emerald-950">
+                                <div className="rounded-2xl border border-dashed border-emerald-900/15 bg-emerald-50/40 p-5 dark:border-white/10 dark:bg-white/[0.04] text-center">
+                                    <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                         Belum ada aksi.
                                     </p>
-                                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                                    <p className="mt-1 text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                         Generate rekomendasi untuk membuat daftar aksi pertama.
                                     </p>
                                 </div>
@@ -389,19 +389,19 @@ export default async function ImpactPage() {
                                     {userActions.map((userAction) => (
                                         <div
                                             key={userAction.id}
-                                            className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4"
+                                            className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]"
                                         >
                                             <div className="flex min-w-0 items-start justify-between gap-3">
-                                                <p className="line-clamp-2 text-sm font-semibold text-emerald-950">
+                                                <p className="line-clamp-2 text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                                                     {userAction.action.name}
                                                 </p>
-                                                <Badge variant="secondary" className="shrink-0">
+                                                <Badge variant="secondary" className="shrink-0 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                                                     {getStatusLabel(userAction.status)}
                                                 </Badge>
                                             </div>
 
                                             {userAction.impactEstimation ? (
-                                                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                                                <p className="mt-2 text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                     Estimasi{" "}
                                                     {formatNumber(
                                                         userAction.impactEstimation

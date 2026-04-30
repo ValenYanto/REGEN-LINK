@@ -8,17 +8,15 @@ export function DashboardShell({
     children: React.ReactNode;
 }) {
     return (
-        <main className="min-h-screen w-full overflow-x-hidden bg-[#f6f9f7] text-[#101828]">
-            <div className="flex min-h-screen w-full min-w-0 overflow-x-hidden">
+        <main className="min-h-screen bg-[#f6f9f7] text-[#101828] transition-colors dark:bg-slate-950 dark:text-slate-50">
+            <div className="flex min-h-screen">
                 {sidebar}
 
-                <div className="flex min-w-0 flex-1 flex-col overflow-x-hidden">
-                    <div className="hidden lg:block">{header}</div>
+                <div className="flex min-w-0 flex-1 flex-col">
+                    {header}
 
-                    <section className="w-full min-w-0 flex-1 overflow-x-hidden px-4 py-4 sm:px-5 md:px-6 lg:px-10 lg:py-6">
-                        <div className="mx-auto w-full min-w-0 max-w-7xl overflow-x-hidden">
-                            {children}
-                        </div>
+                    <section className="flex-1 px-5 py-6 md:px-8 lg:px-10">
+                        <div className="mx-auto max-w-7xl">{children}</div>
                     </section>
                 </div>
             </div>

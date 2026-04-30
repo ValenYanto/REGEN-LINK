@@ -6,7 +6,6 @@ import {
     BarChart3,
     Medal,
     ShieldCheck,
-    Sparkles,
     Trophy,
     Users,
 } from "lucide-react";
@@ -14,6 +13,8 @@ import {
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/admin";
 import { BadgeCreateForm } from "@/components/admin/badge-create-form";
+import { BadgeEditDialog } from "@/components/admin/badge-edit-dialog";
+import { BadgeDeleteDialog } from "@/components/admin/badge-delete-dialog";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,8 +25,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { BadgeEditDialog } from "@/components/admin/badge-edit-dialog";
-import { BadgeDeleteDialog } from "@/components/admin/badge-delete-dialog";
 
 const categoryLabels: Record<string, string> = {
     ENERGY: "Energi",
@@ -52,26 +51,26 @@ function formatDate(value: Date) {
 
 function getCategoryClass(category: string) {
     if (category === "ENERGY") {
-        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100";
+        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100 dark:bg-emerald-300/15 dark:text-emerald-200 dark:hover:bg-emerald-300/15";
     }
 
     if (category === "WASTE") {
-        return "bg-lime-100 text-lime-800 hover:bg-lime-100";
+        return "bg-lime-100 text-lime-800 hover:bg-lime-100 dark:bg-lime-300/15 dark:text-lime-200 dark:hover:bg-lime-300/15";
     }
 
     if (category === "CIRCULAR") {
-        return "bg-teal-100 text-teal-800 hover:bg-teal-100";
+        return "bg-teal-100 text-teal-800 hover:bg-teal-100 dark:bg-teal-300/15 dark:text-teal-200 dark:hover:bg-teal-300/15";
     }
 
     if (category === "IMPACT") {
-        return "bg-sky-100 text-sky-800 hover:bg-sky-100";
+        return "bg-sky-100 text-sky-800 hover:bg-sky-100 dark:bg-sky-300/15 dark:text-sky-200 dark:hover:bg-sky-300/15";
     }
 
     if (category === "COMMUNITY") {
-        return "bg-amber-100 text-amber-800 hover:bg-amber-100";
+        return "bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-300/15 dark:text-amber-200 dark:hover:bg-amber-300/15";
     }
 
-    return "bg-violet-100 text-violet-800 hover:bg-violet-100";
+    return "bg-violet-100 text-violet-800 hover:bg-violet-100 dark:bg-violet-300/15 dark:text-violet-200 dark:hover:bg-violet-300/15";
 }
 
 export default async function AdminBadgesPage() {
@@ -112,6 +111,7 @@ export default async function AdminBadgesPage() {
         (sum, badge) => sum + badge.userBadges.length,
         0
     );
+
     const averageRequiredScore =
         badges.length > 0
             ? Math.round(
@@ -213,12 +213,12 @@ export default async function AdminBadgesPage() {
             </section>
 
             <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
-                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm">
-                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
-                        <CardTitle className="text-base sm:text-lg">
+                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] sm:px-6">
+                        <CardTitle className="text-base text-emerald-950 dark:text-emerald-50 sm:text-lg">
                             Badge Directory
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="dark:text-slate-400">
                             Daftar badge master, required score, kategori, dan jumlah user
                             yang sudah membuka badge tersebut.
                         </CardDescription>
@@ -227,15 +227,15 @@ export default async function AdminBadgesPage() {
                     <CardContent className="p-0">
                         {badges.length === 0 ? (
                             <div className="p-8 text-center">
-                                <p className="text-sm font-medium text-emerald-950">
+                                <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                     Belum ada badge master.
                                 </p>
-                                <p className="mt-1 text-xs text-muted-foreground">
+                                <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                                     Tambahkan badge pertama melalui form di samping.
                                 </p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-emerald-900/10">
+                            <div className="divide-y divide-emerald-900/10 dark:divide-white/10">
                                 {badges.map((badge) => {
                                     const unlockCount = badge.userBadges.length;
                                     const latestUnlock = badge.userBadges
@@ -249,22 +249,22 @@ export default async function AdminBadgesPage() {
                                     return (
                                         <article
                                             key={badge.id}
-                                            className="bg-white px-4 py-5 transition hover:bg-emerald-50/30 sm:px-5"
+                                            className="bg-white px-4 py-5 transition hover:bg-emerald-50/30 dark:bg-transparent dark:hover:bg-white/[0.04] sm:px-5"
                                         >
                                             <div className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_230px] 2xl:items-start">
                                                 <div className="min-w-0">
                                                     <div className="flex min-w-0 items-start gap-3">
-                                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                                                             <Medal className="size-4" />
                                                         </div>
 
                                                         <div className="min-w-0 flex-1">
                                                             <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                                                                 <div className="min-w-0">
-                                                                    <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-emerald-950 sm:text-base">
+                                                                    <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-emerald-950 dark:text-emerald-50 sm:text-base">
                                                                         {badge.name}
                                                                     </h3>
-                                                                    <p className="mt-1 line-clamp-2 max-w-2xl text-xs leading-5 text-muted-foreground">
+                                                                    <p className="mt-1 line-clamp-2 max-w-2xl text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                                         {badge.description}
                                                                     </p>
                                                                 </div>
@@ -317,25 +317,25 @@ export default async function AdminBadgesPage() {
                                                     </div>
                                                 </div>
 
-                                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-slate-50/70 p-3">
-                                                    <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-slate-50/70 p-3 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+                                                    <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
                                                         <Users className="size-3.5" />
                                                         Unlock Monitor
                                                     </div>
 
-                                                    <p className="mt-3 text-2xl font-semibold text-emerald-950">
+                                                    <p className="mt-3 text-2xl font-semibold text-emerald-950 dark:text-emerald-50">
                                                         {formatNumber(unlockCount)}
                                                     </p>
-                                                    <p className="text-xs text-muted-foreground">
+                                                    <p className="text-xs text-muted-foreground dark:text-slate-400">
                                                         User sudah membuka badge ini.
                                                     </p>
 
                                                     {latestUnlock ? (
-                                                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-emerald-900/10">
-                                                            <p className="truncate text-xs font-medium text-emerald-950">
+                                                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-emerald-900/10 dark:bg-white/[0.06] dark:ring-white/10">
+                                                            <p className="truncate text-xs font-medium text-emerald-950 dark:text-emerald-50">
                                                                 {latestUnlock.user.name}
                                                             </p>
-                                                            <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                                                            <p className="mt-0.5 truncate text-[11px] text-muted-foreground dark:text-slate-400">
                                                                 {latestUnlock.user.city?.name ??
                                                                     "No City"}{" "}
                                                                 •{" "}
@@ -345,21 +345,25 @@ export default async function AdminBadgesPage() {
                                                             </p>
                                                         </div>
                                                     ) : (
-                                                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-emerald-900/10">
-                                                            <p className="text-xs text-muted-foreground">
+                                                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-emerald-900/10 dark:bg-white/[0.06] dark:ring-white/10">
+                                                            <p className="text-xs text-muted-foreground dark:text-slate-400">
                                                                 Belum ada user yang membuka
                                                                 badge ini.
                                                             </p>
                                                         </div>
                                                     )}
-                                                    <div className="mt-4 flex flex-col gap-2 border-t border-emerald-900/10 pt-3 sm:flex-row 2xl:flex-col">
+
+                                                    <div className="mt-4 flex flex-col gap-2 border-t border-emerald-900/10 pt-3 dark:border-white/10 sm:flex-row 2xl:flex-col">
                                                         <BadgeEditDialog
                                                             badge={{
                                                                 id: badge.id,
                                                                 name: badge.name,
-                                                                description: badge.description,
+                                                                description:
+                                                                    badge.description,
                                                                 category: badge.category,
-                                                                requiredScore: Number(badge.requiredScore),
+                                                                requiredScore: Number(
+                                                                    badge.requiredScore
+                                                                ),
                                                             }}
                                                         />
 
@@ -384,19 +388,17 @@ export default async function AdminBadgesPage() {
                 <aside className="min-w-0 space-y-5">
                     <BadgeCreateForm />
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
-                            <CardTitle className="text-base">
+                            <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
                                 Badge Rules
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="dark:text-slate-400">
                                 Catatan penggunaan badge dalam REGEN-LINK.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
-                            <p>
-                                1. Nama badge harus unik agar sistem award tidak ambigu.
-                            </p>
+                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground dark:text-slate-400">
+                            <p>1. Nama badge harus unik agar sistem award tidak ambigu.</p>
                             <p>
                                 2. Required score dipakai oleh badge engine saat user
                                 menyelesaikan action.
@@ -406,8 +408,8 @@ export default async function AdminBadgesPage() {
                                 dua kali.
                             </p>
                             <p>
-                                4. Edit dan delete badge akan ditambahkan pada phase
-                                berikutnya dengan safety check.
+                                4. Badge yang sudah pernah dibuka user tidak bisa dihapus
+                                agar histori pencapaian tetap aman.
                             </p>
                         </CardContent>
                     </Card>
@@ -429,21 +431,21 @@ function AdminBadgeStatCard({
     icon: React.ReactNode;
 }) {
     return (
-        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm">
+        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                 <div className="min-w-0">
-                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                         {label}
                     </p>
-                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950">
+                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                         {value}
                     </p>
-                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                    <p className="mt-1 truncate text-xs text-muted-foreground dark:text-slate-400">
                         {caption}
                     </p>
                 </div>
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                     {icon}
                 </div>
             </CardContent>
@@ -461,15 +463,15 @@ function BadgeInfoBox({
     helper?: string;
 }) {
     return (
-        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white px-3 py-3">
-            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white px-3 py-3 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
                 {label}
             </p>
-            <p className="mt-1 truncate text-sm font-semibold text-emerald-950">
+            <p className="mt-1 truncate text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                 {value}
             </p>
             {helper ? (
-                <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                <p className="mt-0.5 truncate text-[11px] text-muted-foreground dark:text-slate-400">
                     {helper}
                 </p>
             ) : null}

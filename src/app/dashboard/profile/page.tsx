@@ -384,22 +384,22 @@ export default async function ProfilePage() {
                     return (
                         <Card
                             key={item.label}
-                            className="border-emerald-950/10 bg-white/90 shadow-sm"
+                            className="border-emerald-950/10 bg-white/90 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none"
                         >
                             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                                 <div className="min-w-0">
-                                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                         {item.label}
                                     </p>
-                                    <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                                    <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                                         {item.value}
                                     </p>
-                                    <p className="mt-1 text-xs text-muted-foreground">
+                                    <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                                         {item.helper}
                                     </p>
                                 </div>
 
-                                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
                                     <Icon className="h-5 w-5" />
                                 </div>
                             </CardContent>
@@ -409,14 +409,14 @@ export default async function ProfilePage() {
             </section>
 
             <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-                <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
+                <Card className="border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                     <CardHeader className="pb-3">
                         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                             <div>
                                 <CardTitle className="text-base font-semibold">
                                     Ringkasan Dampak Pengguna
                                 </CardTitle>
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                     Akumulasi estimasi dampak dari aksi yang sudah diselesaikan.
                                 </p>
                             </div>
@@ -438,15 +438,15 @@ export default async function ProfilePage() {
                                 return (
                                     <div
                                         key={item.label}
-                                        className="rounded-2xl border border-emerald-950/10 bg-gradient-to-br from-emerald-50 to-white p-4"
+                                        className="rounded-2xl border border-emerald-950/10 bg-gradient-to-br from-emerald-50 to-white p-4 dark:border-white/10 dark:from-white/[0.06] dark:to-emerald-400/[0.06]"
                                     >
                                         <div className="flex items-center justify-between gap-3">
-                                            <p className="text-xs font-medium text-muted-foreground">
+                                            <p className="text-xs font-medium text-muted-foreground dark:text-slate-400">
                                                 {item.label}
                                             </p>
                                             <Icon className="h-4 w-4 text-emerald-700" />
                                         </div>
-                                        <p className="mt-3 text-xl font-semibold tracking-tight text-slate-950">
+                                        <p className="mt-3 text-xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                                             {item.value}
                                         </p>
                                     </div>
@@ -455,32 +455,32 @@ export default async function ProfilePage() {
                         </div>
 
                         <div className="mt-4 grid gap-3 md:grid-cols-2">
-                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                                <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                     Catatan Energi
                                 </p>
-                                <p className="mt-2 text-2xl font-semibold text-slate-950">
+                                <p className="mt-2 text-2xl font-semibold text-slate-950 dark:text-emerald-50">
                                     {formatNumber(user.energyRecords.length)} record
                                 </p>
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                     Total tercatat {formatDecimal(totalEnergyKwh)} kWh.
                                 </p>
-                                <p className="mt-2 text-xs text-muted-foreground">
+                                <p className="mt-2 text-xs text-muted-foreground dark:text-slate-400">
                                     Terakhir: {formatDate(latestEnergyRecord?.recordDate)}
                                 </p>
                             </div>
 
-                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                                <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                                     Catatan Limbah
                                 </p>
-                                <p className="mt-2 text-2xl font-semibold text-slate-950">
+                                <p className="mt-2 text-2xl font-semibold text-slate-950 dark:text-emerald-50">
                                     {formatNumber(user.wasteRecords.length)} record
                                 </p>
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                     Total tercatat {formatDecimal(totalWasteKg)} kg.
                                 </p>
-                                <p className="mt-2 text-xs text-muted-foreground">
+                                <p className="mt-2 text-xs text-muted-foreground dark:text-slate-400">
                                     Terakhir: {formatDate(latestWasteRecord?.recordDate)}
                                 </p>
                             </div>
@@ -488,45 +488,45 @@ export default async function ProfilePage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
+                <Card className="border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                     <CardHeader className="pb-3">
                         <CardTitle className="text-base font-semibold">
                             Identitas Akun
                         </CardTitle>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground dark:text-slate-400">
                             Informasi node pengguna dalam jaringan REGEN-LINK.
                         </p>
                     </CardHeader>
 
                     <CardContent className="space-y-3">
-                        <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                            <p className="text-xs text-muted-foreground">Nama Operator</p>
-                            <p className="mt-1 break-words font-medium text-slate-950">{user.name}</p>
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                            <p className="text-xs text-muted-foreground dark:text-slate-400">Nama Operator</p>
+                            <p className="mt-1 break-words font-medium text-slate-950 dark:text-emerald-50">{user.name}</p>
                         </div>
 
-                        <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                            <p className="text-xs text-muted-foreground">Email</p>
-                            <p className="mt-1 break-all font-medium text-slate-950">
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                            <p className="text-xs text-muted-foreground dark:text-slate-400">Email</p>
+                            <p className="mt-1 break-all font-medium text-slate-950 dark:text-emerald-50">
                                 {user.email}
                             </p>
                         </div>
 
                         <div className="grid gap-3 sm:grid-cols-2">
-                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                                <p className="text-xs text-muted-foreground">City Node</p>
-                                <p className="mt-1 truncate font-medium text-slate-950">
+                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                <p className="text-xs text-muted-foreground dark:text-slate-400">City Node</p>
+                                <p className="mt-1 truncate font-medium text-slate-950 dark:text-emerald-50">
                                     {user.city?.name ?? "-"}
                                 </p>
                             </div>
 
-                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                                <p className="text-xs text-muted-foreground">Role</p>
-                                <p className="mt-1 truncate font-medium text-slate-950">{user.role}</p>
+                            <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                <p className="text-xs text-muted-foreground dark:text-slate-400">Role</p>
+                                <p className="mt-1 truncate font-medium text-slate-950 dark:text-emerald-50">{user.role}</p>
                             </div>
                         </div>
 
-                        <div className="rounded-2xl border border-emerald-950/10 bg-emerald-50/70 p-4">
-                            <p className="text-xs font-medium uppercase tracking-[0.18em] text-emerald-800">
+                        <div className="rounded-2xl border border-emerald-950/10 bg-emerald-50/70 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                            <p className="text-xs font-medium uppercase tracking-[0.18em] text-emerald-800 dark:text-emerald-300">
                                 Community Link
                             </p>
 
@@ -536,14 +536,14 @@ export default async function ProfilePage() {
                                         <Badge
                                             key={item.id}
                                             variant="outline"
-                                            className="max-w-full border-emerald-200 bg-white text-emerald-800"
+                                            className="max-w-full border-emerald-200 bg-white text-emerald-800 dark:border-white/10 dark:bg-white/10 dark:text-emerald-300"
                                         >
                                             <span className="truncate">{item.community.name}</span>
                                         </Badge>
                                     ))}
                                 </div>
                             ) : (
-                                <p className="mt-2 text-sm text-emerald-900/70">
+                                <p className="mt-2 text-sm text-emerald-900/70 dark:text-slate-400">
                                     Belum terhubung ke komunitas. Fitur community join dapat
                                     dikembangkan setelah MVP demo.
                                 </p>
@@ -554,12 +554,12 @@ export default async function ProfilePage() {
             </section>
 
             <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-                <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
+                <Card className="border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                     <CardHeader className="pb-3">
                         <CardTitle className="text-base font-semibold">
                             Badge Regeneratif
                         </CardTitle>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground dark:text-slate-400">
                             Lencana yang terbuka berdasarkan kontribusi dan total score.
                         </p>
                     </CardHeader>
@@ -570,21 +570,21 @@ export default async function ProfilePage() {
                                 {userBadges.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="rounded-2xl border border-emerald-950/10 bg-gradient-to-br from-white to-emerald-50 p-4"
+                                        className="rounded-2xl border border-emerald-950/10 bg-gradient-to-br from-white to-emerald-50 p-4 dark:border-white/10 dark:from-white/[0.06] dark:to-emerald-400/[0.06]"
                                     >
                                         <div className="flex items-start gap-3">
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 dark:bg-white/10 text-emerald-700">
                                                 <BadgeCheck className="h-5 w-5" />
                                             </div>
 
                                             <div className="min-w-0">
-                                                <p className="truncate font-medium text-slate-950">
+                                                <p className="truncate font-medium text-slate-950 dark:text-emerald-50">
                                                     {item.badge.name}
                                                 </p>
-                                                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                                                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                     {item.badge.description}
                                                 </p>
-                                                <p className="mt-2 text-[11px] text-emerald-700">
+                                                <p className="mt-2 text-[11px] text-emerald-700 dark:text-emerald-300">
                                                     Dibuka {formatDate(item.awardedAt)}
                                                 </p>
                                             </div>
@@ -593,12 +593,12 @@ export default async function ProfilePage() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="rounded-3xl border border-dashed border-emerald-200 bg-emerald-50/60 p-6 text-center">
+                            <div className="rounded-3xl border border-dashed border-emerald-200 bg-emerald-50/60 p-6 dark:border-white/10 dark:bg-white/[0.04] text-center">
                                 <Award className="mx-auto h-9 w-9 text-emerald-700" />
-                                <p className="mt-3 font-medium text-slate-950">
+                                <p className="mt-3 font-medium text-slate-950 dark:text-emerald-50">
                                     Belum ada badge terbuka
                                 </p>
-                                <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
+                                <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground dark:text-slate-400">
                                     Selesaikan aksi pertama untuk mulai membuka badge kontribusi.
                                 </p>
                                 <Button
@@ -613,12 +613,12 @@ export default async function ProfilePage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
+                <Card className="border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                     <CardHeader className="pb-3">
                         <CardTitle className="text-base font-semibold">
                             Langkah Berikutnya
                         </CardTitle>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground dark:text-slate-400">
                             Jalur cepat untuk melanjutkan kontribusi di REGEN-LINK.
                         </p>
                     </CardHeader>
@@ -626,72 +626,72 @@ export default async function ProfilePage() {
                     <CardContent className="grid gap-3 md:grid-cols-2">
                         <Link
                             href="/dashboard/energy"
-                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"
+                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-emerald-300/30 dark:hover:bg-white/[0.07]"
                         >
                             <div className="flex items-center justify-between gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-none">
                                     <Bolt className="h-5 w-5" />
                                 </div>
-                                <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-emerald-700" />
+                                <ChevronRight className="h-4 w-4 text-muted-foreground dark:text-slate-400 transition group-hover:translate-x-1 group-hover:text-emerald-700" />
                             </div>
-                            <p className="mt-4 font-medium text-slate-950">
+                            <p className="mt-4 font-medium text-slate-950 dark:text-emerald-50">
                                 Tambah Catatan Energi
                             </p>
-                            <p className="mt-1 text-sm text-muted-foreground">
+                            <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                 Update konsumsi listrik bulanan dan perangkat dominan.
                             </p>
                         </Link>
 
                         <Link
                             href="/dashboard/waste"
-                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"
+                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-emerald-300/30 dark:hover:bg-white/[0.07]"
                         >
                             <div className="flex items-center justify-between gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-none">
                                     <Recycle className="h-5 w-5" />
                                 </div>
-                                <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-emerald-700" />
+                                <ChevronRight className="h-4 w-4 text-muted-foreground dark:text-slate-400 transition group-hover:translate-x-1 group-hover:text-emerald-700" />
                             </div>
-                            <p className="mt-4 font-medium text-slate-950">
+                            <p className="mt-4 font-medium text-slate-950 dark:text-emerald-50">
                                 Tambah Catatan Limbah
                             </p>
-                            <p className="mt-1 text-sm text-muted-foreground">
+                            <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                 Catat jenis limbah, berat, sumber, dan status pengelolaan.
                             </p>
                         </Link>
 
                         <Link
                             href="/dashboard/impact"
-                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"
+                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-emerald-300/30 dark:hover:bg-white/[0.07]"
                         >
                             <div className="flex items-center justify-between gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-none">
                                     <BarChart3 className="h-5 w-5" />
                                 </div>
-                                <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-emerald-700" />
+                                <ChevronRight className="h-4 w-4 text-muted-foreground dark:text-slate-400 transition group-hover:translate-x-1 group-hover:text-emerald-700" />
                             </div>
-                            <p className="mt-4 font-medium text-slate-950">
+                            <p className="mt-4 font-medium text-slate-950 dark:text-emerald-50">
                                 Generate Dampak
                             </p>
-                            <p className="mt-1 text-sm text-muted-foreground">
+                            <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                 Dapatkan rekomendasi aksi dan estimasi dampak terbaru.
                             </p>
                         </Link>
 
                         <Link
                             href="/dashboard/actions"
-                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"
+                            className="group rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-emerald-300/30 dark:hover:bg-white/[0.07]"
                         >
                             <div className="flex items-center justify-between gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-emerald-700 shadow-sm dark:bg-emerald-400/10 dark:text-emerald-300 dark:shadow-none">
                                     <Activity className="h-5 w-5" />
                                 </div>
-                                <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-emerald-700" />
+                                <ChevronRight className="h-4 w-4 text-muted-foreground dark:text-slate-400 transition group-hover:translate-x-1 group-hover:text-emerald-700" />
                             </div>
-                            <p className="mt-4 font-medium text-slate-950">
+                            <p className="mt-4 font-medium text-slate-950 dark:text-emerald-50">
                                 Lanjutkan Aksi
                             </p>
-                            <p className="mt-1 text-sm text-muted-foreground">
+                            <p className="mt-1 text-sm text-muted-foreground dark:text-slate-400">
                                 Mulai atau selesaikan aksi untuk menaikkan score.
                             </p>
                         </Link>

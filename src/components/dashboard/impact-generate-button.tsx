@@ -62,7 +62,7 @@ export function ImpactGenerateButton() {
     return (
         <div className="min-w-0 space-y-3">
             {message ? (
-                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                     <AlertDescription className="text-sm leading-6">
                         {message}
                     </AlertDescription>
@@ -72,7 +72,7 @@ export function ImpactGenerateButton() {
             <Button
                 onClick={handleGenerate}
                 disabled={isPending}
-                className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
             >
                 <Sparkles className="mr-2 size-4 shrink-0" />
                 <span className="truncate">
@@ -82,7 +82,7 @@ export function ImpactGenerateButton() {
                 </span>
             </Button>
 
-            <p className="text-xs leading-5 text-muted-foreground">
+            <p className="text-xs leading-5 text-muted-foreground dark:text-slate-400">
                 Sistem akan membaca data terbaru, menghindari duplikasi aksi, lalu
                 membuat rekomendasi yang bisa kamu jalankan di halaman Aksi.
             </p>

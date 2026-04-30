@@ -12,6 +12,10 @@ import {
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/admin";
 import { CommunityCreateForm } from "@/components/admin/community-create-form";
+import { CommunityEditDialog } from "@/components/admin/community-edit-dialog";
+import { CommunityDeleteDialog } from "@/components/admin/community-delete-dialog";
+import { CommunityMemberForm } from "@/components/admin/community-member-form";
+import { CommunityMemberRemoveButton } from "@/components/admin/community-member-remove-button";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,10 +26,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { CommunityEditDialog } from "@/components/admin/community-edit-dialog";
-import { CommunityDeleteDialog } from "@/components/admin/community-delete-dialog";
-import { CommunityMemberForm } from "@/components/admin/community-member-form";
-import { CommunityMemberRemoveButton } from "@/components/admin/community-member-remove-button";
 
 const typeLabels: Record<string, string> = {
     CAMPUS: "Campus",
@@ -50,26 +50,26 @@ function formatDate(value: Date) {
 
 function getTypeClass(type: string) {
     if (type === "CAMPUS") {
-        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100";
+        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100 dark:bg-emerald-300/15 dark:text-emerald-200 dark:hover:bg-emerald-300/15";
     }
 
     if (type === "CITY") {
-        return "bg-sky-100 text-sky-800 hover:bg-sky-100";
+        return "bg-sky-100 text-sky-800 hover:bg-sky-100 dark:bg-sky-300/15 dark:text-sky-200 dark:hover:bg-sky-300/15";
     }
 
     if (type === "UMKM") {
-        return "bg-amber-100 text-amber-800 hover:bg-amber-100";
+        return "bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-300/15 dark:text-amber-200 dark:hover:bg-amber-300/15";
     }
 
     if (type === "YOUTH_ORGANIZATION") {
-        return "bg-violet-100 text-violet-800 hover:bg-violet-100";
+        return "bg-violet-100 text-violet-800 hover:bg-violet-100 dark:bg-violet-300/15 dark:text-violet-200 dark:hover:bg-violet-300/15";
     }
 
     if (type === "ENVIRONMENTAL_COMMUNITY") {
-        return "bg-lime-100 text-lime-800 hover:bg-lime-100";
+        return "bg-lime-100 text-lime-800 hover:bg-lime-100 dark:bg-lime-300/15 dark:text-lime-200 dark:hover:bg-lime-300/15";
     }
 
-    return "bg-slate-100 text-slate-700 hover:bg-slate-100";
+    return "bg-slate-100 text-slate-700 hover:bg-slate-100 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/10";
 }
 
 export default async function AdminCommunitiesPage() {
@@ -141,6 +141,7 @@ export default async function AdminCommunitiesPage() {
         (sum, community) => sum + community.members.length,
         0
     );
+
     const totalCitiesWithCommunity = new Set(
         communities.map((community) => community.cityId)
     ).size;
@@ -237,12 +238,12 @@ export default async function AdminCommunitiesPage() {
             </section>
 
             <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
-                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm">
-                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
-                        <CardTitle className="text-base sm:text-lg">
+                <Card className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08] sm:px-6">
+                        <CardTitle className="text-base text-emerald-950 dark:text-emerald-50 sm:text-lg">
                             Community Directory
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="dark:text-slate-400">
                             Daftar community beserta city node, tipe, jumlah member, dan
                             aktivitasnya.
                         </CardDescription>
@@ -251,15 +252,15 @@ export default async function AdminCommunitiesPage() {
                     <CardContent className="p-0">
                         {communities.length === 0 ? (
                             <div className="p-8 text-center">
-                                <p className="text-sm font-medium text-emerald-950">
+                                <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50">
                                     Belum ada community.
                                 </p>
-                                <p className="mt-1 text-xs text-muted-foreground">
+                                <p className="mt-1 text-xs text-muted-foreground dark:text-slate-400">
                                     Tambahkan community pertama melalui form di samping.
                                 </p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-emerald-900/10">
+                            <div className="divide-y divide-emerald-900/10 dark:divide-white/10">
                                 {communities.map((community) => {
                                     const memberCount = community.members.length;
 
@@ -275,29 +276,26 @@ export default async function AdminCommunitiesPage() {
                                     return (
                                         <article
                                             key={community.id}
-                                            className="bg-white px-4 py-5 transition hover:bg-emerald-50/30 sm:px-5"
+                                            className="bg-white px-4 py-5 transition hover:bg-emerald-50/30 dark:bg-transparent dark:hover:bg-white/[0.04] sm:px-5"
                                         >
                                             <div className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_230px] 2xl:items-start">
                                                 <div className="min-w-0">
                                                     <div className="flex min-w-0 items-start gap-3">
-                                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                                                             <UsersRound className="size-4" />
                                                         </div>
 
                                                         <div className="min-w-0 flex-1">
                                                             <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                                                                 <div className="min-w-0">
-                                                                    <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-emerald-950 sm:text-base">
+                                                                    <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-emerald-950 dark:text-emerald-50 sm:text-base">
                                                                         {community.name}
                                                                     </h3>
-                                                                    <p className="mt-1 flex items-center gap-1.5 text-xs leading-5 text-muted-foreground">
+                                                                    <p className="mt-1 flex items-center gap-1.5 text-xs leading-5 text-muted-foreground dark:text-slate-400">
                                                                         <Building2 className="size-3.5 shrink-0" />
                                                                         <span className="truncate">
                                                                             {community.city.name},{" "}
-                                                                            {
-                                                                                community.city
-                                                                                    .province
-                                                                            }
+                                                                            {community.city.province}
                                                                         </span>
                                                                     </p>
                                                                 </div>
@@ -344,16 +342,16 @@ export default async function AdminCommunitiesPage() {
                                                     </div>
                                                 </div>
 
-                                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-slate-50/70 p-3">
-                                                    <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                                                <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-slate-50/70 p-3 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+                                                    <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
                                                         <Users className="size-3.5" />
                                                         Member Monitor
                                                     </div>
 
-                                                    <p className="mt-3 text-2xl font-semibold text-emerald-950">
+                                                    <p className="mt-3 text-2xl font-semibold text-emerald-950 dark:text-emerald-50">
                                                         {formatNumber(memberCount)}
                                                     </p>
-                                                    <p className="text-xs text-muted-foreground">
+                                                    <p className="text-xs text-muted-foreground dark:text-slate-400">
                                                         Member terhubung ke community ini.
                                                     </p>
 
@@ -362,33 +360,42 @@ export default async function AdminCommunitiesPage() {
                                                             latestMembers.map((member) => (
                                                                 <div
                                                                     key={member.id}
-                                                                    className="flex items-start justify-between gap-2 rounded-xl bg-white p-3 ring-1 ring-emerald-900/10"
+                                                                    className="flex items-start justify-between gap-2 rounded-xl bg-white p-3 ring-1 ring-emerald-900/10 dark:bg-white/[0.06] dark:ring-white/10"
                                                                 >
                                                                     <div className="min-w-0">
-                                                                        <p className="truncate text-xs font-medium text-emerald-950">
+                                                                        <p className="truncate text-xs font-medium text-emerald-950 dark:text-emerald-50">
                                                                             {member.user.name}
                                                                         </p>
-                                                                        <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                                                                        <p className="mt-0.5 truncate text-[11px] text-muted-foreground dark:text-slate-400">
                                                                             {member.memberRole} •{" "}
-                                                                            {formatNumber(member.user.regenerativeScore?.totalScore ?? 0)} pts
+                                                                            {formatNumber(
+                                                                                member.user
+                                                                                    .regenerativeScore
+                                                                                    ?.totalScore ??
+                                                                                0
+                                                                            )}{" "}
+                                                                            pts
                                                                         </p>
                                                                     </div>
 
                                                                     <CommunityMemberRemoveButton
                                                                         memberId={member.id}
-                                                                        memberName={member.user.name}
+                                                                        memberName={
+                                                                            member.user.name
+                                                                        }
                                                                     />
                                                                 </div>
                                                             ))
                                                         ) : (
-                                                            <div className="rounded-xl bg-white p-3 ring-1 ring-emerald-900/10">
-                                                                <p className="text-xs text-muted-foreground">
+                                                            <div className="rounded-xl bg-white p-3 ring-1 ring-emerald-900/10 dark:bg-white/[0.06] dark:ring-white/10">
+                                                                <p className="text-xs text-muted-foreground dark:text-slate-400">
                                                                     Belum ada member di community
                                                                     ini.
                                                                 </p>
                                                             </div>
                                                         )}
-                                                        <div className="mt-4 flex flex-col gap-2 border-t border-emerald-900/10 pt-3 sm:flex-row 2xl:flex-col">
+
+                                                        <div className="mt-4 flex flex-col gap-2 border-t border-emerald-900/10 pt-3 dark:border-white/10 sm:flex-row 2xl:flex-col">
                                                             <CommunityEditDialog
                                                                 community={{
                                                                     id: community.id,
@@ -435,16 +442,16 @@ export default async function AdminCommunitiesPage() {
                         }))}
                     />
 
-                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
                         <CardHeader>
-                            <CardTitle className="text-base">
+                            <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
                                 Community Rules
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="dark:text-slate-400">
                                 Catatan penggunaan community dalam REGEN-LINK.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
+                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground dark:text-slate-400">
                             <p>
                                 1. Nama community harus unik dalam city node yang sama.
                             </p>
@@ -457,8 +464,8 @@ export default async function AdminCommunitiesPage() {
                                 dan community leaderboard berikutnya.
                             </p>
                             <p>
-                                4. Edit, delete, dan member management akan ditambahkan pada
-                                phase berikutnya.
+                                4. Edit, delete, dan member management tersedia dengan safety
+                                check agar histori komunitas tetap aman.
                             </p>
                         </CardContent>
                     </Card>
@@ -480,21 +487,21 @@ function AdminCommunityStatCard({
     icon: React.ReactNode;
 }) {
     return (
-        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm">
+        <Card className="w-full min-w-0 border-emerald-950/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
             <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
                 <div className="min-w-0">
-                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                    <p className="truncate text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
                         {label}
                     </p>
-                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950">
+                    <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50">
                         {value}
                     </p>
-                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                    <p className="mt-1 truncate text-xs text-muted-foreground dark:text-slate-400">
                         {caption}
                     </p>
                 </div>
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
                     {icon}
                 </div>
             </CardContent>
@@ -512,15 +519,15 @@ function CommunityInfoBox({
     helper?: string;
 }) {
     return (
-        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white px-3 py-3">
-            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white px-3 py-3 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
                 {label}
             </p>
-            <p className="mt-1 truncate text-sm font-semibold text-emerald-950">
+            <p className="mt-1 truncate text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                 {value}
             </p>
             {helper ? (
-                <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                <p className="mt-0.5 truncate text-[11px] text-muted-foreground dark:text-slate-400">
                     {helper}
                 </p>
             ) : null}

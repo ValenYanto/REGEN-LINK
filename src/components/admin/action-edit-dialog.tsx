@@ -107,14 +107,14 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-8 border-emerald-900/15 text-emerald-950 hover:bg-emerald-50"
+                    className="h-8 border-emerald-900/15 text-emerald-950 dark:text-emerald-50 hover:bg-emerald-50"
                 >
                     <Edit3 className="mr-2 size-3.5" />
                     Edit
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl dark:border-white/10 dark:bg-slate-950 dark:text-slate-50">
                 <DialogHeader>
                     <DialogTitle>Edit Action Master</DialogTitle>
                     <DialogDescription>
@@ -125,7 +125,7 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
 
                 <form onSubmit={onSubmit} className="grid gap-4">
                     {message ? (
-                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
+                        <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-100">
                             <AlertDescription className="text-sm leading-6">
                                 {message}
                             </AlertDescription>
@@ -133,7 +133,7 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                     ) : null}
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`name-${action.id}`}>Nama Aksi</Label>
+                        <Label className="dark:text-slate-200" htmlFor={`name-${action.id}`}>Nama Aksi</Label>
                         <Input
                             id={`name-${action.id}`}
                             name="name"
@@ -141,12 +141,12 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                             required
                         />
                         {errors.name ? (
-                            <p className="text-xs text-red-600">{errors.name[0]}</p>
+                            <p className="text-xs text-red-600 dark:text-red-300">{errors.name[0]}</p>
                         ) : null}
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`description-${action.id}`}>Deskripsi</Label>
+                        <Label className="dark:text-slate-200" htmlFor={`description-${action.id}`}>Deskripsi</Label>
                         <Textarea
                             id={`description-${action.id}`}
                             name="description"
@@ -156,7 +156,7 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                             required
                         />
                         {errors.description ? (
-                            <p className="text-xs text-red-600">
+                            <p className="text-xs text-red-600 dark:text-red-300">
                                 {errors.description[0]}
                             </p>
                         ) : null}
@@ -164,9 +164,9 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label>Kategori</Label>
+                            <Label className="dark:text-slate-200">Kategori</Label>
                             <Select name="category" defaultValue={action.category} required>
-                                <SelectTrigger>
+                                <SelectTrigger className="dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih kategori" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -178,20 +178,20 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                                 </SelectContent>
                             </Select>
                             {errors.category ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.category[0]}
                                 </p>
                             ) : null}
                         </div>
 
                         <div className="grid gap-2">
-                            <Label>Kesulitan</Label>
+                            <Label className="dark:text-slate-200">Kesulitan</Label>
                             <Select
                                 name="difficultyLevel"
                                 defaultValue={action.difficultyLevel}
                                 required
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className="dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50">
                                     <SelectValue placeholder="Pilih kesulitan" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -201,7 +201,7 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                                 </SelectContent>
                             </Select>
                             {errors.difficultyLevel ? (
-                                <p className="text-xs text-red-600">
+                                <p className="text-xs text-red-600 dark:text-red-300">
                                     {errors.difficultyLevel[0]}
                                 </p>
                             ) : null}
@@ -209,7 +209,7 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor={`baseImpactScore-${action.id}`}>
+                        <Label className="dark:text-slate-200" htmlFor={`baseImpactScore-${action.id}`}>
                             Base Impact Score
                         </Label>
                         <Input
@@ -222,7 +222,7 @@ export function ActionEditDialog({ action }: ActionEditDialogProps) {
                             required
                         />
                         {errors.baseImpactScore ? (
-                            <p className="text-xs text-red-600">
+                            <p className="text-xs text-red-600 dark:text-red-300">
                                 {errors.baseImpactScore[0]}
                             </p>
                         ) : null}
