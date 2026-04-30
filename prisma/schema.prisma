@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  COMMUNITY_LEADER
+  ADMIN
+}
+
+enum HousingType {
+  KOS
+  HOUSE
+  APARTMENT
+  DORMITORY
+  UMKM
+  OTHER
+}
+
+enum WasteType {
+  FOOD
+  PLASTIC
+  PAPER
+  ORGANIC
+  METAL
+  GLASS
+  MIXED
+  OTHER
+}
+
+enum WasteManagementStatus {
+  NOT_SORTED
+  SORTED
+  RECYCLED
+  COMPOSTED
+  DONATED
+  SENT_TO_WASTE_BANK
+  OTHER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String?
+  role         Role     @default(USER)
+  avatarUrl    String?
+  cityId       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  city              City?              @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  energyRecords     EnergyRecord[]
+  wasteRecords      WasteRecord[]
+  regenerativeScore RegenerativeScore?
+
+  @@index([cityId])
+}
+
+model City {
+  id        String   @id @default(cuid())
+  name      String
+  province  String
+  country   String   @default("Indonesia")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+
+  @@unique([name, province])
+}
+
+model EnergyRecord {
+  id              String      @id @default(cuid())
+  userId          String
+  monthlyKwh      Float
+  electricityCost Float
+  housingType     HousingType
+  occupants       Int
+  dominantDevices String
+  notes           String?
+  recordDate      DateTime    @default(now())
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([recordDate])
+}
+
+model WasteRecord {
+  id               String                @id @default(cuid())
+  userId           String
+  wasteType        WasteType
+  weightKg         Float
+  wasteSource      String
+  managementStatus WasteManagementStatus
+  notes            String?
+  recordDate       DateTime              @default(now())
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([recordDate])
+  @@index([wasteType])
+}
+
+model RegenerativeScore {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  totalScore Int      @default(0)
+  level      String   @default("Seed")
+  cityRank   Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
