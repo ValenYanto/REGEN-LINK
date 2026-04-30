@@ -28,14 +28,23 @@ export function ChallengeJoinButton({
                 method: "POST",
             });
 
-            const data = await res.json();
+            let data: {
+                message?: string;
+            } = {};
 
-            if (!res.ok) {
-                setMessage(data.message || "Failed to join challenge.");
+            try {
+                data = await res.json();
+            } catch {
+                setMessage("Server mengembalikan respons yang tidak valid.");
                 return;
             }
 
-            setMessage("Berhasil join challenge.");
+            if (!res.ok) {
+                setMessage(data.message || "Belum bisa bergabung ke challenge.");
+                return;
+            }
+
+            setMessage("Berhasil bergabung ke challenge. Selesaikan aksi untuk menaikkan progress.");
             router.refresh();
         });
     }
@@ -44,16 +53,18 @@ export function ChallengeJoinButton({
         return (
             <Button type="button" disabled variant="secondary" className="w-full">
                 <Trophy className="mr-2 size-4" />
-                Already Joined
+                Sudah Bergabung
             </Button>
         );
     }
 
     return (
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
             {message ? (
                 <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
-                    <AlertDescription>{message}</AlertDescription>
+                    <AlertDescription className="text-sm leading-6">
+                        {message}
+                    </AlertDescription>
                 </Alert>
             ) : null}
 
@@ -68,7 +79,7 @@ export function ChallengeJoinButton({
                 ) : (
                     <Trophy className="mr-2 size-4" />
                 )}
-                Join Challenge
+                Gabung Challenge
             </Button>
         </div>
     );

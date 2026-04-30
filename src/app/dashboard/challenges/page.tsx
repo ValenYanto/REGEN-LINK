@@ -25,10 +25,10 @@ import {
 } from "@/components/ui/card";
 
 const statusLabels: Record<string, string> = {
-    JOINED: "Joined",
-    IN_PROGRESS: "In Progress",
-    COMPLETED: "Completed",
-    DROPPED: "Dropped",
+    JOINED: "Bergabung",
+    IN_PROGRESS: "Berjalan",
+    COMPLETED: "Selesai",
+    DROPPED: "Ditinggalkan",
 };
 
 const statusClassNames: Record<string, string> = {
@@ -39,11 +39,11 @@ const statusClassNames: Record<string, string> = {
 };
 
 const typeLabels: Record<string, string> = {
-    ENERGY: "Energy",
-    WASTE: "Waste",
-    CIRCULAR: "Circular",
-    CROSS_CITY: "Cross-City",
-    COMMUNITY: "Community",
+    ENERGY: "Energi",
+    WASTE: "Limbah",
+    CIRCULAR: "Sirkular",
+    CROSS_CITY: "Lintas Kota",
+    COMMUNITY: "Komunitas",
 };
 
 function formatDate(date: Date) {
@@ -54,6 +54,12 @@ function formatDate(date: Date) {
     }).format(date);
 }
 
+function formatNumber(value: number, maximumFractionDigits = 1) {
+    return value.toLocaleString("id-ID", {
+        maximumFractionDigits,
+    });
+}
+
 export default async function ChallengesPage() {
     const session = await auth();
 
@@ -62,6 +68,7 @@ export default async function ChallengesPage() {
     }
 
     const userId = session.user.id;
+
     await syncChallengeProgress(userId);
 
     const [challenges, participants] = await Promise.all([
@@ -97,200 +104,270 @@ export default async function ChallengesPage() {
         0
     );
 
+    const averageProgress =
+        participants.length > 0
+            ? Math.round(
+                participants.reduce((total, participant) => {
+                    const target = participant.challenge.targetValue || 1;
+                    return (
+                        total +
+                        Math.min(
+                            Math.round((participant.progressValue / target) * 100),
+                            100
+                        )
+                    );
+                }, 0) / participants.length
+            )
+            : 0;
+
     return (
-        <div className="space-y-6">
-            <section className="relative overflow-hidden rounded-[2rem] border border-emerald-900/10 bg-[#f7faf6] p-6 shadow-sm md:p-8">
+        <div className="w-full min-w-0 space-y-6 overflow-x-hidden">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[2rem] md:p-8">
                 <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
                 <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
 
-                <div className="relative grid gap-6 lg:grid-cols-[1fr_320px] lg:items-end">
-                    <div>
-                        <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
-                            <Trophy className="mr-1.5 size-3.5" />
-                            Cross-City Climate Challenge
+                <div className="relative grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)] lg:items-end">
+                    <div className="min-w-0">
+                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                            <Trophy className="mr-1.5 size-3.5 shrink-0" />
+                            <span className="truncate">Cross-City Climate Challenge</span>
                         </div>
 
-                        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
-                            Challenges Center
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-5xl">
+                            Pusat Tantangan
                         </h1>
 
                         <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 md:text-base">
-                            Ikuti tantangan energi, limbah, dan circular action untuk
-                            mengubah aksi individu menjadi kontribusi kolektif lintas kota.
+                            Ikuti tantangan energi, limbah, dan aksi sirkular untuk
+                            mengubah kontribusi individu menjadi gerakan kolektif lintas kota.
                         </p>
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                                {participants.length} tantangan diikuti
+                            </Badge>
+                            <Badge variant="secondary">
+                                {completedCount} selesai
+                            </Badge>
+                            <Badge variant="outline">
+                                Auto progress sync
+                            </Badge>
+                        </div>
                     </div>
 
-                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
+                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
                         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
-                            Joined Challenges
+                            Tantangan Diikuti
                         </p>
-                        <p className="mt-2 text-3xl font-semibold text-emerald-950">
+                        <p className="mt-2 break-words text-3xl font-semibold text-emerald-950">
                             {participants.length}
                         </p>
                         <p className="mt-1 text-xs leading-5 text-slate-500">
-                            {completedCount} challenge selesai.
+                            {completedCount} tantangan selesai.
+                        </p>
+
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100">
+                            <div
+                                className="h-full rounded-full bg-emerald-950"
+                                style={{
+                                    width: `${averageProgress}%`,
+                                }}
+                            />
+                        </div>
+
+                        <p className="mt-2 text-xs text-muted-foreground">
+                            Rata-rata progress: {averageProgress}%.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <section className="grid gap-4 md:grid-cols-4">
+            <section className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardMetricCard
-                    label="Available"
+                    label="Tersedia"
                     value={challenges.length.toString()}
-                    caption="Challenge tersedia"
+                    caption="Tantangan aktif"
                     icon={<Trophy className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    label="Joined"
+                    label="Diikuti"
                     value={participants.length.toString()}
-                    caption="Challenge diikuti"
+                    caption="Tantangan yang kamu ikuti"
                     icon={<Users className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    label="In Progress"
+                    label="Berjalan"
                     value={inProgressCount.toString()}
-                    caption="Challenge berjalan"
+                    caption="Progress sedang aktif"
                     icon={<Activity className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    label="Completed"
+                    label="Selesai"
                     value={completedCount.toString()}
-                    caption="Challenge selesai"
+                    caption="Tantangan selesai"
                     icon={<CheckCircle2 className="size-5" />}
                 />
             </section>
 
-            <section className="grid items-start gap-6 xl:grid-cols-[1fr_360px]">
-                <div className="space-y-4">
-                    {challenges.map((challenge) => {
-                        const participant = participants.find(
-                            (item) => item.challengeId === challenge.id
-                        );
+            <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+                <div className="min-w-0 space-y-4">
+                    {challenges.length === 0 ? (
+                        <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                            <CardContent className="p-8 text-center sm:p-10">
+                                <div className="mx-auto flex size-14 items-center justify-center rounded-3xl bg-emerald-50 text-emerald-800">
+                                    <Trophy className="size-6" />
+                                </div>
+                                <h2 className="mt-5 text-xl font-semibold text-emerald-950">
+                                    Belum ada tantangan.
+                                </h2>
+                                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+                                    Tantangan akan muncul setelah data seed atau admin
+                                    menambahkan challenge baru.
+                                </p>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        challenges.map((challenge) => {
+                            const participant = participants.find(
+                                (item) => item.challengeId === challenge.id
+                            );
 
-                        const isJoined = joinedChallengeIds.has(challenge.id);
+                            const isJoined = joinedChallengeIds.has(challenge.id);
 
-                        const progressValue = participant?.progressValue ?? 0;
-                        const progressPercentage = Math.min(
-                            Math.round((progressValue / challenge.targetValue) * 100),
-                            100
-                        );
+                            const progressValue = participant?.progressValue ?? 0;
+                            const progressPercentage = Math.min(
+                                Math.round(
+                                    (progressValue / Math.max(challenge.targetValue, 1)) * 100
+                                ),
+                                100
+                            );
 
-                        return (
-                            <Card
-                                key={challenge.id}
-                                className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm"
-                            >
-                                <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60">
-                                    <div className="flex flex-wrap items-start justify-between gap-4">
-                                        <div className="flex gap-3">
-                                            <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
-                                                <Trophy className="size-5" />
-                                            </div>
-                                            <div>
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <CardTitle className="text-lg">
-                                                        {challenge.name}
-                                                    </CardTitle>
-                                                    <Badge variant="secondary">
-                                                        {typeLabels[challenge.type] ?? challenge.type}
-                                                    </Badge>
+                            return (
+                                <Card
+                                    key={challenge.id}
+                                    className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm"
+                                >
+                                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                                        <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                            <div className="flex min-w-0 gap-3">
+                                                <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                                    <Trophy className="size-5" />
                                                 </div>
-                                                <CardDescription className="mt-1 max-w-2xl leading-6">
-                                                    {challenge.description}
-                                                </CardDescription>
+
+                                                <div className="min-w-0">
+                                                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                                        <CardTitle className="line-clamp-2 text-base sm:text-lg">
+                                                            {challenge.name}
+                                                        </CardTitle>
+                                                        <Badge variant="secondary" className="w-fit shrink-0">
+                                                            {typeLabels[challenge.type] ?? challenge.type}
+                                                        </Badge>
+                                                    </div>
+
+                                                    <CardDescription className="mt-1 line-clamp-3 text-xs leading-5 sm:text-sm sm:leading-6">
+                                                        {challenge.description}
+                                                    </CardDescription>
+                                                </div>
+                                            </div>
+
+                                            {participant ? (
+                                                <Badge
+                                                    className={
+                                                        (statusClassNames[
+                                                            participant.progressStatus
+                                                        ] ?? "bg-slate-100 text-slate-700") +
+                                                        " w-fit shrink-0"
+                                                    }
+                                                >
+                                                    {statusLabels[participant.progressStatus] ??
+                                                        participant.progressStatus}
+                                                </Badge>
+                                            ) : (
+                                                <Badge variant="outline" className="w-fit shrink-0">
+                                                    Belum Bergabung
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </CardHeader>
+
+                                    <CardContent className="min-w-0 space-y-5 px-4 pt-5 pb-4 sm:px-6">
+                                        <div className="grid min-w-0 gap-3 md:grid-cols-3">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                                    Timeline
+                                                </p>
+                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950">
+                                                    {formatDate(challenge.startDate)} —{" "}
+                                                    {formatDate(challenge.endDate)}
+                                                </p>
+                                            </div>
+
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                                    Target
+                                                </p>
+                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950">
+                                                    {challenge.targetValue.toLocaleString("id-ID")}{" "}
+                                                    {getChallengeProgressLabel(challenge.type)}
+                                                </p>
+                                            </div>
+
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                                    Progress Kamu
+                                                </p>
+                                                <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950">
+                                                    {formatNumber(progressValue)}{" "}
+                                                    {getChallengeProgressLabel(challenge.type)}
+                                                </p>
                                             </div>
                                         </div>
 
-                                        {participant ? (
-                                            <Badge
-                                                className={
-                                                    statusClassNames[participant.progressStatus] ??
-                                                    "bg-slate-100 text-slate-700"
-                                                }
-                                            >
-                                                {statusLabels[participant.progressStatus] ??
-                                                    participant.progressStatus}
-                                            </Badge>
-                                        ) : (
-                                            <Badge variant="outline">Not Joined</Badge>
-                                        )}
-                                    </div>
-                                </CardHeader>
-
-                                <CardContent className="space-y-5 pt-5">
-                                    <div className="grid gap-3 md:grid-cols-3">
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
-                                            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                                Timeline
-                                            </p>
-                                            <p className="mt-2 text-sm font-semibold text-emerald-950">
-                                                {formatDate(challenge.startDate)} —{" "}
-                                                {formatDate(challenge.endDate)}
+                                        <div className="min-w-0">
+                                            <div className="mb-2 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                                                <span>Progress</span>
+                                                <span>{progressPercentage}%</span>
+                                            </div>
+                                            <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
+                                                <div
+                                                    className="h-full rounded-full bg-emerald-950 transition-all"
+                                                    style={{
+                                                        width: `${progressPercentage}%`,
+                                                    }}
+                                                />
+                                            </div>
+                                            <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                                                Progress dihitung otomatis dari aksi selesai
+                                                yang relevan dengan tipe challenge.
                                             </p>
                                         </div>
 
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4">
-                                            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                                Target
-                                            </p>
-                                            <p className="mt-2 text-sm font-semibold text-emerald-950">
-                                                {challenge.targetValue.toLocaleString("id-ID")}{" "}
-                                                {getChallengeProgressLabel(challenge.type)}
-                                            </p>
-                                        </div>
-
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-white p-4">
-                                            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                                Your Progress
-                                            </p>
-                                            <p className="mt-2 text-sm font-semibold text-emerald-950">
-                                                {progressValue.toLocaleString("id-ID", {
-                                                    maximumFractionDigits: 1,
-                                                })}{" "}
-                                                {getChallengeProgressLabel(challenge.type)}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-                                            <span>Progress</span>
-                                            <span>{progressPercentage}%</span>
-                                        </div>
-                                        <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
-                                            <div
-                                                className="h-full rounded-full bg-emerald-950 transition-all"
-                                                style={{
-                                                    width: `${progressPercentage}%`,
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <ChallengeJoinButton
-                                        challengeId={challenge.id}
-                                        isJoined={isJoined}
-                                    />
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
+                                        <ChallengeJoinButton
+                                            challengeId={challenge.id}
+                                            isJoined={isJoined}
+                                        />
+                                    </CardContent>
+                                </Card>
+                            );
+                        })
+                    )}
                 </div>
 
-                <aside className="space-y-5">
-                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
+                <aside className="min-w-0 space-y-5">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
-                            <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
-                                <Flame className="mr-1.5 size-3" />
-                                Challenge Progress
+                            <Badge className="mb-3 w-fit max-w-full bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                                <Flame className="mr-1.5 size-3 shrink-0" />
+                                <span className="truncate">Progress Tantangan</span>
                             </Badge>
-                            <CardTitle className="text-white">Collective Action</CardTitle>
+                            <CardTitle className="break-words text-white">
+                                Aksi Kolektif
+                            </CardTitle>
                             <CardDescription className="text-emerald-50/70">
-                                Progress challenge dihitung dari action yang sudah kamu
+                                Progress challenge dihitung dari aksi yang sudah kamu
                                 selesaikan.
                             </CardDescription>
                         </CardHeader>
@@ -300,46 +377,50 @@ export default async function ChallengesPage() {
                                 <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
                                     Total Progress
                                 </p>
-                                <p className="mt-3 text-4xl font-semibold">
-                                    {totalProgress.toLocaleString("id-ID", {
-                                        maximumFractionDigits: 1,
-                                    })}
+                                <p className="mt-3 break-words text-4xl font-semibold">
+                                    {formatNumber(totalProgress)}
                                 </p>
                                 <p className="mt-2 text-sm text-emerald-50/70">
                                     Akumulasi progress dari semua challenge yang diikuti.
                                 </p>
 
                                 <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
-                                    <div className="h-full w-[68%] rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]" />
+                                    <div
+                                        className="h-full rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]"
+                                        style={{
+                                            width: `${averageProgress}%`,
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
                         <CardHeader>
                             <CardTitle className="text-base">Auto Progress Sync</CardTitle>
                             <CardDescription>
-                                Progress challenge otomatis diperbarui setiap kamu membuka halaman ini.
+                                Progress diperbarui otomatis saat halaman dibuka.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
                             <p>
-                                Sistem membaca action yang sudah selesai, mengambil estimasi dampaknya,
-                                lalu menghitung progress challenge secara otomatis.
+                                Sistem membaca aksi yang sudah selesai, mengambil estimasi
+                                dampaknya, lalu menghitung progress challenge tanpa tombol
+                                refresh manual.
                             </p>
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-base">How it works</CardTitle>
+                            <CardTitle className="text-base">Cara Kerja</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
-                            <p>1. Join challenge yang ingin kamu ikuti.</p>
-                            <p>2. Generate recommendation di Impact Center.</p>
-                            <p>3. Selesaikan action di Actions Center.</p>
-                            <p>4. Saat halaman ini dibuka, progress otomatis dihitung ulang.</p>
+                            <p>1. Gabung ke challenge yang ingin kamu ikuti.</p>
+                            <p>2. Generate rekomendasi di Pusat Dampak.</p>
+                            <p>3. Selesaikan aksi di Pusat Aksi.</p>
+                            <p>4. Progress challenge dihitung ulang otomatis.</p>
                         </CardContent>
                     </Card>
                 </aside>

@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import {
-    Activity,
     BadgeCheck,
     CheckCircle2,
     Flame,
@@ -24,11 +23,11 @@ import {
 } from "@/components/ui/card";
 
 const statusLabels: Record<string, string> = {
-    PLANNED: "Planned",
-    IN_PROGRESS: "In Progress",
-    COMPLETED: "Completed",
-    VERIFIED: "Verified",
-    CANCELLED: "Cancelled",
+    PLANNED: "Direncanakan",
+    IN_PROGRESS: "Berjalan",
+    COMPLETED: "Selesai",
+    VERIFIED: "Terverifikasi",
+    CANCELLED: "Dibatalkan",
 };
 
 const statusClassNames: Record<string, string> = {
@@ -38,6 +37,26 @@ const statusClassNames: Record<string, string> = {
     VERIFIED: "bg-lime-100 text-lime-800 hover:bg-lime-100",
     CANCELLED: "bg-red-100 text-red-700 hover:bg-red-100",
 };
+
+const categoryLabels: Record<string, string> = {
+    ENERGY: "Energi",
+    WASTE: "Limbah",
+    CIRCULAR: "Sirkular",
+    COMMUNITY: "Komunitas",
+    GENERAL: "Umum",
+};
+
+const difficultyLabels: Record<string, string> = {
+    EASY: "Mudah",
+    MEDIUM: "Sedang",
+    HARD: "Sulit",
+};
+
+function formatNumber(value: number, maximumFractionDigits = 1) {
+    return value.toLocaleString("id-ID", {
+        maximumFractionDigits,
+    });
+}
 
 export default async function ActionsPage() {
     const session = await auth();
@@ -105,87 +124,115 @@ export default async function ActionsPage() {
         0
     );
 
+    const score = regenerativeScore?.totalScore ?? 0;
+    const level = regenerativeScore?.level ?? "Perintis Aksi";
+    const completionRate =
+        userActions.length > 0
+            ? Math.round((completedCount / userActions.length) * 100)
+            : 0;
+
     return (
-        <div className="space-y-6">
-            <section className="relative overflow-hidden rounded-[2rem] border border-emerald-900/10 bg-[#f7faf6] p-6 shadow-sm md:p-8">
+        <div className="w-full min-w-0 space-y-6 overflow-x-hidden">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[2rem] md:p-8">
                 <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
                 <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
 
-                <div className="relative grid gap-6 lg:grid-cols-[1fr_300px] lg:items-end">
-                    <div>
-                        <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
-                            <Flame className="mr-1.5 size-3.5" />
-                            Climate Action Execution
+                <div className="relative grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:items-end">
+                    <div className="min-w-0">
+                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                            <Flame className="mr-1.5 size-3.5 shrink-0" />
+                            <span className="truncate">Climate Action Execution</span>
                         </div>
 
-                        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
-                            Actions Center
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-5xl">
+                            Pusat Aksi
                         </h1>
 
                         <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 md:text-base">
-                            Jalankan rekomendasi aksi dari Impact Center, ubah status menjadi
-                            selesai, dan naikkan regenerative score berdasarkan dampak aksi.
+                            Jalankan rekomendasi dari Pusat Dampak, ubah status aksi,
+                            lalu dapatkan kenaikan regenerative score saat aksi selesai.
                         </p>
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            <Badge className="max-w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                                <span className="truncate">{level}</span>
+                            </Badge>
+                            <Badge variant="secondary">
+                                {score.toLocaleString("id-ID")} pts
+                            </Badge>
+                            <Badge variant="outline">
+                                {formatNumber(totalCo2Avoided)} kg CO₂ avoided
+                            </Badge>
+                        </div>
                     </div>
 
-                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
+                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
                         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
                             Current Score
                         </p>
-                        <p className="mt-2 text-3xl font-semibold text-emerald-950">
-                            {regenerativeScore?.totalScore ?? 0}
+                        <p className="mt-2 break-words text-3xl font-semibold text-emerald-950">
+                            {score.toLocaleString("id-ID")}
                         </p>
-                        <p className="mt-1 text-xs leading-5 text-slate-500">
-                            Level: {regenerativeScore?.level ?? "Seed"}
+                        <p className="mt-1 truncate text-xs leading-5 text-slate-500">
+                            Level: {level}
                         </p>
+
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100">
+                            <div
+                                className="h-full rounded-full bg-emerald-950"
+                                style={{
+                                    width: `${Math.min((score / 500) * 100, 100)}%`,
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section className="grid gap-4 md:grid-cols-4">
+            <section className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardMetricCard
-                    label="Planned"
+                    label="Direncanakan"
                     value={plannedCount.toString()}
-                    caption="Aksi yang siap dimulai"
+                    caption="Aksi siap dimulai"
                     icon={<Target className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    label="In Progress"
+                    label="Sedang Berjalan"
                     value={inProgressCount.toString()}
-                    caption="Aksi sedang berjalan"
+                    caption="Aksi dalam proses"
                     icon={<PlayCircle className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    label="Completed"
+                    label="Selesai"
                     value={completedCount.toString()}
-                    caption="Aksi selesai"
+                    caption="Aksi sudah berdampak"
                     icon={<CheckCircle2 className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    label="Badges"
+                    label="Badge"
                     value={userBadges.length.toString()}
-                    caption="Badge berhasil dibuka"
+                    caption="Lencana terbuka"
                     icon={<BadgeCheck className="size-5" />}
                 />
             </section>
 
-            <section className="grid items-start gap-6 xl:grid-cols-[1fr_360px]">
-                <div className="space-y-4">
+            <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+                <div className="min-w-0 space-y-4">
                     {userActions.length === 0 ? (
-                        <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
-                            <CardContent className="p-10 text-center">
+                        <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
+                            <CardContent className="p-8 text-center sm:p-10">
                                 <div className="mx-auto flex size-14 items-center justify-center rounded-3xl bg-emerald-50 text-emerald-800">
                                     <Sparkles className="size-6" />
                                 </div>
                                 <h2 className="mt-5 text-xl font-semibold text-emerald-950">
-                                    Belum ada action.
+                                    Belum ada aksi.
                                 </h2>
                                 <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-                                    Buka Impact Center, lalu klik Generate Impact &
-                                    Recommendation untuk membuat action pertama.
+                                    Buka Pusat Dampak, lalu klik Generate Rekomendasi &
+                                    Estimasi Dampak untuk membuat aksi pertama.
                                 </p>
                             </CardContent>
                         </Card>
@@ -193,19 +240,19 @@ export default async function ActionsPage() {
                         userActions.map((userAction) => (
                             <Card
                                 key={userAction.id}
-                                className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm"
+                                className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm"
                             >
-                                <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60">
-                                    <div className="flex flex-wrap items-start justify-between gap-4">
-                                        <div className="flex gap-3">
+                                <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                                    <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                        <div className="flex min-w-0 gap-3">
                                             <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                                                 <Flame className="size-5" />
                                             </div>
-                                            <div>
-                                                <CardTitle className="text-lg">
+                                            <div className="min-w-0">
+                                                <CardTitle className="line-clamp-2 text-base sm:text-lg">
                                                     {userAction.action.name}
                                                 </CardTitle>
-                                                <CardDescription className="mt-1 max-w-2xl leading-6">
+                                                <CardDescription className="mt-1 line-clamp-3 text-xs leading-5 sm:text-sm sm:leading-6">
                                                     {userAction.action.description}
                                                 </CardDescription>
                                             </div>
@@ -213,8 +260,9 @@ export default async function ActionsPage() {
 
                                         <Badge
                                             className={
-                                                statusClassNames[userAction.status] ??
-                                                "bg-slate-100 text-slate-700"
+                                                (statusClassNames[userAction.status] ??
+                                                    "bg-slate-100 text-slate-700") +
+                                                " w-fit shrink-0"
                                             }
                                         >
                                             {statusLabels[userAction.status] ?? userAction.status}
@@ -222,27 +270,30 @@ export default async function ActionsPage() {
                                     </div>
                                 </CardHeader>
 
-                                <CardContent className="space-y-5 pt-5">
-                                    <div className="grid gap-3 md:grid-cols-4">
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
+                                <CardContent className="min-w-0 space-y-5 px-4 pt-5 pb-4 sm:px-6">
+                                    <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                                        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
                                             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                                Category
+                                                Kategori
                                             </p>
-                                            <p className="mt-2 text-sm font-semibold text-emerald-950">
-                                                {userAction.action.category}
+                                            <p className="mt-2 truncate text-sm font-semibold text-emerald-950">
+                                                {categoryLabels[userAction.action.category] ??
+                                                    userAction.action.category}
                                             </p>
                                         </div>
 
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4">
+                                        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4">
                                             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                                Difficulty
+                                                Kesulitan
                                             </p>
-                                            <p className="mt-2 text-sm font-semibold text-emerald-950">
-                                                {userAction.action.difficultyLevel}
+                                            <p className="mt-2 truncate text-sm font-semibold text-emerald-950">
+                                                {difficultyLabels[
+                                                    userAction.action.difficultyLevel
+                                                ] ?? userAction.action.difficultyLevel}
                                             </p>
                                         </div>
 
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-white p-4">
+                                        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4">
                                             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                                                 Base Score
                                             </p>
@@ -251,25 +302,24 @@ export default async function ActionsPage() {
                                             </p>
                                         </div>
 
-                                        <div className="rounded-2xl border border-emerald-900/10 bg-white p-4">
+                                        <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4">
                                             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                                CO₂ Impact
+                                                Dampak CO₂
                                             </p>
                                             <p className="mt-2 text-sm font-semibold text-emerald-950">
-                                                {(
-                                                    userAction.impactEstimation?.estimatedCo2ReducedKg ?? 0
-                                                ).toLocaleString("id-ID", {
-                                                    maximumFractionDigits: 1,
-                                                })}{" "}
+                                                {formatNumber(
+                                                    userAction.impactEstimation
+                                                        ?.estimatedCo2ReducedKg ?? 0
+                                                )}{" "}
                                                 kg
                                             </p>
                                         </div>
                                     </div>
 
                                     {userAction.notes ? (
-                                        <div className="rounded-2xl border border-dashed border-emerald-900/20 bg-emerald-50/30 p-4">
+                                        <div className="min-w-0 rounded-2xl border border-dashed border-emerald-900/20 bg-emerald-50/30 p-4">
                                             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-800">
-                                                AI Reason
+                                                Alasan AI
                                             </p>
                                             <p className="mt-2 text-sm leading-6 text-muted-foreground">
                                                 {userAction.notes}
@@ -287,17 +337,19 @@ export default async function ActionsPage() {
                     )}
                 </div>
 
-                <aside className="space-y-5">
-                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
+                <aside className="min-w-0 space-y-5">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
-                            <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
-                                <BadgeCheck className="mr-1.5 size-3" />
-                                Action Progress
+                            <Badge className="mb-3 w-fit max-w-full bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                                <BadgeCheck className="mr-1.5 size-3 shrink-0" />
+                                <span className="truncate">Progress Aksi</span>
                             </Badge>
-                            <CardTitle className="text-white">Execution Readiness</CardTitle>
+                            <CardTitle className="break-words text-white">
+                                Kesiapan Eksekusi
+                            </CardTitle>
                             <CardDescription className="text-emerald-50/70">
-                                Setiap action selesai akan menaikkan score berdasarkan difficulty
-                                dan estimasi dampak.
+                                Setiap aksi selesai akan menaikkan score berdasarkan tingkat
+                                kesulitan dan estimasi dampak.
                             </CardDescription>
                         </CardHeader>
 
@@ -307,23 +359,17 @@ export default async function ActionsPage() {
                                     Completion Rate
                                 </p>
                                 <p className="mt-3 text-4xl font-semibold">
-                                    {userActions.length > 0
-                                        ? Math.round((completedCount / userActions.length) * 100)
-                                        : 0}
-                                    %
+                                    {completionRate}%
                                 </p>
                                 <p className="mt-2 text-sm text-emerald-50/70">
-                                    {completedCount} dari {userActions.length} action selesai.
+                                    {completedCount} dari {userActions.length} aksi selesai.
                                 </p>
 
                                 <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
                                     <div
                                         className="h-full rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]"
                                         style={{
-                                            width: `${userActions.length > 0
-                                                ? Math.round((completedCount / userActions.length) * 100)
-                                                : 0
-                                                }%`,
+                                            width: `${completionRate}%`,
                                         }}
                                     />
                                 </div>
@@ -331,7 +377,7 @@ export default async function ActionsPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
                         <CardHeader>
                             <CardTitle className="text-base">Badge Pengguna</CardTitle>
                             <CardDescription>
@@ -356,16 +402,16 @@ export default async function ActionsPage() {
                                                 key={badge.id}
                                                 className={
                                                     isUnlocked
-                                                        ? "rounded-2xl border border-emerald-900/10 bg-emerald-50 p-4"
-                                                        : "rounded-2xl border border-slate-200 bg-slate-50 p-4 opacity-70"
+                                                        ? "min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50 p-4"
+                                                        : "min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-4 opacity-70"
                                                 }
                                             >
-                                                <div className="flex items-start justify-between gap-3">
-                                                    <div>
-                                                        <p className="text-sm font-semibold text-emerald-950">
+                                                <div className="flex min-w-0 items-start justify-between gap-3">
+                                                    <div className="min-w-0">
+                                                        <p className="truncate text-sm font-semibold text-emerald-950">
                                                             {badge.name}
                                                         </p>
-                                                        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                                                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
                                                             {badge.description}
                                                         </p>
                                                     </div>
@@ -373,11 +419,13 @@ export default async function ActionsPage() {
                                                     <Badge
                                                         className={
                                                             isUnlocked
-                                                                ? "bg-emerald-950 text-emerald-50 hover:bg-emerald-950"
-                                                                : "bg-slate-200 text-slate-700 hover:bg-slate-200"
+                                                                ? "shrink-0 bg-emerald-950 text-emerald-50 hover:bg-emerald-950"
+                                                                : "shrink-0 bg-slate-200 text-slate-700 hover:bg-slate-200"
                                                         }
                                                     >
-                                                        {isUnlocked ? "Unlocked" : `${badge.requiredScore} pts`}
+                                                        {isUnlocked
+                                                            ? "Terbuka"
+                                                            : `${badge.requiredScore} pts`}
                                                     </Badge>
                                                 </div>
                                             </div>
@@ -388,24 +436,18 @@ export default async function ActionsPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-base">How it works</CardTitle>
+                            <CardTitle className="text-base">Cara Kerja</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
                             <p>
-                                1. Action dibuat dari rekomendasi rule-based AI di Impact
-                                Center.
+                                1. Aksi dibuat dari rekomendasi rule-based AI di Pusat Dampak.
                             </p>
+                            <p>2. Klik Mulai Aksi untuk menandai aksi sedang berjalan.</p>
+                            <p>3. Klik Tandai Selesai setelah aksi dilakukan.</p>
                             <p>
-                                2. Klik Start Action untuk menandai aksi sedang berjalan.
-                            </p>
-                            <p>
-                                3. Klik Mark as Completed setelah aksi selesai dilakukan.
-                            </p>
-                            <p>
-                                4. Score akan bertambah otomatis saat action berubah menjadi
-                                completed.
+                                4. Score, badge, dan progress challenge akan diperbarui otomatis.
                             </p>
                         </CardContent>
                     </Card>

@@ -299,14 +299,14 @@ export default async function ProfilePage() {
 
     return (
         <main className="min-h-screen space-y-6">
-            <section className="overflow-hidden rounded-[2rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_52%,#07130f)] p-5 text-white shadow-2xl shadow-emerald-950/20 md:p-7">
-                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div className="flex flex-col gap-5 md:flex-row md:items-center">
-                        <div className="flex h-24 w-24 items-center justify-center rounded-3xl border border-emerald-300/25 bg-white/10 shadow-inner shadow-emerald-950/40">
-                            <CircleUserRound className="h-12 w-12 text-emerald-100" />
+            <section className="w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_52%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 sm:p-5 md:rounded-[2rem] md:p-7">
+                <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex min-w-0 flex-col gap-5 md:flex-row md:items-center">
+                        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-emerald-300/25 bg-white/10 shadow-inner shadow-emerald-950/40 sm:h-24 sm:w-24">
+                            <CircleUserRound className="h-10 w-10 text-emerald-100 sm:h-12 sm:w-12" />
                         </div>
 
-                        <div>
+                        <div className="min-w-0">
                             <div className="mb-3 flex flex-wrap items-center gap-2">
                                 <Badge className="border-emerald-300/20 bg-emerald-400/15 text-emerald-100 hover:bg-emerald-400/15">
                                     <ShieldCheck className="mr-1 h-3.5 w-3.5" />
@@ -317,7 +317,7 @@ export default async function ProfilePage() {
                                 </Badge>
                             </div>
 
-                            <h1 className="text-2xl font-semibold tracking-tight md:text-4xl">
+                            <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
                                 {user.name}
                             </h1>
 
@@ -343,7 +343,7 @@ export default async function ProfilePage() {
                         </div>
                     </div>
 
-                    <div className="rounded-3xl border border-white/10 bg-white/8 p-4 backdrop-blur md:min-w-[280px]">
+                    <div className="w-full min-w-0 rounded-3xl border border-white/10 bg-white/8 p-4 backdrop-blur lg:w-auto lg:min-w-[280px]">
                         <div className="flex items-end justify-between gap-4">
                             <div>
                                 <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/60">
@@ -377,7 +377,7 @@ export default async function ProfilePage() {
                 </div>
             </section>
 
-            <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <section className="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {profileStats.map((item) => {
                     const Icon = item.icon;
 
@@ -386,8 +386,8 @@ export default async function ProfilePage() {
                             key={item.label}
                             className="border-emerald-950/10 bg-white/90 shadow-sm"
                         >
-                            <CardContent className="flex items-center justify-between p-5">
-                                <div>
+                            <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
+                                <div className="min-w-0">
                                     <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
                                         {item.label}
                                     </p>
@@ -408,7 +408,7 @@ export default async function ProfilePage() {
                 })}
             </section>
 
-            <section className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+            <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
                 <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
                     <CardHeader className="pb-3">
                         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
@@ -501,7 +501,7 @@ export default async function ProfilePage() {
                     <CardContent className="space-y-3">
                         <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
                             <p className="text-xs text-muted-foreground">Nama Operator</p>
-                            <p className="mt-1 font-medium text-slate-950">{user.name}</p>
+                            <p className="mt-1 break-words font-medium text-slate-950">{user.name}</p>
                         </div>
 
                         <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
@@ -514,14 +514,14 @@ export default async function ProfilePage() {
                         <div className="grid gap-3 sm:grid-cols-2">
                             <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
                                 <p className="text-xs text-muted-foreground">City Node</p>
-                                <p className="mt-1 font-medium text-slate-950">
+                                <p className="mt-1 truncate font-medium text-slate-950">
                                     {user.city?.name ?? "-"}
                                 </p>
                             </div>
 
                             <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
                                 <p className="text-xs text-muted-foreground">Role</p>
-                                <p className="mt-1 font-medium text-slate-950">{user.role}</p>
+                                <p className="mt-1 truncate font-medium text-slate-950">{user.role}</p>
                             </div>
                         </div>
 
@@ -536,9 +536,9 @@ export default async function ProfilePage() {
                                         <Badge
                                             key={item.id}
                                             variant="outline"
-                                            className="border-emerald-200 bg-white text-emerald-800"
+                                            className="max-w-full border-emerald-200 bg-white text-emerald-800"
                                         >
-                                            {item.community.name}
+                                            <span className="truncate">{item.community.name}</span>
                                         </Badge>
                                     ))}
                                 </div>
@@ -553,7 +553,7 @@ export default async function ProfilePage() {
                 </Card>
             </section>
 
-            <section className="grid gap-5 xl:grid-cols-[0.9fr_1.1fr]">
+            <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
                 <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
                     <CardHeader className="pb-3">
                         <CardTitle className="text-base font-semibold">
@@ -577,8 +577,8 @@ export default async function ProfilePage() {
                                                 <BadgeCheck className="h-5 w-5" />
                                             </div>
 
-                                            <div>
-                                                <p className="font-medium text-slate-950">
+                                            <div className="min-w-0">
+                                                <p className="truncate font-medium text-slate-950">
                                                     {item.badge.name}
                                                 </p>
                                                 <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">

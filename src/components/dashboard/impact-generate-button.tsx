@@ -29,12 +29,15 @@ export function ImpactGenerateButton() {
             try {
                 data = await res.json();
             } catch {
-                setMessage("Server mengembalikan response yang tidak valid.");
+                setMessage("Server mengembalikan respons yang tidak valid.");
                 return;
             }
 
             if (!res.ok) {
-                setMessage(data.message || "Failed to generate impact.");
+                setMessage(
+                    data.message ||
+                    "Rekomendasi belum bisa dibuat. Pastikan data energi atau limbah sudah tersedia."
+                );
                 return;
             }
 
@@ -44,11 +47,11 @@ export function ImpactGenerateButton() {
             if (createdCount === 0 && skippedCount > 0) {
                 setMessage(
                     data.message ||
-                    "Semua rekomendasi sudah ada. Selesaikan action yang tersedia dulu."
+                    "Semua rekomendasi sudah tersedia. Lanjutkan atau selesaikan aksi yang ada terlebih dahulu."
                 );
             } else {
                 setMessage(
-                    `Berhasil membuat ${createdCount} action baru. ${skippedCount} action dilewati karena sudah ada.`
+                    `Berhasil membuat ${createdCount} aksi baru. ${skippedCount} aksi dilewati karena sudah pernah dibuat.`
                 );
             }
 
@@ -57,10 +60,12 @@ export function ImpactGenerateButton() {
     }
 
     return (
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
             {message ? (
                 <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
-                    <AlertDescription>{message}</AlertDescription>
+                    <AlertDescription className="text-sm leading-6">
+                        {message}
+                    </AlertDescription>
                 </Alert>
             ) : null}
 
@@ -69,11 +74,18 @@ export function ImpactGenerateButton() {
                 disabled={isPending}
                 className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
             >
-                <Sparkles className="mr-2 size-4" />
-                {isPending
-                    ? "Generating climate intelligence..."
-                    : "Generate Impact & Recommendation"}
+                <Sparkles className="mr-2 size-4 shrink-0" />
+                <span className="truncate">
+                    {isPending
+                        ? "Menganalisis data..."
+                        : "Generate Rekomendasi & Estimasi Dampak"}
+                </span>
             </Button>
+
+            <p className="text-xs leading-5 text-muted-foreground">
+                Sistem akan membaca data terbaru, menghindari duplikasi aksi, lalu
+                membuat rekomendasi yang bisa kamu jalankan di halaman Aksi.
+            </p>
         </div>
     );
 }

@@ -34,10 +34,21 @@ export function ActionStatusControls({
                 }),
             });
 
-            const data = await res.json();
+            let data: {
+                message?: string;
+                scoreIncrement?: number;
+                awardedBadges?: unknown[];
+            } = {};
+
+            try {
+                data = await res.json();
+            } catch {
+                setMessage("Server mengembalikan respons yang tidak valid.");
+                return;
+            }
 
             if (!res.ok) {
-                setMessage(data.message || "Failed to update action.");
+                setMessage(data.message || "Status aksi belum bisa diperbarui.");
                 return;
             }
 
@@ -46,9 +57,9 @@ export function ActionStatusControls({
             setMessage(
                 nextStatus === "COMPLETED"
                     ? badgeCount > 0
-                        ? `Action completed. +${data.scoreIncrement ?? 0} score. ${badgeCount} badge unlocked.`
-                        : `Action completed. +${data.scoreIncrement ?? 0} score.`
-                    : "Action started."
+                        ? `Aksi selesai. +${data.scoreIncrement ?? 0} score dan ${badgeCount} badge terbuka.`
+                        : `Aksi selesai. +${data.scoreIncrement ?? 0} score.`
+                    : "Aksi dimulai. Lanjutkan sampai selesai untuk menaikkan score."
             );
 
             router.refresh();
@@ -60,28 +71,30 @@ export function ActionStatusControls({
     const isCompleted = status === "COMPLETED" || status === "VERIFIED";
 
     return (
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
             {message ? (
                 <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
-                    <AlertDescription>{message}</AlertDescription>
+                    <AlertDescription className="text-sm leading-6">
+                        {message}
+                    </AlertDescription>
                 </Alert>
             ) : null}
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:flex-wrap">
                 {isPlanned ? (
                     <Button
                         type="button"
                         onClick={() => updateStatus("IN_PROGRESS")}
                         disabled={isPending}
                         variant="outline"
-                        className="border-emerald-900/20 text-emerald-950 hover:bg-emerald-50"
+                        className="w-full border-emerald-900/20 text-emerald-950 hover:bg-emerald-50 sm:w-fit"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />
                         ) : (
                             <PlayCircle className="mr-2 size-4" />
                         )}
-                        Start Action
+                        Mulai Aksi
                     </Button>
                 ) : null}
 
@@ -90,21 +103,21 @@ export function ActionStatusControls({
                         type="button"
                         onClick={() => updateStatus("COMPLETED")}
                         disabled={isPending}
-                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 sm:w-fit"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />
                         ) : (
                             <CheckCircle2 className="mr-2 size-4" />
                         )}
-                        Mark as Completed
+                        Tandai Selesai
                     </Button>
                 ) : null}
 
                 {isCompleted ? (
-                    <Button type="button" disabled variant="secondary">
+                    <Button type="button" disabled variant="secondary" className="w-full sm:w-fit">
                         <CheckCircle2 className="mr-2 size-4" />
-                        Completed
+                        Aksi Selesai
                     </Button>
                 ) : null}
             </div>

@@ -119,7 +119,8 @@ type RecommendationView = {
     id: string;
     actionId: string;
     confidenceScore: unknown;
-    createdAt: Date;
+    createdAt?: Date;
+    generatedAt?: Date;
     reason?: string | null;
     recommendationReason?: string | null;
     explanation?: string | null;
@@ -155,7 +156,7 @@ export default async function RecommendationsPage() {
                     action: true,
                 },
                 orderBy: {
-                    createdAt: "desc",
+                    generatedAt: "desc",
                 },
             },
             userActions: {
@@ -201,16 +202,16 @@ export default async function RecommendationsPage() {
             : 0;
 
     return (
-        <main className="min-h-screen space-y-6">
-            <section className="overflow-hidden rounded-[2rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.20),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_55%,#07130f)] p-5 text-white shadow-2xl shadow-emerald-950/20 md:p-7">
-                <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                    <div>
-                        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-white/8 px-3 py-1.5 text-xs font-medium text-emerald-100">
+        <main className="min-h-screen w-full min-w-0 space-y-6 overflow-x-hidden">
+            <section className="w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.20),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_55%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 sm:p-5 md:rounded-[2rem] md:p-7">
+                <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                    <div className="min-w-0">
+                        <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-300/20 bg-white/8 px-3 py-1.5 text-xs font-medium text-emerald-100">
                             <Bot className="h-3.5 w-3.5" />
-                            AI Recommendation System
+                            <span className="truncate">Sistem Rekomendasi AI</span>
                         </div>
 
-                        <h1 className="text-2xl font-semibold tracking-tight md:text-4xl">
+                        <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
                             Rekomendasi AI
                         </h1>
 
@@ -220,7 +221,7 @@ export default async function RecommendationsPage() {
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-2 sm:flex-row">
+                    <div className="flex min-w-0 flex-col gap-2 sm:flex-row">
                         <Button
                             asChild
                             variant="secondary"
@@ -245,7 +246,7 @@ export default async function RecommendationsPage() {
                 </div>
             </section>
 
-            <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <section className="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
                     <CardContent className="flex items-center justify-between p-5">
                         <div>
@@ -266,8 +267,8 @@ export default async function RecommendationsPage() {
                 </Card>
 
                 <Card className="border-emerald-950/10 bg-white/95 shadow-sm">
-                    <CardContent className="flex items-center justify-between p-5">
-                        <div>
+                    <CardContent className="flex min-w-0 items-center justify-between gap-3 p-5">
+                        <div className="min-w-0">
                             <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
                                 Confidence Avg
                             </p>
@@ -323,7 +324,7 @@ export default async function RecommendationsPage() {
                 </Card>
             </section>
 
-            <section>
+            <section className="min-w-0">
                 {recommendations.length > 0 ? (
                     <div className="grid gap-4">
                         {recommendations.map((recommendation) => {
@@ -339,11 +340,11 @@ export default async function RecommendationsPage() {
                             return (
                                 <Card
                                     key={recommendation.id}
-                                    className="overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm"
+                                    className="w-full min-w-0 overflow-hidden border-emerald-950/10 bg-white/95 shadow-sm"
                                 >
                                     <CardContent className="p-0">
-                                        <div className="grid gap-0 lg:grid-cols-[1fr_280px]">
-                                            <div className="p-5 md:p-6">
+                                        <div className="grid min-w-0 gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,280px)]">
+                                            <div className="min-w-0 p-4 sm:p-5 md:p-6">
                                                 <div className="flex flex-col gap-4 md:flex-row md:items-start">
                                                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
                                                         <Icon className="h-6 w-6" />
@@ -369,12 +370,11 @@ export default async function RecommendationsPage() {
                                                                 {getStatusLabel(userAction?.status)}
                                                             </Badge>
                                                         </div>
-
-                                                        <h2 className="mt-3 text-lg font-semibold tracking-tight text-slate-950">
+                                                        <h2 className="mt-3 line-clamp-2 text-base font-semibold tracking-tight text-slate-950 sm:text-lg">
                                                             {action.name}
                                                         </h2>
 
-                                                        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                                                        <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
                                                             {action.description}
                                                         </p>
 
@@ -394,7 +394,7 @@ export default async function RecommendationsPage() {
 
                                                         <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                                                             <span>
-                                                                Dibuat: {formatDate(recommendation.createdAt)}
+                                                                Dibuat: {formatDate(recommendation.generatedAt ?? recommendation.createdAt)}
                                                             </span>
                                                             <span>•</span>
                                                             <span>Base score: {action.baseImpactScore} pts</span>
@@ -403,7 +403,7 @@ export default async function RecommendationsPage() {
                                                 </div>
                                             </div>
 
-                                            <aside className="border-t border-emerald-950/10 bg-slate-50/80 p-5 lg:border-l lg:border-t-0">
+                                            <aside className="min-w-0 border-t border-emerald-950/10 bg-slate-50/80 p-4 sm:p-5 lg:border-l lg:border-t-0">
                                                 <div>
                                                     <div className="flex items-center justify-between text-sm">
                                                         <span className="font-medium text-slate-800">
@@ -499,15 +499,15 @@ export default async function RecommendationsPage() {
                                 dengan profil kamu.
                             </p>
 
-                            <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-                                <Button asChild className="bg-emerald-700 hover:bg-emerald-800">
+                            <div className="mt-6 flex w-full max-w-md flex-col gap-2 sm:flex-row">
+                                <Button asChild className="w-full bg-emerald-700 hover:bg-emerald-800 sm:w-fit">
                                     <Link href="/dashboard/impact">
                                         Generate Rekomendasi
                                         <Sparkles className="ml-2 h-4 w-4" />
                                     </Link>
                                 </Button>
 
-                                <Button asChild variant="outline">
+                                <Button asChild variant="outline" className="w-full sm:w-fit">
                                     <Link href="/dashboard/energy">Tambah Data Energi</Link>
                                 </Button>
                             </div>
