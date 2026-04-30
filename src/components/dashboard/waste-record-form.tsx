@@ -76,34 +76,37 @@ export function WasteRecordForm() {
     }
 
     return (
-        <Card className="h-fit overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 py-4">
-                <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+        <Card className="h-fit w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                <div className="flex min-w-0 items-start gap-3">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                         <Recycle className="size-5" />
                     </div>
-                    <div>
-                        <CardTitle>Circular Waste Input</CardTitle>
-                        <CardDescription>
+
+                    <div className="min-w-0">
+                        <CardTitle className="text-base leading-tight sm:text-lg">
+                            Circular Waste Input
+                        </CardTitle>
+                        <CardDescription className="mt-1 max-w-full text-xs leading-5 sm:text-sm">
                             Catat jenis, berat, sumber, dan status pengelolaan limbah.
                         </CardDescription>
                     </div>
                 </div>
             </CardHeader>
 
-            <CardContent className="pt-4">
+            <CardContent className="min-w-0 px-4 pt-4 pb-4 sm:px-6">
                 {message ? (
                     <Alert className="mb-5 border-emerald-200 bg-emerald-50 text-emerald-950">
                         <AlertDescription>{message}</AlertDescription>
                     </Alert>
                 ) : null}
 
-                <form onSubmit={onSubmit} className="grid gap-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <div className="grid gap-2">
+                <form onSubmit={onSubmit} className="grid min-w-0 gap-4">
+                    <div className="grid min-w-0 gap-4 md:grid-cols-2">
+                        <div className="grid min-w-0 gap-2">
                             <Label>Waste Type</Label>
                             <Select name="wasteType" required>
-                                <SelectTrigger>
+                                <SelectTrigger className="w-full min-w-0">
                                     <SelectValue placeholder="Pilih jenis limbah" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -122,7 +125,7 @@ export function WasteRecordForm() {
                             ) : null}
                         </div>
 
-                        <div className="grid gap-2">
+                        <div className="grid min-w-0 gap-2">
                             <Label htmlFor="weightKg">Weight Kg</Label>
                             <Input
                                 id="weightKg"
@@ -131,6 +134,7 @@ export function WasteRecordForm() {
                                 step="0.01"
                                 placeholder="Contoh: 7.5"
                                 required
+                                className="w-full min-w-0"
                             />
                             {errors.weightKg ? (
                                 <p className="text-xs text-red-600">{errors.weightKg[0]}</p>
@@ -138,23 +142,24 @@ export function WasteRecordForm() {
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label htmlFor="wasteSource">Waste Source</Label>
                         <Input
                             id="wasteSource"
                             name="wasteSource"
-                            placeholder="Contoh: dapur kos, kantin, rumah tangga, UMKM makanan"
+                            placeholder="Contoh: dapur kos, kantin, UMKM makanan"
                             required
+                            className="w-full min-w-0"
                         />
                         {errors.wasteSource ? (
                             <p className="text-xs text-red-600">{errors.wasteSource[0]}</p>
                         ) : null}
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label>Management Status</Label>
                         <Select name="managementStatus" required>
-                            <SelectTrigger>
+                            <SelectTrigger className="w-full min-w-0">
                                 <SelectValue placeholder="Pilih status pengelolaan" />
                             </SelectTrigger>
                             <SelectContent>
@@ -163,7 +168,9 @@ export function WasteRecordForm() {
                                 <SelectItem value="RECYCLED">Didaur Ulang</SelectItem>
                                 <SelectItem value="COMPOSTED">Dikomposkan</SelectItem>
                                 <SelectItem value="DONATED">Didonasikan</SelectItem>
-                                <SelectItem value="SENT_TO_WASTE_BANK">Dikirim ke Bank Sampah</SelectItem>
+                                <SelectItem value="SENT_TO_WASTE_BANK">
+                                    Dikirim ke Bank Sampah
+                                </SelectItem>
                                 <SelectItem value="OTHER">Lainnya</SelectItem>
                             </SelectContent>
                         </Select>
@@ -174,22 +181,27 @@ export function WasteRecordForm() {
                         ) : null}
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label htmlFor="recordDate">Record Date</Label>
-                        <Input id="recordDate" name="recordDate" type="date" />
+                        <Input
+                            id="recordDate"
+                            name="recordDate"
+                            type="date"
+                            className="w-full min-w-0"
+                        />
                         <p className="text-xs text-muted-foreground">
                             Kosongkan jika ingin memakai tanggal hari ini.
                         </p>
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label htmlFor="notes">Notes</Label>
                         <Textarea
                             id="notes"
                             name="notes"
                             placeholder="Tambahkan catatan pengelolaan limbah..."
                             rows={3}
-                            className="min-h-20 resize-none"
+                            className="min-h-20 w-full min-w-0 resize-none"
                         />
                         {errors.notes ? (
                             <p className="text-xs text-red-600">{errors.notes[0]}</p>
@@ -199,7 +211,7 @@ export function WasteRecordForm() {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 sm:w-fit"
                     >
                         {isPending ? "Saving circular record..." : "Save Waste Record"}
                     </Button>

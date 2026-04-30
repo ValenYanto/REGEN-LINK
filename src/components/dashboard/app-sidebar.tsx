@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
     BarChart3,
     BrainCircuit,
@@ -9,6 +12,7 @@ import {
     Medal,
     Recycle,
     Settings,
+    Sparkles,
     Trophy,
     UserCircle,
     Zap,
@@ -45,8 +49,8 @@ const navigationItems = [
     {
         title: "AI Recommendations",
         href: "/dashboard/recommendations",
-        icon: Leaf,
-        status: "soon",
+        icon: Sparkles,
+        status: "active",
     },
     {
         title: "Actions",
@@ -76,15 +80,13 @@ const navigationItems = [
         title: "Profile",
         href: "/dashboard/profile",
         icon: UserCircle,
-        status: "soon",
+        status: "active",
     },
 ];
 
-type AppSidebarProps = {
-    activePath?: string;
-};
+export function AppSidebar() {
+    const pathname = usePathname();
 
-export function AppSidebar({ activePath = "/dashboard" }: AppSidebarProps) {
     return (
         <aside className="hidden min-h-screen w-72 border-r border-emerald-900/10 bg-white/85 px-4 py-5 backdrop-blur-xl lg:block">
             <div className="flex items-center gap-3 rounded-3xl border border-emerald-900/10 bg-emerald-50/70 p-3">
@@ -108,10 +110,11 @@ export function AppSidebar({ activePath = "/dashboard" }: AppSidebarProps) {
             <nav className="mt-6 space-y-1">
                 {navigationItems.map((item) => {
                     const Icon = item.icon;
+
                     const isActive =
                         item.href === "/dashboard"
-                            ? activePath === "/dashboard"
-                            : activePath.startsWith(item.href);
+                            ? pathname === "/dashboard"
+                            : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
                     const isSoon = item.status === "soon";
 
@@ -153,10 +156,11 @@ export function AppSidebar({ activePath = "/dashboard" }: AppSidebarProps) {
             <div className="mt-8 rounded-3xl border border-emerald-900/10 bg-gradient-to-br from-emerald-950 to-lime-900 p-4 text-white">
                 <div className="flex items-center gap-2">
                     <Leaf className="size-4 text-lime-300" />
-                    <p className="text-sm font-semibold">Phase 6B Active</p>
+                    <p className="text-sm font-semibold">Phase 10 Active</p>
                 </div>
                 <p className="mt-2 text-xs leading-5 text-emerald-50/75">
-                    Impact calculator and rule-based AI recommendation are now connected.
+                    Final polish, profile, recommendations, and demo readiness are now in
+                    progress.
                 </p>
             </div>
 

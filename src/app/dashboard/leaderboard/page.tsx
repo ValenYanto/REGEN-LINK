@@ -116,19 +116,19 @@ export default async function LeaderboardPage() {
     );
 
     return (
-        <div className="space-y-5">
-            <section className="relative overflow-hidden rounded-[1.75rem] border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm md:p-6">
+        <div className="w-full min-w-0 space-y-5 overflow-x-hidden">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[1.75rem] md:p-6">
                 <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
                 <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
 
-                <div className="relative grid gap-5 lg:grid-cols-[1fr_300px] lg:items-center">
-                    <div>
+                <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:items-center">
+                    <div className="min-w-0">
                         <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
                             <Trophy className="mr-1.5 size-3.5" />
                             Cross-City Leaderboard
                         </div>
 
-                        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-4xl">
                             Leaderboard
                         </h1>
 
@@ -152,11 +152,11 @@ export default async function LeaderboardPage() {
                         </div>
                     </div>
 
-                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
+                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
                         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
                             Current Champion
                         </p>
-                        <p className="mt-2 text-2xl font-semibold text-emerald-950">
+                        <p className="mt-2 truncate text-xl font-semibold text-emerald-950 sm:text-2xl">
                             {topUser?.name ?? "No user"}
                         </p>
                         <p className="mt-1 text-sm text-slate-600">
@@ -168,7 +168,7 @@ export default async function LeaderboardPage() {
                 </div>
             </section>
 
-            <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardMetricCard
                     label="Participants"
                     value={totalParticipants.toString()}
@@ -198,16 +198,16 @@ export default async function LeaderboardPage() {
                 />
             </section>
 
-            <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
-                <Card className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 py-4">
+            <section className="grid min-w-0 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
+                <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
+                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
                         <div className="flex items-center gap-3">
-                            <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                            <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                                 <Trophy className="size-5" />
                             </div>
-                            <div>
+                            <div className="min-w-0">
                                 <CardTitle>User Ranking</CardTitle>
-                                <CardDescription>
+                                <CardDescription className="text-xs leading-5 sm:text-sm">
                                     Ranking berdasarkan score tertinggi, lalu jumlah action
                                     selesai dan badge.
                                 </CardDescription>
@@ -250,7 +250,7 @@ export default async function LeaderboardPage() {
                                                         : "bg-white px-4 py-4"
                                                 }
                                             >
-                                                <div className="grid gap-4 md:grid-cols-[72px_1.4fr_1fr_1fr_90px_90px_90px] md:items-center">
+                                                <div className="grid min-w-0 gap-3 md:grid-cols-[72px_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_90px_90px_90px] md:items-center">
                                                     <div>
                                                         <div
                                                             className={
@@ -263,9 +263,11 @@ export default async function LeaderboardPage() {
                                                         </div>
                                                     </div>
 
-                                                    <div>
-                                                        <div className="flex flex-wrap items-center gap-2">
-                                                            <p className="font-semibold text-emerald-950">{user.name}</p>
+                                                    <div className="min-w-0">
+                                                        <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                                            <p className="max-w-[210px] truncate font-semibold text-emerald-950 sm:max-w-[260px]">
+                                                                {user.name}
+                                                            </p>
 
                                                             {isCurrentUser ? (
                                                                 <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
@@ -281,23 +283,24 @@ export default async function LeaderboardPage() {
                                                             ) : null}
                                                         </div>
 
-                                                        <p className="mt-1 text-xs text-muted-foreground md:hidden">
+                                                        <p className="mt-1 max-w-[260px] truncate text-xs text-muted-foreground md:hidden">
                                                             {user.city
                                                                 ? `${user.city.name}, ${user.city.province}`
                                                                 : "No City Node"}
                                                         </p>
                                                     </div>
 
-                                                    <div className="hidden text-sm text-muted-foreground md:block">
-                                                        {user.city ? `${user.city.name}, ${user.city.province}` : "No City Node"}
+                                                    <div className="hidden min-w-0 text-sm text-muted-foreground md:block">
+                                                        <p className="truncate">
+                                                            {user.city ? `${user.city.name}, ${user.city.province}` : "No City Node"}
+                                                        </p>
                                                     </div>
 
-                                                    <div>
-                                                        <Badge variant="secondary" className="font-medium">
-                                                            {user.level}
+                                                    <div className="min-w-0">
+                                                        <Badge variant="secondary" className="max-w-full font-medium">
+                                                            <span className="truncate">{user.level}</span>
                                                         </Badge>
                                                     </div>
-
                                                     <div className="flex items-center justify-between rounded-2xl bg-white px-3 py-2 ring-1 ring-emerald-900/10 md:block md:bg-transparent md:p-0 md:text-right md:ring-0">
                                                         <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground md:hidden">
                                                             Score
@@ -330,8 +333,8 @@ export default async function LeaderboardPage() {
                     </CardContent>
                 </Card>
 
-                <aside className="space-y-4">
-                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
+                <aside className="min-w-0 space-y-4">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
                             <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
                                 <Crown className="mr-1.5 size-3" />
@@ -352,7 +355,7 @@ export default async function LeaderboardPage() {
                                 <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
                                     Current Score
                                 </p>
-                                <p className="mt-3 text-4xl font-semibold">
+                                <p className="mt-3 break-words text-3xl font-semibold sm:text-4xl">
                                     {currentUserRank?.score ?? 0}
                                 </p>
                                 <p className="mt-2 text-sm text-emerald-50/70">
@@ -374,7 +377,7 @@ export default async function LeaderboardPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
                             <CardTitle className="text-base">Leaderboard Rules</CardTitle>
                             <CardDescription>
@@ -390,7 +393,7 @@ export default async function LeaderboardPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
                             <CardTitle className="text-base">Top User</CardTitle>
                             <CardDescription>
@@ -405,12 +408,12 @@ export default async function LeaderboardPage() {
                                 </p>
                             ) : (
                                 <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex min-w-0 items-start gap-3">
                                         <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                                             <Crown className="size-5" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-emerald-950">
+                                            <p className="max-w-[190px] truncate text-sm font-semibold text-emerald-950">
                                                 {topUser.name}
                                             </p>
                                             <p className="text-xs text-muted-foreground">

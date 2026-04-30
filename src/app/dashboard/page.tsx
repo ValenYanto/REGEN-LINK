@@ -249,19 +249,19 @@ export default async function DashboardPage() {
     ];
 
     return (
-        <div className="space-y-5">
-            <section className="relative overflow-hidden rounded-[1.75rem] border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm md:p-6">
+        <div className="min-w-0 space-y-5">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[1.75rem] md:p-6">
                 <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
                 <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
 
-                <div className="relative grid gap-5 lg:grid-cols-[1fr_300px] lg:items-center">
-                    <div>
+                <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:items-center">
+                    <div className="min-w-0">
                         <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
                             <Leaf className="mr-1.5 size-3.5" />
                             REGEN-LINK Climate Command Center
                         </div>
 
-                        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-4xl">
                             Selamat datang, {user?.name ?? "Climate Actor"}
                         </h1>
 
@@ -306,7 +306,7 @@ export default async function DashboardPage() {
                 </div>
             </section>
 
-            <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardMetricCard
                     label="Energy Records"
                     value={`${totalEnergyRecorded.toLocaleString("id-ID", {
@@ -376,19 +376,19 @@ export default async function DashboardPage() {
                 />
             </section>
 
-            <section className="grid gap-5 lg:grid-cols-2">
+            <section className="grid min-w-0 gap-5 lg:grid-cols-2">
                 <EnergyUsageChart data={energyChartData} />
                 <WasteTrendChart data={wasteChartData} />
             </section>
 
-            <section className="grid gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(360px,0.6fr)]">
+            <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,0.6fr)]">
                 <ImpactBreakdownChart data={impactBreakdownData} />
                 <ScoreProgressChart score={score} level={level} />
             </section>
 
-            <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
-                <div className="space-y-5">
-                    <div className="grid gap-4 lg:grid-cols-2">
+            <section className="grid min-w-0 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
+                <div className="w-full min-w-0 space-y-5 overflow-x-hidden">
+                    <div className="grid min-w-0 gap-4 lg:grid-cols-2">
                         <OverviewProgressPanel
                             title="Action Progress"
                             description="Ringkasan eksekusi aksi pengguna."
@@ -481,7 +481,7 @@ export default async function DashboardPage() {
                     </Card>
                 </div>
 
-                <aside className="space-y-5">
+                <aside className="min-w-0 space-y-5">
                     <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
                             <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">

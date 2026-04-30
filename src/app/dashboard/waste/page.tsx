@@ -42,19 +42,19 @@ export default async function WastePage() {
     const latestRecord = records[0];
 
     return (
-        <div className="space-y-8">
-            <section className="relative overflow-hidden rounded-[2rem] border border-emerald-900/10 bg-[#f7faf6] p-6 shadow-sm md:p-8">
+        <div className="w-full min-w-0 space-y-6 overflow-x-hidden">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[2rem] md:p-8">
                 <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
                 <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
 
-                <div className="relative grid gap-6 lg:grid-cols-[1fr_280px] lg:items-end">
-                    <div>
+                <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
+                    <div className="min-w-0">
                         <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
                             <Recycle className="mr-1.5 size-3.5" />
                             Circular Waste Action Module
                         </div>
 
-                        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-5xl">
                             Waste Input Center
                         </h1>
 
@@ -82,7 +82,7 @@ export default async function WastePage() {
                 </div>
             </section>
 
-            <section className="grid gap-4 md:grid-cols-3">
+            <section className="grid min-w-0 gap-4 md:grid-cols-3">
                 <DashboardMetricCard
                     label="Total Waste Recorded"
                     value={`${totalWasteKg.toLocaleString("id-ID")} kg`}
@@ -105,8 +105,8 @@ export default async function WastePage() {
                 />
             </section>
 
-            <section className="grid items-start gap-6 xl:grid-cols-[1fr_360px]">
-                <div className="space-y-6">
+            <section className="grid min-w-0 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+                <div className="min-w-0 space-y-6">
                     <WasteRecordForm />
                     <WasteRecordsTable records={records} />
                 </div>

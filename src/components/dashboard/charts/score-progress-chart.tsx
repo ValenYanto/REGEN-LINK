@@ -108,24 +108,24 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
     ];
 
     return (
-        <Card className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 pb-4">
-                <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 pb-4 sm:px-6">
+                <div className="flex min-w-0 items-start gap-3">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                         <Award className="size-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                         <CardTitle className="text-base">Score Progress</CardTitle>
-                        <CardDescription>
+                        <CardDescription className="mt-1 text-xs leading-5 sm:text-sm">
                             Progress regenerative score dan level pengguna.
                         </CardDescription>
                     </div>
                 </div>
             </CardHeader>
 
-            <CardContent className="space-y-5 pt-5">
-                <div className="grid items-center gap-5 md:grid-cols-[190px_1fr]">
-                    <div className="relative mx-auto size-[190px]">
+            <CardContent className="min-w-0 space-y-5 px-4 pt-5 pb-4 sm:px-6">
+                <div className="grid min-w-0 items-center gap-5 md:grid-cols-[170px_1fr]">
+                    <div className="relative mx-auto size-[160px] sm:size-[190px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <RadialBarChart
                                 cx="50%"
@@ -156,7 +156,7 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
                             <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
                                 Score
                             </p>
-                            <p className="mt-1 text-4xl font-semibold tracking-tight text-emerald-950">
+                            <p className="mt-1 text-3xl font-semibold tracking-tight text-emerald-950 sm:text-4xl">
                                 {score}
                             </p>
                             <p className="mt-1 text-xs font-medium text-emerald-700">
@@ -165,14 +165,14 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <div>
-                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
-                                <Sparkles className="mr-1.5 size-3" />
-                                {level}
+                    <div className="min-w-0 space-y-4">
+                        <div className="min-w-0">
+                            <Badge className="max-w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                                <Sparkles className="mr-1.5 size-3 shrink-0" />
+                                <span className="truncate">{level}</span>
                             </Badge>
 
-                            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-emerald-950">
+                            <h3 className="mt-3 break-words text-xl font-semibold tracking-tight text-emerald-950 sm:text-2xl">
                                 {remaining === 0 ? "Level tertinggi terbuka" : `${remaining} pts lagi`}
                             </h3>
 
@@ -184,7 +184,7 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
                         </div>
 
                         <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/60 p-4">
-                            <div className="mb-2 flex items-center justify-between text-xs font-medium text-emerald-950">
+                            <div className="mb-2 flex items-center justify-between gap-3 text-xs font-medium text-emerald-950">
                                 <span>Progress ke Juara Regeneratif</span>
                                 <span>{progress}%</span>
                             </div>
@@ -200,7 +200,7 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
                     </div>
                 </div>
 
-                <div className="grid gap-2 sm:grid-cols-5">
+                <div className="grid min-w-0 gap-2 sm:grid-cols-5">
                     {milestones.map((milestone) => (
                         <div
                             key={milestone.label}
@@ -213,9 +213,9 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
                             <div className="flex items-center justify-between gap-2">
                                 <p className="text-xs font-semibold">{milestone.label}</p>
                                 {milestone.active ? (
-                                    <CheckCircle2 className="size-3.5 text-emerald-300" />
+                                    <CheckCircle2 className="size-3.5 shrink-0 text-emerald-300" />
                                 ) : (
-                                    <Crown className="size-3.5 text-emerald-700/60" />
+                                    <Crown className="size-3.5 shrink-0 text-emerald-700/60" />
                                 )}
                             </div>
                             <p

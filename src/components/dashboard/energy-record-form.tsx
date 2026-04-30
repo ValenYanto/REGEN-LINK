@@ -78,31 +78,34 @@ export function EnergyRecordForm() {
 
 
     return (
-        <Card className="h-fit overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 py-4">
-                <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+        <Card className="h-fit w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                <div className="flex min-w-0 items-start gap-3">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                         <Zap className="size-5" />
                     </div>
-                    <div>
-                        <CardTitle>Energy Telemetry Input</CardTitle>
-                        <CardDescription>
+
+                    <div className="min-w-0">
+                        <CardTitle className="text-base leading-tight sm:text-lg">
+                            Energy Telemetry Input
+                        </CardTitle>
+                        <CardDescription className="mt-1 max-w-full text-xs leading-5 sm:text-sm">
                             Catat konsumsi listrik bulanan untuk membaca pola efisiensi energi.
                         </CardDescription>
                     </div>
                 </div>
             </CardHeader>
 
-            <CardContent className="pt-4">
+            <CardContent className="min-w-0 px-4 pt-4 pb-4 sm:px-6">
                 {message ? (
                     <Alert className="mb-5 border-emerald-200 bg-emerald-50 text-emerald-950">
                         <AlertDescription>{message}</AlertDescription>
                     </Alert>
                 ) : null}
 
-                <form onSubmit={onSubmit} className="grid gap-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <div className="grid gap-2">
+                <form onSubmit={onSubmit} className="grid min-w-0 gap-4">
+                    <div className="grid min-w-0 gap-4 md:grid-cols-2">
+                        <div className="grid min-w-0 gap-2">
                             <Label htmlFor="monthlyKwh">Monthly kWh</Label>
                             <Input
                                 id="monthlyKwh"
@@ -111,13 +114,14 @@ export function EnergyRecordForm() {
                                 step="0.01"
                                 placeholder="Contoh: 220"
                                 required
+                                className="w-full min-w-0"
                             />
                             {errors.monthlyKwh ? (
                                 <p className="text-xs text-red-600">{errors.monthlyKwh[0]}</p>
                             ) : null}
                         </div>
 
-                        <div className="grid gap-2">
+                        <div className="grid min-w-0 gap-2">
                             <Label htmlFor="electricityCost">Electricity Cost</Label>
                             <Input
                                 id="electricityCost"
@@ -126,6 +130,7 @@ export function EnergyRecordForm() {
                                 step="100"
                                 placeholder="Contoh: 315000"
                                 required
+                                className="w-full min-w-0"
                             />
                             {errors.electricityCost ? (
                                 <p className="text-xs text-red-600">
@@ -135,11 +140,11 @@ export function EnergyRecordForm() {
                         </div>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-4 md:grid-cols-2">
+                        <div className="grid min-w-0 gap-2">
                             <Label>Housing Type</Label>
                             <Select name="housingType" required>
-                                <SelectTrigger>
+                                <SelectTrigger className="w-full min-w-0">
                                     <SelectValue placeholder="Pilih tipe tempat tinggal" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -156,7 +161,7 @@ export function EnergyRecordForm() {
                             ) : null}
                         </div>
 
-                        <div className="grid gap-2">
+                        <div className="grid min-w-0 gap-2">
                             <Label htmlFor="occupants">Occupants</Label>
                             <Input
                                 id="occupants"
@@ -164,6 +169,7 @@ export function EnergyRecordForm() {
                                 type="number"
                                 placeholder="Contoh: 3"
                                 required
+                                className="w-full min-w-0"
                             />
                             {errors.occupants ? (
                                 <p className="text-xs text-red-600">{errors.occupants[0]}</p>
@@ -171,13 +177,14 @@ export function EnergyRecordForm() {
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label htmlFor="dominantDevices">Dominant Devices</Label>
                         <Input
                             id="dominantDevices"
                             name="dominantDevices"
-                            placeholder="Contoh: AC, laptop, rice cooker, refrigerator"
+                            placeholder="Contoh: AC, laptop, rice cooker"
                             required
+                            className="w-full min-w-0"
                         />
                         {errors.dominantDevices ? (
                             <p className="text-xs text-red-600">
@@ -186,22 +193,27 @@ export function EnergyRecordForm() {
                         ) : null}
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label htmlFor="recordDate">Record Date</Label>
-                        <Input id="recordDate" name="recordDate" type="date" />
+                        <Input
+                            id="recordDate"
+                            name="recordDate"
+                            type="date"
+                            className="w-full min-w-0"
+                        />
                         <p className="text-xs text-muted-foreground">
                             Kosongkan jika ingin memakai tanggal hari ini.
                         </p>
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid min-w-0 gap-2">
                         <Label htmlFor="notes">Notes</Label>
                         <Textarea
                             id="notes"
                             name="notes"
                             placeholder="Tambahkan catatan pola konsumsi listrik..."
                             rows={3}
-                            className="min-h-20 resize-none"
+                            className="min-h-20 w-full min-w-0 resize-none"
                         />
                         {errors.notes ? (
                             <p className="text-xs text-red-600">{errors.notes[0]}</p>
@@ -211,7 +223,7 @@ export function EnergyRecordForm() {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 sm:w-fit"
                     >
                         {isPending ? "Saving telemetry..." : "Save Energy Record"}
                     </Button>

@@ -188,19 +188,21 @@ export default async function CityInsightsPage() {
     );
 
     return (
-        <div className="space-y-5">
-            <section className="relative overflow-hidden rounded-[1.75rem] border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm md:p-6">
+        <div className="w-full min-w-0 space-y-5 overflow-x-hidden">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm sm:p-5 md:rounded-[1.75rem] md:p-6">
                 <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
                 <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
 
-                <div className="relative grid gap-5 lg:grid-cols-[1fr_300px] lg:items-center">
-                    <div>
-                        <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
-                            <BarChart3 className="mr-1.5 size-3.5" />
-                            Cross-City Climate Intelligence
+                <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:items-center">
+                    <div className="min-w-0">
+                        <div className="mb-5 inline-flex max-w-full items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                            <BarChart3 className="mr-1.5 size-3.5 shrink-0" />
+                            <span className="truncate">
+                                Cross-City Climate Intelligence
+                            </span>
                         </div>
 
-                        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+                        <h1 className="max-w-3xl break-words text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl md:text-4xl">
                             City Insights
                         </h1>
 
@@ -210,31 +212,39 @@ export default async function CityInsightsPage() {
                             REGEN-LINK.
                         </p>
 
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
-                                {currentCityInsight
-                                    ? `Your City Rank #${currentCityInsight.rank}`
-                                    : "No City Rank"}
+                        <div className="mt-4 flex min-w-0 flex-wrap gap-2">
+                            <Badge className="max-w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                                <span className="truncate">
+                                    {currentCityInsight
+                                        ? `Your City Rank #${currentCityInsight.rank}`
+                                        : "No City Rank"}
+                                </span>
                             </Badge>
-                            <Badge variant="secondary">
-                                {currentUser?.city
-                                    ? `${currentUser.city.name}, ${currentUser.city.province}`
-                                    : "No City Node"}
+
+                            <Badge variant="secondary" className="max-w-full">
+                                <span className="truncate">
+                                    {currentUser?.city
+                                        ? `${currentUser.city.name}, ${currentUser.city.province}`
+                                        : "No City Node"}
+                                </span>
                             </Badge>
-                            <Badge variant="outline">
-                                {currentCityInsight?.totalScore ?? 0} city pts
+
+                            <Badge variant="outline" className="max-w-full">
+                                <span className="truncate">
+                                    {currentCityInsight?.totalScore ?? 0} city pts
+                                </span>
                             </Badge>
                         </div>
                     </div>
 
-                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
+                    <div className="min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
                         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
                             Leading City
                         </p>
-                        <p className="mt-2 text-2xl font-semibold text-emerald-950">
+                        <p className="mt-2 truncate text-xl font-semibold text-emerald-950 sm:text-2xl">
                             {topCity?.name ?? "No city"}
                         </p>
-                        <p className="mt-1 text-sm text-slate-600">
+                        <p className="mt-1 truncate text-sm text-slate-600">
                             {topCity
                                 ? `${topCity.totalScore} pts • ${topCity.userCount} users`
                                 : "Belum ada data kota."}
@@ -243,7 +253,7 @@ export default async function CityInsightsPage() {
                 </div>
             </section>
 
-            <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardMetricCard
                     label="Cities"
                     value={totalCities.toString()}
@@ -305,16 +315,18 @@ export default async function CityInsightsPage() {
                 />
             </section>
 
-            <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
-                <Card className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
-                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 py-4">
-                        <div className="flex items-center gap-3">
-                            <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+            <section className="grid min-w-0 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
+                <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm">
+                    <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 px-4 py-4 sm:px-6">
+                        <div className="flex min-w-0 items-start gap-3">
+                            <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                                 <Trophy className="size-5" />
                             </div>
-                            <div>
-                                <CardTitle>City Ranking</CardTitle>
-                                <CardDescription>
+                            <div className="min-w-0">
+                                <CardTitle className="text-base sm:text-lg">
+                                    City Ranking
+                                </CardTitle>
+                                <CardDescription className="text-xs leading-5 sm:text-sm">
                                     Ranking kota berdasarkan total score, completed actions, dan
                                     badge.
                                 </CardDescription>
@@ -324,7 +336,7 @@ export default async function CityInsightsPage() {
 
                     <CardContent className="p-0">
                         {cityInsights.length === 0 ? (
-                            <div className="p-10 text-center">
+                            <div className="p-8 text-center sm:p-10">
                                 <p className="text-sm font-medium text-emerald-950">
                                     Belum ada city insight.
                                 </p>
@@ -333,8 +345,8 @@ export default async function CityInsightsPage() {
                                 </p>
                             </div>
                         ) : (
-                            <div>
-                                <div className="hidden grid-cols-[72px_1.3fr_90px_100px_100px_100px_100px] border-b border-emerald-900/10 bg-emerald-50/40 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground md:grid">
+                            <div className="min-w-0">
+                                <div className="hidden grid-cols-[72px_minmax(0,1.3fr)_90px_100px_100px_100px_100px] border-b border-emerald-900/10 bg-emerald-50/40 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground md:grid">
                                     <div>Rank</div>
                                     <div>City</div>
                                     <div className="text-right">Users</div>
@@ -357,7 +369,7 @@ export default async function CityInsightsPage() {
                                                         : "bg-white px-4 py-4"
                                                 }
                                             >
-                                                <div className="grid gap-4 md:grid-cols-[72px_1.3fr_90px_100px_100px_100px_100px] md:items-center">
+                                                <div className="grid min-w-0 gap-3 md:grid-cols-[72px_minmax(0,1.3fr)_90px_100px_100px_100px_100px] md:items-center">
                                                     <div>
                                                         <div
                                                             className={
@@ -370,9 +382,9 @@ export default async function CityInsightsPage() {
                                                         </div>
                                                     </div>
 
-                                                    <div>
-                                                        <div className="flex flex-wrap items-center gap-2">
-                                                            <p className="font-semibold text-emerald-950">
+                                                    <div className="min-w-0">
+                                                        <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                                            <p className="max-w-[210px] truncate font-semibold text-emerald-950 sm:max-w-[260px]">
                                                                 {city.name}
                                                             </p>
 
@@ -387,7 +399,7 @@ export default async function CityInsightsPage() {
                                                             </Badge>
                                                         </div>
 
-                                                        <p className="mt-1 text-xs text-muted-foreground">
+                                                        <p className="mt-1 max-w-[260px] truncate text-xs text-muted-foreground">
                                                             {city.province}, {city.country}
                                                         </p>
                                                     </div>
@@ -450,14 +462,14 @@ export default async function CityInsightsPage() {
                     </CardContent>
                 </Card>
 
-                <aside className="space-y-4">
-                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
+                <aside className="min-w-0 space-y-4">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
                         <CardHeader>
-                            <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
-                                <MapPin className="mr-1.5 size-3" />
-                                Your City Node
+                            <Badge className="mb-3 w-fit max-w-full bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                                <MapPin className="mr-1.5 size-3 shrink-0" />
+                                <span className="truncate">Your City Node</span>
                             </Badge>
-                            <CardTitle className="text-white">
+                            <CardTitle className="break-words text-white">
                                 {currentCityInsight
                                     ? `Rank #${currentCityInsight.rank}`
                                     : "No City Node"}
@@ -472,10 +484,10 @@ export default async function CityInsightsPage() {
                                 <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
                                     City Score
                                 </p>
-                                <p className="mt-3 text-4xl font-semibold">
+                                <p className="mt-3 break-words text-3xl font-semibold sm:text-4xl">
                                     {currentCityInsight?.totalScore ?? 0}
                                 </p>
-                                <p className="mt-2 text-sm text-emerald-50/70">
+                                <p className="mt-2 truncate text-sm text-emerald-50/70">
                                     {currentCityInsight
                                         ? `${currentCityInsight.name}, ${currentCityInsight.province}`
                                         : "Belum ada kota terhubung."}
@@ -498,7 +510,7 @@ export default async function CityInsightsPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
                         <CardHeader>
                             <CardTitle className="text-base">Leading City</CardTitle>
                             <CardDescription>
@@ -513,31 +525,31 @@ export default async function CityInsightsPage() {
                                 </p>
                             ) : (
                                 <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                    <div className="flex min-w-0 items-center gap-3">
+                                        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
                                             <Crown className="size-5" />
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-emerald-950">
+                                        <div className="min-w-0">
+                                            <p className="max-w-[190px] truncate text-sm font-semibold text-emerald-950">
                                                 {topCity.name}
                                             </p>
-                                            <p className="text-xs text-muted-foreground">
+                                            <p className="truncate text-xs text-muted-foreground">
                                                 {topCity.province}
                                             </p>
                                         </div>
                                     </div>
 
                                     <div className="mt-4 grid grid-cols-2 gap-2">
-                                        <div className="rounded-2xl bg-white p-3">
-                                            <p className="text-sm font-semibold text-emerald-950">
+                                        <div className="min-w-0 rounded-2xl bg-white p-3">
+                                            <p className="truncate text-sm font-semibold text-emerald-950">
                                                 {topCity.totalScore}
                                             </p>
                                             <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                                                 Score
                                             </p>
                                         </div>
-                                        <div className="rounded-2xl bg-white p-3">
-                                            <p className="text-sm font-semibold text-emerald-950">
+                                        <div className="min-w-0 rounded-2xl bg-white p-3">
+                                            <p className="truncate text-sm font-semibold text-emerald-950">
                                                 {topCity.userCount}
                                             </p>
                                             <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
@@ -550,7 +562,7 @@ export default async function CityInsightsPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                    <Card className="w-full min-w-0 border-emerald-900/10 bg-white/95 shadow-sm">
                         <CardHeader>
                             <CardTitle className="text-base">Insight Rules</CardTitle>
                             <CardDescription>

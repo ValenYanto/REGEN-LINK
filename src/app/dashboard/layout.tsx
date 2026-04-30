@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { MobileDashboardNav } from "@/components/dashboard/mobile-dashboard-nav";
 
 export default async function DashboardLayout({
     children,
@@ -32,22 +33,26 @@ export default async function DashboardLayout({
     }
 
     return (
-        <DashboardShell
-            sidebar={<AppSidebar />}
-            header={
-                <DashboardHeader
-                    user={{
-                        name: user.name,
-                        email: user.email,
-                        city: user.city
-                            ? `${user.city.name}, ${user.city.province}`
-                            : "Unknown City",
-                        level: user.regenerativeScore?.level ?? "Seed",
-                    }}
-                />
-            }
-        >
-            {children}
-        </DashboardShell>
+        <>
+            <MobileDashboardNav />
+
+            <DashboardShell
+                sidebar={<AppSidebar />}
+                header={
+                    <DashboardHeader
+                        user={{
+                            name: user.name,
+                            email: user.email,
+                            city: user.city
+                                ? `${user.city.name}, ${user.city.province}`
+                                : "Unknown City",
+                            level: user.regenerativeScore?.level ?? "Perintis Aksi",
+                        }}
+                    />
+                }
+            >
+                {children}
+            </DashboardShell>
+        </>
     );
 }
