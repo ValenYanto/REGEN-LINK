@@ -1,167 +1,152 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
 import {
     BarChart3,
-    Brain,
-    CircleGauge,
-    Flag,
-    Globe2,
+    BrainCircuit,
+    Flame,
     Home,
     Leaf,
     Medal,
     Recycle,
-    UserRound,
+    Settings,
+    Trophy,
+    UserCircle,
     Zap,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
-const navigation = [
+const navigationItems = [
     {
-        label: "Overview",
+        title: "Overview",
         href: "/dashboard",
         icon: Home,
-        available: true,
+        status: "active",
     },
     {
-        label: "Energy Records",
+        title: "Energy Records",
         href: "/dashboard/energy",
         icon: Zap,
-        available: false,
+        status: "active",
     },
     {
-        label: "Waste Records",
+        title: "Waste Records",
         href: "/dashboard/waste",
         icon: Recycle,
-        available: false,
+        status: "active",
     },
     {
-        label: "AI Recommendations",
+        title: "AI Recommendations",
         href: "/dashboard/recommendations",
-        icon: Brain,
-        available: false,
+        icon: BrainCircuit,
+        status: "soon",
     },
     {
-        label: "Actions",
+        title: "Actions",
         href: "/dashboard/actions",
-        icon: CircleGauge,
-        available: false,
+        icon: Flame,
+        status: "soon",
     },
     {
-        label: "Challenges",
+        title: "Challenges",
         href: "/dashboard/challenges",
-        icon: Flag,
-        available: false,
+        icon: Trophy,
+        status: "soon",
     },
     {
-        label: "Leaderboard",
+        title: "Leaderboard",
         href: "/dashboard/leaderboard",
         icon: Medal,
-        available: false,
+        status: "soon",
     },
     {
-        label: "City Insights",
+        title: "City Insights",
         href: "/dashboard/city-insights",
-        icon: Globe2,
-        available: false,
+        icon: BarChart3,
+        status: "soon",
     },
     {
-        label: "Profile",
+        title: "Profile",
         href: "/dashboard/profile",
-        icon: UserRound,
-        available: false,
+        icon: UserCircle,
+        status: "soon",
     },
 ];
 
-export function AppSidebar() {
-    const pathname = usePathname();
+type AppSidebarProps = {
+    activePath?: string;
+};
 
+export function AppSidebar({ activePath = "/dashboard" }: AppSidebarProps) {
     return (
-        <aside className="hidden w-[280px] shrink-0 border-r border-[#e4e7ec] bg-white lg:block">
-            <div className="flex h-full flex-col">
-                <div className="px-6 py-5">
-                    <Link href="/" className="flex items-center gap-3">
-                        <div className="relative h-11 w-11 overflow-hidden rounded-full">
-                            <Image
-                                src="/logo.png"
-                                alt="REGEN-LINK Logo"
-                                fill
-                                sizes="44px"
-                                className="object-contain"
-                                priority
-                            />
-                        </div>
-
-                        <div>
-                            <p className="text-lg font-black tracking-[-0.04em] text-[#005c43]">
-                                REGEN-LINK
-                            </p>
-                            <p className="-mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#8a9a95]">
-                                Climate Node
-                            </p>
-                        </div>
-                    </Link>
+        <aside className="hidden min-h-screen w-72 border-r border-emerald-900/10 bg-white/85 px-4 py-5 backdrop-blur-xl lg:block">
+            <div className="flex items-center gap-3 rounded-3xl border border-emerald-900/10 bg-emerald-50/70 p-3">
+                <Image
+                    src="/logo.png"
+                    alt="REGEN-LINK"
+                    width={42}
+                    height={42}
+                    className="rounded-2xl"
+                />
+                <div>
+                    <p className="text-sm font-bold tracking-tight text-emerald-950">
+                        REGEN-LINK
+                    </p>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-emerald-700">
+                        Climate Node
+                    </p>
                 </div>
+            </div>
 
-                <Separator className="bg-[#e4e7ec]" />
+            <nav className="mt-6 space-y-1">
+                {navigationItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive =
+                        item.href === "/dashboard"
+                            ? activePath === "/dashboard"
+                            : activePath.startsWith(item.href);
 
-                <nav className="flex-1 space-y-1 px-4 py-5">
-                    {navigation.map((item) => {
-                        const Icon = item.icon;
-                        const isActive = pathname === item.href;
+                    const isSoon = item.status === "soon";
 
+                    if (isSoon) {
                         return (
-                            <Link
-                                key={item.label}
-                                href={item.href}
-                                className={`group flex items-center justify-between rounded-xl px-3 py-3 text-sm font-black transition ${isActive
-                                        ? "bg-[#dff8ec] text-[#00734f]"
-                                        : "text-[#52615c] hover:bg-[#f3f7f5] hover:text-[#005c43]"
-                                    }`}
+                            <div
+                                key={item.title}
+                                className="flex cursor-not-allowed items-center justify-between rounded-2xl px-3 py-2.5 text-sm text-muted-foreground opacity-70"
                             >
-                                <span className="flex items-center gap-3">
-                                    <Icon
-                                        size={18}
-                                        className={
-                                            isActive
-                                                ? "text-[#00a66a]"
-                                                : "text-[#8a9a95] group-hover:text-[#00a66a]"
-                                        }
-                                    />
-                                    {item.label}
-                                </span>
-
-                                {!item.available && (
-                                    <Badge
-                                        variant="outline"
-                                        className="border-[#d9e1e5] px-2 py-0 text-[9px] font-black uppercase tracking-[0.08em] text-[#8a9a95]"
-                                    >
-                                        Soon
-                                    </Badge>
-                                )}
-                            </Link>
+                                <div className="flex items-center gap-3">
+                                    <Icon className="size-4" />
+                                    <span>{item.title}</span>
+                                </div>
+                                <Badge variant="secondary" className="text-[10px]">
+                                    Soon
+                                </Badge>
+                            </div>
                         );
-                    })}
-                </nav>
+                    }
 
-                <div className="p-4">
-                    <div className="rounded-2xl border border-[#d9e1e5] bg-[#f8fbfa] p-4">
-                        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#dff8ec] text-[#00734f]">
-                            <Leaf size={20} />
-                        </div>
-                        <p className="text-sm font-black text-[#101828]">
-                            Phase 4 Active
-                        </p>
-                        <p className="mt-1 text-xs leading-5 text-[#667085]">
-                            Dashboard shell ready. Energy, waste, AI, and challenge modules
-                            will unlock in the next phases.
-                        </p>
-                    </div>
-                </div>
+                    return (
+                        <Link
+                            key={item.title}
+                            href={item.href}
+                            className={cn(
+                                "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition",
+                                isActive
+                                    ? "bg-emerald-950 text-emerald-50 shadow-sm"
+                                    : "text-emerald-950/70 hover:bg-emerald-50 hover:text-emerald-950"
+                            )}
+                        >
+                            <Icon className="size-4" />
+                            <span>{item.title}</span>
+                        </Link>
+                    );
+                })}
+            </nav>
+
+            <div className="mt-4 flex items-center gap-2 px-2 text-xs text-muted-foreground">
+                <Settings className="size-3.5" />
+                <span>System protocol: MVP Build</span>
             </div>
         </aside>
     );

@@ -391,30 +391,6 @@ export default async function DashboardPage() {
                     </CardContent>
                 </Card>
             </section>
-
-            <section className="rounded-2xl border border-[#d9e1e5] bg-[#ecfdf6] p-6">
-                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                    <div>
-                        <div className="mb-2 flex items-center gap-2">
-                            <CheckCircle2 size={18} className="text-[#00734f]" />
-                            <p className="text-sm font-black uppercase tracking-[0.14em] text-[#00734f]">
-                                Phase 4 Complete
-                            </p>
-                        </div>
-                        <h2 className="text-2xl font-black tracking-[-0.04em] text-[#101828]">
-                            Dashboard shell is ready.
-                        </h2>
-                        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#667085]">
-                            Selanjutnya Phase 5: membuat halaman input Energy Record dan Waste
-                            Record agar data dashboard bisa berubah dari form asli.
-                        </p>
-                    </div>
-
-                    <Badge className="w-fit rounded-full bg-[#00734f] px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white hover:bg-[#00734f]">
-                        Next: Phase 5
-                    </Badge>
-                </div>
-            </section>
         </div>
     );
 }
