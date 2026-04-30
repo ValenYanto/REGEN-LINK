@@ -64,13 +64,13 @@ const navigationItems = [
         title: "Leaderboard",
         href: "/dashboard/leaderboard",
         icon: Medal,
-        status: "soon",
+        status: "active",
     },
     {
         title: "City Insights",
         href: "/dashboard/city-insights",
         icon: BarChart3,
-        status: "soon",
+        status: "active",
     },
     {
         title: "Profile",

@@ -1,20 +1,18 @@
 import { ReactNode } from "react";
 
-type DashboardMetricCardProps = {
-    icon: ReactNode;
+type OverviewImpactCardProps = {
     label: string;
     value: string;
     caption: string;
-    trend?: string;
+    icon: ReactNode;
 };
 
-export function DashboardMetricCard({
-    icon,
+export function OverviewImpactCard({
     label,
     value,
     caption,
-    trend,
-}: DashboardMetricCardProps) {
+    icon,
+}: OverviewImpactCardProps) {
     return (
         <div className="rounded-3xl border border-emerald-900/10 bg-white/90 p-4 shadow-sm">
             <div className="flex items-start justify-between gap-4">
@@ -28,11 +26,6 @@ export function DashboardMetricCard({
                     <p className="mt-1 text-xs leading-5 text-muted-foreground">
                         {caption}
                     </p>
-                    {trend ? (
-                        <p className="mt-2 text-xs font-medium text-emerald-700">
-                            {trend}
-                        </p>
-                    ) : null}
                 </div>
 
                 <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-800">

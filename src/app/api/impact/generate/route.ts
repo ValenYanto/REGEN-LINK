@@ -77,23 +77,64 @@ export async function POST() {
         const createdRecommendations = [];
         const createdUserActions = [];
         const createdImpactEstimations = [];
+        const skippedActions = [];
 
         for (const candidate of candidates) {
             const action = actions.find((item) => item.name === candidate.actionName);
 
             if (!action) continue;
 
-            const recommendation = await prisma.aiRecommendation.create({
-                data: {
+            const existingUserAction = await prisma.userAction.findFirst({
+                where: {
                     userId,
                     actionId: action.id,
-                    recommendationReason: candidate.reason,
-                    confidenceScore: candidate.confidenceScore,
+                    status: {
+                        in: ["PLANNED", "IN_PROGRESS", "COMPLETED", "VERIFIED"],
+                    },
                 },
                 include: {
                     action: true,
+                    impactEstimation: true,
                 },
             });
+
+            if (existingUserAction) {
+                skippedActions.push({
+                    actionName: action.name,
+                    status: existingUserAction.status,
+                    reason: "Action sudah pernah dibuat.",
+                });
+
+                continue;
+            }
+
+            const existingRecommendation = await prisma.aiRecommendation.findFirst({
+                where: {
+                    userId,
+                    actionId: action.id,
+                },
+                orderBy: {
+                    generatedAt: "desc",
+                },
+            });
+
+            const recommendation =
+                existingRecommendation ??
+                (await prisma.aiRecommendation.create({
+                    data: {
+                        userId,
+                        actionId: action.id,
+                        recommendationReason: candidate.reason,
+                        confidenceScore: candidate.confidenceScore,
+                    },
+                    include: {
+                        action: true,
+                    },
+                }));
+
+            if (!existingRecommendation) {
+                createdRecommendations.push(recommendation);
+            }
 
             const userAction = await prisma.userAction.create({
                 data: {
@@ -120,9 +161,23 @@ export async function POST() {
                 },
             });
 
-            createdRecommendations.push(recommendation);
             createdUserActions.push(userAction);
             createdImpactEstimations.push(impactEstimation);
+        }
+
+        if (createdUserActions.length === 0) {
+            return NextResponse.json(
+                {
+                    message:
+                        "Semua rekomendasi utama sudah ada di Actions Center. Selesaikan action yang tersedia atau tambahkan data energy/waste baru untuk sinyal rekomendasi berikutnya.",
+                    totalImpact,
+                    skippedActions,
+                    recommendations: createdRecommendations,
+                    userActions: createdUserActions,
+                    impactEstimations: createdImpactEstimations,
+                },
+                { status: 200 }
+            );
         }
 
         const currentScore = await prisma.regenerativeScore.findUnique({
@@ -131,8 +186,12 @@ export async function POST() {
             },
         });
 
-        const nextScore =
-            (currentScore?.totalScore ?? 0) + totalImpact.scoreIncrement;
+        const scoreIncrement = Math.max(
+            5,
+            Math.round(totalImpact.scoreIncrement / Math.max(candidates.length, 1))
+        );
+
+        const nextScore = (currentScore?.totalScore ?? 0) + scoreIncrement;
 
         const regenerativeScore = await prisma.regenerativeScore.upsert({
             where: {
@@ -153,10 +212,12 @@ export async function POST() {
         return NextResponse.json({
             message: "Impact and recommendation generated successfully.",
             totalImpact,
+            scoreIncrement,
             regenerativeScore,
             recommendations: createdRecommendations,
             userActions: createdUserActions,
             impactEstimations: createdImpactEstimations,
+            skippedActions,
         });
     } catch (error) {
         console.error("[IMPACT_GENERATE_POST]", error);

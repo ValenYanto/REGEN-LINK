@@ -20,14 +20,38 @@ export function ImpactGenerateButton() {
                 method: "POST",
             });
 
-            const data = await res.json();
+            let data: {
+                message?: string;
+                userActions?: unknown[];
+                skippedActions?: unknown[];
+            } = {};
+
+            try {
+                data = await res.json();
+            } catch {
+                setMessage("Server mengembalikan response yang tidak valid.");
+                return;
+            }
 
             if (!res.ok) {
                 setMessage(data.message || "Failed to generate impact.");
                 return;
             }
 
-            setMessage("Impact dan rekomendasi berhasil dibuat.");
+            const createdCount = data.userActions?.length ?? 0;
+            const skippedCount = data.skippedActions?.length ?? 0;
+
+            if (createdCount === 0 && skippedCount > 0) {
+                setMessage(
+                    data.message ||
+                    "Semua rekomendasi sudah ada. Selesaikan action yang tersedia dulu."
+                );
+            } else {
+                setMessage(
+                    `Berhasil membuat ${createdCount} action baru. ${skippedCount} action dilewati karena sudah ada.`
+                );
+            }
+
             router.refresh();
         });
     }

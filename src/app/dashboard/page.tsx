@@ -1,486 +1,630 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
-    Brain,
-    CalendarClock,
+    Award,
+    BadgeCheck,
+    BrainCircuit,
     CheckCircle2,
+    Coins,
     Flame,
     Leaf,
-    LineChart,
-    Medal,
     Recycle,
     Trophy,
     Zap,
 } from "lucide-react";
-import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { DashboardMetricCard } from "@/components/dashboard/dashboard-metric-card";
-import { EmptyState } from "@/components/dashboard/empty-state";
+import { OverviewImpactCard } from "@/components/dashboard/overview-impact-card";
+import { OverviewProgressPanel } from "@/components/dashboard/overview-progress-panel";
+import { LatestRecommendationCard } from "@/components/dashboard/latest-recommendation-card";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { EnergyUsageChart } from "@/components/dashboard/charts/energy-usage-chart";
+import { WasteTrendChart } from "@/components/dashboard/charts/waste-trend-chart";
+import { ImpactBreakdownChart } from "@/components/dashboard/charts/impact-breakdown-chart";
+import { ScoreProgressChart } from "@/components/dashboard/charts/score-progress-chart";
 
-function formatIdr(value: number) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        maximumFractionDigits: 0,
-    }).format(value);
-}
-
-function formatDate(value: Date) {
+function formatDate(date: Date) {
     return new Intl.DateTimeFormat("id-ID", {
         day: "2-digit",
         month: "short",
         year: "numeric",
-    }).format(value);
-}
-
-function getScoreProgress(score: number) {
-    if (score >= 1000) return 100;
-    return Math.min((score / 1000) * 100, 100);
+    }).format(date);
 }
 
 export default async function DashboardPage() {
     const session = await auth();
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
         redirect("/login");
     }
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: session.user.id,
-        },
-        include: {
-            city: true,
-            regenerativeScore: true,
-            energyRecords: {
-                orderBy: {
-                    recordDate: "desc",
-                },
-                take: 5,
-            },
-            wasteRecords: {
-                orderBy: {
-                    recordDate: "desc",
-                },
-                take: 5,
-            },
-        },
-    });
+    const userId = session.user.id;
 
-    if (!user) {
-        redirect("/login");
-    }
+    const [
+        user,
+        regenerativeScore,
+        energyRecords,
+        wasteRecords,
+        userActions,
+        userBadges,
+        challengeParticipants,
+        latestRecommendation,
+    ] = await Promise.all([
+        prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            include: {
+                city: true,
+            },
+        }),
 
-    const totalEnergyKwh = user.energyRecords.reduce(
+        prisma.regenerativeScore.findUnique({
+            where: {
+                userId,
+            },
+        }),
+
+        prisma.energyRecord.findMany({
+            where: {
+                userId,
+            },
+            orderBy: {
+                recordDate: "desc",
+            },
+            take: 5,
+        }),
+
+        prisma.wasteRecord.findMany({
+            where: {
+                userId,
+            },
+            orderBy: {
+                recordDate: "desc",
+            },
+            take: 5,
+        }),
+
+        prisma.userAction.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                action: true,
+                impactEstimation: true,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+            take: 8,
+        }),
+
+        prisma.userBadge.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                badge: true,
+            },
+            orderBy: {
+                earnedAt: "desc",
+            },
+            take: 3,
+        }),
+
+        prisma.challengeParticipant.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                challenge: true,
+            },
+            orderBy: {
+                updatedAt: "desc",
+            },
+            take: 5,
+        }),
+
+        prisma.aiRecommendation.findFirst({
+            where: {
+                userId,
+            },
+            include: {
+                action: true,
+            },
+            orderBy: {
+                generatedAt: "desc",
+            },
+        }),
+    ]);
+
+    const totalEnergyRecorded = energyRecords.reduce(
         (total, record) => total + record.monthlyKwh,
         0
     );
 
-    const totalElectricityCost = user.energyRecords.reduce(
-        (total, record) => total + record.electricityCost,
-        0
-    );
-
-    const totalWasteKg = user.wasteRecords.reduce(
+    const totalWasteRecorded = wasteRecords.reduce(
         (total, record) => total + record.weightKg,
         0
     );
 
-    const score = user.regenerativeScore?.totalScore ?? 0;
-    const level = user.regenerativeScore?.level ?? "Seed";
-    const cityRank = user.regenerativeScore?.cityRank ?? null;
+    const completedActions = userActions.filter(
+        (item) => item.status === "COMPLETED" || item.status === "VERIFIED"
+    );
 
-    const latestEnergy = user.energyRecords[0];
-    const latestWaste = user.wasteRecords[0];
+    const activeActions = userActions.filter(
+        (item) => item.status === "PLANNED" || item.status === "IN_PROGRESS"
+    );
+
+    const impactTotals = userActions.reduce(
+        (total, item) => {
+            const impact = item.impactEstimation;
+
+            return {
+                energySaved:
+                    total.energySaved + (impact?.estimatedEnergySavedKwh ?? 0),
+                wasteReduced:
+                    total.wasteReduced + (impact?.estimatedWasteReducedKg ?? 0),
+                co2Reduced: total.co2Reduced + (impact?.estimatedCo2ReducedKg ?? 0),
+                costSaved: total.costSaved + (impact?.estimatedCostSaved ?? 0),
+            };
+        },
+        {
+            energySaved: 0,
+            wasteReduced: 0,
+            co2Reduced: 0,
+            costSaved: 0,
+        }
+    );
+
+    const score = regenerativeScore?.totalScore ?? 0;
+    const level = regenerativeScore?.level ?? "Perintis Aksi";
+    const scoreProgress = Math.min(Math.round((score / 500) * 100), 100);
+
+    const completedChallengeCount = challengeParticipants.filter(
+        (item) => item.progressStatus === "COMPLETED"
+    ).length;
+
+    const challengeProgressAverage =
+        challengeParticipants.length > 0
+            ? Math.round(
+                challengeParticipants.reduce((total, item) => {
+                    return (
+                        total +
+                        Math.min(
+                            Math.round(
+                                (item.progressValue / item.challenge.targetValue) * 100
+                            ),
+                            100
+                        )
+                    );
+                }, 0) / challengeParticipants.length
+            )
+            : 0;
+
+    const latestEnergy = energyRecords[0];
+    const latestWaste = wasteRecords[0];
+
+    const energyChartData = [...energyRecords]
+        .reverse()
+        .map((record) => ({
+            date: formatDate(record.recordDate),
+            kwh: Number(record.monthlyKwh.toFixed(2)),
+        }));
+
+    const wasteChartData = [...wasteRecords]
+        .reverse()
+        .map((record) => ({
+            date: formatDate(record.recordDate),
+            kg: Number(record.weightKg.toFixed(2)),
+            type: record.wasteType,
+        }));
+
+    const impactBreakdownData = [
+        {
+            name: "Energy",
+            value: Number(impactTotals.energySaved.toFixed(2)),
+            unit: "kWh",
+        },
+        {
+            name: "Waste",
+            value: Number(impactTotals.wasteReduced.toFixed(2)),
+            unit: "kg",
+        },
+        {
+            name: "CO₂",
+            value: Number(impactTotals.co2Reduced.toFixed(2)),
+            unit: "kg",
+        },
+    ];
 
     return (
-        <div className="space-y-6">
-            <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="space-y-5">
+            <section className="relative overflow-hidden rounded-[1.75rem] border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm md:p-6">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl" />
+
+                <div className="relative grid gap-5 lg:grid-cols-[1fr_300px] lg:items-center">
+                    <div>
+                        <div className="mb-5 inline-flex items-center rounded-full border border-emerald-900/10 bg-white px-3 py-1 text-xs font-medium text-emerald-800 shadow-sm">
+                            <Leaf className="mr-1.5 size-3.5" />
+                            REGEN-LINK Climate Command Center
+                        </div>
+
+                        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+                            Selamat datang, {user?.name ?? "Climate Actor"}
+                        </h1>
+
+                        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                            Pantau input energi, limbah, rekomendasi AI, action, badge,
+                            challenge, dan estimasi dampak dalam satu dashboard ringkas.
+                        </p>
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            <Badge variant="secondary">
+                                {user?.city?.name ?? "No City Node"}
+                            </Badge>
+                            <Badge className="bg-emerald-950 text-emerald-50 hover:bg-emerald-950">
+                                {level}
+                            </Badge>
+                            <Badge variant="outline">{score} pts</Badge>
+                        </div>
+                    </div>
+
+                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                            Regenerative Score
+                        </p>
+                        <p className="mt-2 text-3xl font-semibold text-emerald-950">
+                            {score}
+                        </p>
+                        <p className="mt-1 text-sm text-slate-600">{level}</p>
+
+                        <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100">
+                            <div
+                                className="h-full rounded-full bg-emerald-950"
+                                style={{
+                                    width: `${scoreProgress}%`,
+                                }}
+                            />
+                        </div>
+
+                        <p className="mt-2 text-xs text-muted-foreground">
+                            {scoreProgress}% menuju Juara Regeneratif.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardMetricCard
-                    icon={<Trophy size={20} />}
-                    label="Regenerative Score"
-                    value={`${score}`}
-                    caption={level}
-                    trend="+4.1%"
+                    label="Energy Records"
+                    value={`${totalEnergyRecorded.toLocaleString("id-ID", {
+                        maximumFractionDigits: 1,
+                    })} kWh`}
+                    caption={`${energyRecords.length} record terbaru`}
+                    icon={<Zap className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    icon={<Zap size={20} />}
-                    label="Energy Recorded"
-                    value={`${totalEnergyKwh.toFixed(1)} kWh`}
-                    caption={`${user.energyRecords.length} latest records`}
+                    label="Waste Records"
+                    value={`${totalWasteRecorded.toLocaleString("id-ID", {
+                        maximumFractionDigits: 1,
+                    })} kg`}
+                    caption={`${wasteRecords.length} record terbaru`}
+                    icon={<Recycle className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    icon={<Recycle size={20} />}
-                    label="Waste Recorded"
-                    value={`${totalWasteKg.toFixed(1)} kg`}
-                    caption={`${user.wasteRecords.length} latest records`}
+                    label="Actions Done"
+                    value={completedActions.length.toString()}
+                    caption={`${activeActions.length} masih aktif`}
+                    icon={<CheckCircle2 className="size-5" />}
                 />
 
                 <DashboardMetricCard
-                    icon={<Medal size={20} />}
-                    label="City Rank"
-                    value={cityRank ? `#${cityRank}` : "-"}
-                    caption={user.city ? `${user.city.name} node` : "No city node"}
+                    label="Badges"
+                    value={userBadges.length.toString()}
+                    caption="Badge berhasil dibuka"
+                    icon={<Award className="size-5" />}
+                />
+
+                <OverviewImpactCard
+                    label="Energy Saved"
+                    value={`${impactTotals.energySaved.toLocaleString("id-ID", {
+                        maximumFractionDigits: 1,
+                    })} kWh`}
+                    caption="Estimasi dari action"
+                    icon={<Zap className="size-5" />}
+                />
+
+                <OverviewImpactCard
+                    label="Waste Reduced"
+                    value={`${impactTotals.wasteReduced.toLocaleString("id-ID", {
+                        maximumFractionDigits: 1,
+                    })} kg`}
+                    caption="Estimasi dari action"
+                    icon={<Recycle className="size-5" />}
+                />
+
+                <OverviewImpactCard
+                    label="CO₂ Avoided"
+                    value={`${impactTotals.co2Reduced.toLocaleString("id-ID", {
+                        maximumFractionDigits: 1,
+                    })} kg`}
+                    caption="Estimasi emisi"
+                    icon={<Leaf className="size-5" />}
+                />
+
+                <OverviewImpactCard
+                    label="Cost Saved"
+                    value={`Rp${impactTotals.costSaved.toLocaleString("id-ID", {
+                        maximumFractionDigits: 0,
+                    })}`}
+                    caption="Estimasi hemat"
+                    icon={<Coins className="size-5" />}
                 />
             </section>
 
-            <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-                <Card className="overflow-hidden rounded-2xl border-[#e4e7ec] bg-white shadow-none">
-                    <CardContent className="p-0">
-                        <div className="border-b border-[#e4e7ec] p-6">
-                            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
-                                <div>
-                                    <Badge className="mb-3 rounded-full bg-[#dff8ec] px-3 py-1 text-xs font-black text-[#00734f] hover:bg-[#dff8ec]">
-                                        Real-Time Regen Telemetry
-                                    </Badge>
-                                    <h2 className="text-3xl font-black tracking-[-0.05em] text-[#101828]">
-                                        Environmental Dashboard
-                                    </h2>
-                                    <p className="mt-2 max-w-2xl text-sm leading-6 text-[#667085]">
-                                        Overview awal dari data energi, limbah, dan kontribusi
-                                        regeneratif kamu. Modul input dan AI recommendation akan
-                                        aktif di phase berikutnya.
-                                    </p>
-                                </div>
+            <section className="grid gap-5 lg:grid-cols-2">
+                <EnergyUsageChart data={energyChartData} />
+                <WasteTrendChart data={wasteChartData} />
+            </section>
 
-                                <div className="rounded-2xl border border-[#e4e7ec] bg-[#f9fafb] px-5 py-4">
-                                    <p className="text-xs font-black uppercase tracking-[0.14em] text-[#667085]">
-                                        Estimated Cost Input
-                                    </p>
-                                    <p className="mt-1 text-2xl font-black text-[#101828]">
-                                        {formatIdr(totalElectricityCost)}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+            <section className="grid gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(360px,0.6fr)]">
+                <ImpactBreakdownChart data={impactBreakdownData} />
+                <ScoreProgressChart score={score} level={level} />
+            </section>
 
-                        <div className="grid gap-0 md:grid-cols-[0.85fr_1.15fr]">
-                            <div className="border-b border-[#e4e7ec] p-6 md:border-b-0 md:border-r">
-                                <div className="mb-6 flex items-center justify-between">
-                                    <p className="text-xs font-black uppercase tracking-[0.14em] text-[#667085]">
-                                        Score Progress
-                                    </p>
-                                    <Leaf size={20} className="text-[#00a66a]" />
-                                </div>
+            <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
+                <div className="space-y-5">
+                    <div className="grid gap-4 lg:grid-cols-2">
+                        <OverviewProgressPanel
+                            title="Action Progress"
+                            description="Ringkasan eksekusi aksi pengguna."
+                            value={`${completedActions.length}/${userActions.length}`}
+                            caption={`${activeActions.length} action masih perlu diselesaikan.`}
+                            progress={
+                                userActions.length > 0
+                                    ? Math.round((completedActions.length / userActions.length) * 100)
+                                    : 0
+                            }
+                            icon={<Flame className="size-5" />}
+                        />
 
-                                <div className="flex items-end gap-2">
-                                    <p className="text-6xl font-black tracking-[-0.06em] text-[#00a66a]">
-                                        {score}
-                                    </p>
-                                    <p className="mb-3 text-sm font-black text-[#667085]">
-                                        /1000
-                                    </p>
-                                </div>
+                        <OverviewProgressPanel
+                            title="Challenge Progress"
+                            description="Rata-rata progres challenge yang diikuti."
+                            value={`${challengeProgressAverage}%`}
+                            caption={`${completedChallengeCount} challenge selesai dari ${challengeParticipants.length} diikuti.`}
+                            progress={challengeProgressAverage}
+                            icon={<Trophy className="size-5" />}
+                        />
+                    </div>
 
-                                <Progress
-                                    value={getScoreProgress(score)}
-                                    className="mt-6 h-2.5 bg-[#eef2f6] [&>div]:bg-[#06d69e]"
-                                />
+                    <LatestRecommendationCard recommendation={latestRecommendation} />
 
-                                <div className="mt-5 flex items-center justify-between">
-                                    <p className="text-sm font-black text-[#101828]">{level}</p>
-                                    <p className="text-sm font-semibold text-[#667085]">
-                                        Next: Green Mover
-                                    </p>
-                                </div>
-                            </div>
+                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                        <CardHeader>
+                            <CardTitle>Latest Records</CardTitle>
+                            <CardDescription>
+                                Aktivitas input data terbaru dari Energy dan Waste Center.
+                            </CardDescription>
+                        </CardHeader>
 
-                            <div className="p-6">
-                                <div className="mb-5 flex items-center justify-between">
-                                    <div>
-                                        <h3 className="text-xl font-black text-[#101828]">
-                                            Latest Activity Snapshot
-                                        </h3>
-                                        <p className="mt-1 text-sm text-[#667085]">
-                                            Data terakhir dari energy dan waste record.
-                                        </p>
-                                    </div>
-
-                                    <LineChart size={22} className="text-[#00a66a]" />
-                                </div>
-
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <ActivitySnapshot
-                                        icon={<Zap size={18} />}
-                                        title="Latest Energy"
-                                        value={
-                                            latestEnergy
-                                                ? `${latestEnergy.monthlyKwh} kWh`
-                                                : "No data"
-                                        }
-                                        description={
-                                            latestEnergy
-                                                ? `${latestEnergy.housingType} • ${formatDate(
-                                                    latestEnergy.recordDate
-                                                )}`
-                                                : "Energy module coming in Phase 5"
-                                        }
-                                    />
-
-                                    <ActivitySnapshot
-                                        icon={<Recycle size={18} />}
-                                        title="Latest Waste"
-                                        value={
-                                            latestWaste
-                                                ? `${latestWaste.weightKg} kg`
-                                                : "No data"
-                                        }
-                                        description={
-                                            latestWaste
-                                                ? `${latestWaste.wasteType} • ${formatDate(
-                                                    latestWaste.recordDate
-                                                )}`
-                                                : "Waste module coming in Phase 5"
-                                        }
-                                    />
-                                </div>
-
-                                <div className="mt-4 rounded-2xl border border-[#e4e7ec] bg-[#071a13] p-5 text-white">
-                                    <div className="mb-4 flex items-center gap-3">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#00a66a]/20 text-[#06d69e]">
-                                            <Brain size={20} />
-                                        </div>
-                                        <div>
-                                            <p className="font-black">AI Readiness</p>
-                                            <p className="text-xs font-semibold text-slate-300">
-                                                Recommendation engine will use your latest records.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-2">
-                                        <Badge className="rounded-full bg-white/10 text-white hover:bg-white/10">
-                                            Rule-based AI
-                                        </Badge>
-                                        <Badge className="rounded-full bg-white/10 text-white hover:bg-white/10">
-                                            Impact Estimation
-                                        </Badge>
-                                        <Badge className="rounded-full bg-white/10 text-white hover:bg-white/10">
-                                            Phase 6
-                                        </Badge>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <div className="grid gap-6">
-                    <Card className="rounded-2xl border-[#e4e7ec] bg-white shadow-none">
-                        <CardContent className="p-6">
-                            <div className="mb-5 flex items-center justify-between">
-                                <div>
-                                    <h2 className="text-xl font-black text-[#101828]">
-                                        Active Challenge
-                                    </h2>
-                                    <p className="mt-1 text-sm text-[#667085]">
-                                        Preview challenge module.
-                                    </p>
-                                </div>
-                                <Flame size={22} className="text-[#00a66a]" />
-                            </div>
-
-                            <div className="rounded-2xl border border-[#d9e1e5] bg-[#f8fbfa] p-5">
-                                <div className="mb-4 flex items-center gap-3">
-                                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#dff8ec] text-[#00734f]">
-                                        <CalendarClock size={20} />
+                        <CardContent className="grid gap-3 md:grid-cols-2">
+                            <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/40 p-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                        <Zap className="size-5" />
                                     </div>
                                     <div>
-                                        <p className="font-black text-[#101828]">
-                                            7 Days Energy Saving
+                                        <p className="font-semibold text-emerald-950">
+                                            Latest Energy
                                         </p>
-                                        <p className="text-sm text-[#667085]">
-                                            Challenge module unlocks in Phase 8.
+                                        <p className="text-xs text-muted-foreground">
+                                            {latestEnergy
+                                                ? formatDate(latestEnergy.recordDate)
+                                                : "No data"}
                                         </p>
                                     </div>
                                 </div>
 
-                                <Progress
-                                    value={35}
-                                    className="h-2.5 bg-[#eef2f6] [&>div]:bg-[#06d69e]"
-                                />
+                                <p className="mt-4 text-2xl font-semibold text-emerald-950">
+                                    {latestEnergy
+                                        ? `${latestEnergy.monthlyKwh.toLocaleString("id-ID")} kWh`
+                                        : "—"}
+                                </p>
+                                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                                    {latestEnergy?.dominantDevices ??
+                                        "Tambahkan data energi untuk memulai analisis."}
+                                </p>
+                            </div>
 
-                                <p className="mt-3 text-sm font-semibold text-[#667085]">
-                                    Demo progress: 35%
+                            <div className="rounded-2xl border border-emerald-900/10 bg-lime-50/40 p-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300">
+                                        <Recycle className="size-5" />
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-emerald-950">
+                                            Latest Waste
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {latestWaste ? formatDate(latestWaste.recordDate) : "No data"}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p className="mt-4 text-2xl font-semibold text-emerald-950">
+                                    {latestWaste
+                                        ? `${latestWaste.weightKg.toLocaleString("id-ID")} kg`
+                                        : "—"}
+                                </p>
+                                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                                    {latestWaste
+                                        ? `${latestWaste.wasteType} • ${latestWaste.managementStatus}`
+                                        : "Tambahkan data limbah untuk memulai circular action."}
                                 </p>
                             </div>
                         </CardContent>
                     </Card>
+                </div>
 
-                    <Card className="rounded-2xl border-[#e4e7ec] bg-white shadow-none">
-                        <CardContent className="p-6">
-                            <div className="mb-5 flex items-center justify-between">
-                                <div>
-                                    <h2 className="text-xl font-black text-[#101828]">
-                                        City Node Status
-                                    </h2>
-                                    <p className="mt-1 text-sm text-[#667085]">
-                                        Cross-city collaboration preview.
-                                    </p>
-                                </div>
-                                <Medal size={22} className="text-[#00a66a]" />
-                            </div>
+                <aside className="space-y-5">
+                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
+                        <CardHeader>
+                            <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                                <BrainCircuit className="mr-1.5 size-3" />
+                                MVP Intelligence
+                            </Badge>
+                            <CardTitle className="text-white">Next Best Action</CardTitle>
+                            <CardDescription className="text-emerald-50/70">
+                                Lanjutkan alur dari input data sampai aksi selesai.
+                            </CardDescription>
+                        </CardHeader>
 
-                            <div className="space-y-3">
-                                <CityRank rank="#1" city="Bogor" score="18.450 pts" active />
-                                <CityRank rank="#2" city="Bandung" score="16.920 pts" />
-                                <CityRank rank="#3" city="Yogyakarta" score="15.380 pts" />
-                            </div>
+                        <CardContent className="space-y-3">
+                            <Button
+                                asChild
+                                className="w-full bg-emerald-300 text-emerald-950 hover:bg-emerald-200"
+                            >
+                                <Link href="/dashboard/impact">Generate Recommendation</Link>
+                            </Button>
+
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="w-full border-white/20 bg-white/10 text-white hover:bg-white/15 hover:text-white"
+                            >
+                                <Link href="/dashboard/actions">Complete Actions</Link>
+                            </Button>
+
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="w-full border-white/20 bg-white/10 text-white hover:bg-white/15 hover:text-white"
+                            >
+                                <Link href="/dashboard/challenges">Join Challenge</Link>
+                            </Button>
                         </CardContent>
                     </Card>
-                </div>
-            </section>
 
-            <section className="grid gap-6 lg:grid-cols-2">
-                <Card className="rounded-2xl border-[#e4e7ec] bg-white shadow-none">
-                    <CardContent className="p-6">
-                        <h2 className="text-xl font-black text-[#101828]">
-                            Latest Energy Records
-                        </h2>
+                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                        <CardHeader>
+                            <CardTitle className="text-base">Unlocked Badges</CardTitle>
+                            <CardDescription>
+                                Badge terbaru berdasarkan regenerative score.
+                            </CardDescription>
+                        </CardHeader>
 
-                        <div className="mt-5 space-y-3">
-                            {user.energyRecords.length === 0 ? (
-                                <EmptyState
-                                    title="Belum ada data energi"
-                                    description="Di Phase 5, kamu akan bisa menambahkan konsumsi listrik bulanan."
-                                />
+                        <CardContent>
+                            {userBadges.length === 0 ? (
+                                <div className="rounded-2xl border border-dashed bg-emerald-50/40 p-6 text-center">
+                                    <p className="text-sm font-medium text-emerald-950">
+                                        Belum ada badge.
+                                    </p>
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        Selesaikan action untuk membuka badge.
+                                    </p>
+                                </div>
                             ) : (
-                                user.energyRecords.map((record) => (
-                                    <RecordRow
-                                        key={record.id}
-                                        icon={<Zap size={17} />}
-                                        title={`${record.monthlyKwh} kWh`}
-                                        description={`${formatIdr(record.electricityCost)} • ${record.housingType
-                                            } • ${formatDate(record.recordDate)}`}
-                                    />
-                                ))
+                                <div className="space-y-3">
+                                    {userBadges.map((userBadge) => (
+                                        <div
+                                            key={userBadge.id}
+                                            className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4"
+                                        >
+                                            <div className="flex items-start gap-3">
+                                                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-950 text-emerald-300">
+                                                    <BadgeCheck className="size-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-semibold text-emerald-950">
+                                                        {userBadge.badge.name}
+                                                    </p>
+                                                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                                                        {userBadge.badge.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             )}
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
 
-                <Card className="rounded-2xl border-[#e4e7ec] bg-white shadow-none">
-                    <CardContent className="p-6">
-                        <h2 className="text-xl font-black text-[#101828]">
-                            Latest Waste Records
-                        </h2>
+                    <Card className="border-emerald-900/10 bg-white/95 shadow-sm">
+                        <CardHeader>
+                            <CardTitle className="text-base">Active Challenges</CardTitle>
+                            <CardDescription>
+                                Challenge yang sedang kamu ikuti.
+                            </CardDescription>
+                        </CardHeader>
 
-                        <div className="mt-5 space-y-3">
-                            {user.wasteRecords.length === 0 ? (
-                                <EmptyState
-                                    title="Belum ada data limbah"
-                                    description="Di Phase 5, kamu akan bisa mencatat food waste, plastik, dan sampah lain."
-                                />
+                        <CardContent>
+                            {challengeParticipants.length === 0 ? (
+                                <p className="text-sm text-muted-foreground">
+                                    Belum mengikuti challenge.
+                                </p>
                             ) : (
-                                user.wasteRecords.map((record) => (
-                                    <RecordRow
-                                        key={record.id}
-                                        icon={<Recycle size={17} />}
-                                        title={`${record.weightKg} kg • ${record.wasteType}`}
-                                        description={`${record.wasteSource} • ${record.managementStatus
-                                            } • ${formatDate(record.recordDate)}`}
-                                    />
-                                ))
+                                <div className="space-y-3">
+                                    {challengeParticipants.map((participant) => {
+                                        const progress = Math.min(
+                                            Math.round(
+                                                (participant.progressValue /
+                                                    participant.challenge.targetValue) *
+                                                100
+                                            ),
+                                            100
+                                        );
+
+                                        return (
+                                            <div
+                                                key={participant.id}
+                                                className="rounded-2xl border border-emerald-900/10 bg-white p-4"
+                                            >
+                                                <div className="flex items-start justify-between gap-3">
+                                                    <p className="text-sm font-semibold text-emerald-950">
+                                                        {participant.challenge.name}
+                                                    </p>
+                                                    <Badge variant="secondary">
+                                                        {participant.progressStatus}
+                                                    </Badge>
+                                                </div>
+
+                                                <div className="mt-3 h-2 overflow-hidden rounded-full bg-emerald-100">
+                                                    <div
+                                                        className="h-full rounded-full bg-emerald-950"
+                                                        style={{
+                                                            width: `${progress}%`,
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                <p className="mt-2 text-xs text-muted-foreground">
+                                                    {progress}% completed
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             )}
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                </aside>
             </section>
-        </div>
-    );
-}
-
-function ActivitySnapshot({
-    icon,
-    title,
-    value,
-    description,
-}: {
-    icon: React.ReactNode;
-    title: string;
-    value: string;
-    description: string;
-}) {
-    return (
-        <div className="rounded-2xl border border-[#e4e7ec] bg-[#f9fafb] p-5">
-            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#dff8ec] text-[#00734f]">
-                {icon}
-            </div>
-            <p className="text-xs font-black uppercase tracking-[0.12em] text-[#667085]">
-                {title}
-            </p>
-            <p className="mt-2 text-2xl font-black text-[#101828]">{value}</p>
-            <p className="mt-1 text-sm leading-6 text-[#667085]">{description}</p>
-        </div>
-    );
-}
-
-function CityRank({
-    rank,
-    city,
-    score,
-    active = false,
-}: {
-    rank: string;
-    city: string;
-    score: string;
-    active?: boolean;
-}) {
-    return (
-        <div
-            className={`flex items-center justify-between rounded-xl border p-4 ${active
-                ? "border-[#99e6c8] bg-[#ecfdf6]"
-                : "border-[#e4e7ec] bg-[#f9fafb]"
-                }`}
-        >
-            <div className="flex items-center gap-3">
-                <div
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg text-xs font-black ${active
-                        ? "bg-[#00734f] text-white"
-                        : "bg-white text-[#667085]"
-                        }`}
-                >
-                    {rank}
-                </div>
-                <div>
-                    <p className="font-black text-[#101828]">{city}</p>
-                    <p className="text-sm text-[#667085]">{score}</p>
-                </div>
-            </div>
-
-            {active && (
-                <Badge className="rounded-full bg-[#dff8ec] text-[#00734f] hover:bg-[#dff8ec]">
-                    Active
-                </Badge>
-            )}
-        </div>
-    );
-}
-
-function RecordRow({
-    icon,
-    title,
-    description,
-}: {
-    icon: React.ReactNode;
-    title: string;
-    description: string;
-}) {
-    return (
-        <div className="flex items-center gap-4 rounded-xl border border-[#e4e7ec] bg-[#f9fafb] p-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#dff8ec] text-[#00734f]">
-                {icon}
-            </div>
-
-            <div className="min-w-0">
-                <p className="font-black text-[#101828]">{title}</p>
-                <p className="truncate text-sm text-[#667085]">{description}</p>
-            </div>
         </div>
     );
 }
