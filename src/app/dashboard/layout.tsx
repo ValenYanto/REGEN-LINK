@@ -37,7 +37,7 @@ export default async function DashboardLayout({
             <MobileDashboardNav />
 
             <DashboardShell
-                sidebar={<AppSidebar />}
+                sidebar={<AppSidebar role={user.role} />}
                 header={
                     <DashboardHeader
                         user={{

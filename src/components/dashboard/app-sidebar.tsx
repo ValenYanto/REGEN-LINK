@@ -12,6 +12,7 @@ import {
     Medal,
     Recycle,
     Settings,
+    ShieldCheck,
     Sparkles,
     Trophy,
     UserCircle,
@@ -21,7 +22,14 @@ import {
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
-const navigationItems = [
+type NavigationItem = {
+    title: string;
+    href: string;
+    icon: React.ElementType;
+    status: "active" | "soon";
+};
+
+const navigationItems: NavigationItem[] = [
     {
         title: "Overview",
         href: "/dashboard",
@@ -84,8 +92,26 @@ const navigationItems = [
     },
 ];
 
-export function AppSidebar() {
+const adminNavigationItems: NavigationItem[] = [
+    {
+        title: "Admin Center",
+        href: "/dashboard/admin",
+        icon: ShieldCheck,
+        status: "active",
+    },
+];
+
+type AppSidebarProps = {
+    role?: string | null;
+};
+
+export function AppSidebar({ role }: AppSidebarProps) {
     const pathname = usePathname();
+    const isAdmin = role === "ADMIN";
+
+    const items = isAdmin
+        ? [...navigationItems, ...adminNavigationItems]
+        : navigationItems;
 
     return (
         <aside className="hidden min-h-screen w-72 border-r border-emerald-900/10 bg-white/85 px-4 py-5 backdrop-blur-xl lg:block">
@@ -108,7 +134,7 @@ export function AppSidebar() {
             </div>
 
             <nav className="mt-6 space-y-1">
-                {navigationItems.map((item) => {
+                {items.map((item) => {
                     const Icon = item.icon;
 
                     const isActive =
@@ -143,7 +169,9 @@ export function AppSidebar() {
                                 "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition",
                                 isActive
                                     ? "bg-emerald-950 text-emerald-50 shadow-sm"
-                                    : "text-emerald-950/70 hover:bg-emerald-50 hover:text-emerald-950"
+                                    : item.href.startsWith("/dashboard/admin")
+                                        ? "text-emerald-800 hover:bg-emerald-50 hover:text-emerald-950"
+                                        : "text-emerald-950/70 hover:bg-emerald-50 hover:text-emerald-950"
                             )}
                         >
                             <Icon className="size-4" />
@@ -156,11 +184,10 @@ export function AppSidebar() {
             <div className="mt-8 rounded-3xl border border-emerald-900/10 bg-gradient-to-br from-emerald-950 to-lime-900 p-4 text-white">
                 <div className="flex items-center gap-2">
                     <Leaf className="size-4 text-lime-300" />
-                    <p className="text-sm font-semibold">Phase 10 Active</p>
+                    <p className="text-sm font-semibold">Phase 11 Active</p>
                 </div>
                 <p className="mt-2 text-xs leading-5 text-emerald-50/75">
-                    Final polish, profile, recommendations, and demo readiness are now in
-                    progress.
+                    Admin control center is now being added for platform management.
                 </p>
             </div>
 
