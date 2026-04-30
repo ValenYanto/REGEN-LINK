@@ -24,6 +24,15 @@ const prisma = new PrismaClient({
     adapter,
 });
 
+function getLevelFromScore(score: number) {
+    if (score >= 500) return "Juara Regeneratif";
+    if (score >= 250) return "Penggerak Komunitas";
+    if (score >= 150) return "Pembuat Dampak";
+    if (score >= 100) return "Pejuang Minim Sampah";
+    if (score >= 50) return "Pemula Hemat Energi";
+    return "Perintis Aksi";
+}
+
 async function main() {
     const cities = [
         {
@@ -108,19 +117,28 @@ async function main() {
         },
     });
 
+    const demoInitialScore = 120;
+
+    const existingDemoScore = await prisma.regenerativeScore.findUnique({
+        where: {
+            userId: demoUser.id,
+        },
+    });
+
+    const demoScore = existingDemoScore?.totalScore ?? demoInitialScore;
+
     await prisma.regenerativeScore.upsert({
         where: {
             userId: demoUser.id,
         },
         update: {
-            totalScore: 120,
-            level: "Sprout",
+            level: getLevelFromScore(demoScore),
             cityRank: 3,
         },
         create: {
             userId: demoUser.id,
-            totalScore: 120,
-            level: "Sprout",
+            totalScore: demoInitialScore,
+            level: getLevelFromScore(demoInitialScore),
             cityRank: 3,
         },
     });
@@ -304,36 +322,38 @@ async function main() {
 
     const badges = [
         {
-            name: "Energy Starter",
+            name: "Pemula Hemat Energi",
             category: BadgeCategory.ENERGY,
-            description: "Diberikan kepada pengguna yang mulai mencatat data energi.",
+            description:
+                "Diberikan kepada pengguna yang mulai konsisten mencatat dan menjalankan aksi hemat energi.",
             requiredScore: 50,
         },
         {
-            name: "Circular Starter",
+            name: "Pejuang Minim Sampah",
             category: BadgeCategory.WASTE,
-            description: "Diberikan kepada pengguna yang mulai mencatat data limbah.",
-            requiredScore: 50,
+            description:
+                "Diberikan kepada pengguna yang mulai mencatat dan mengelola limbah secara lebih bertanggung jawab.",
+            requiredScore: 100,
         },
         {
-            name: "Impact Builder",
+            name: "Pembuat Dampak",
             category: BadgeCategory.IMPACT,
             description:
-                "Diberikan kepada pengguna yang mulai menghasilkan estimasi dampak.",
+                "Diberikan kepada pengguna yang berhasil menghasilkan estimasi dampak lingkungan dari aksi nyata.",
             requiredScore: 150,
         },
         {
-            name: "Community Mover",
+            name: "Penggerak Komunitas",
             category: BadgeCategory.COMMUNITY,
             description:
-                "Diberikan kepada pengguna yang aktif dalam challenge komunitas.",
+                "Diberikan kepada pengguna yang aktif mendorong aksi keberlanjutan bersama komunitas.",
             requiredScore: 250,
         },
         {
-            name: "Regenerative Champion",
+            name: "Juara Regeneratif",
             category: BadgeCategory.STREAK,
             description:
-                "Diberikan kepada pengguna dengan kontribusi konsisten dan skor tinggi.",
+                "Diberikan kepada pengguna dengan kontribusi konsisten dan skor regenerative yang tinggi.",
             requiredScore: 500,
         },
     ];
@@ -349,6 +369,30 @@ async function main() {
                 requiredScore: badge.requiredScore,
             },
             create: badge,
+        });
+    }
+
+    const eligibleDemoBadges = await prisma.badge.findMany({
+        where: {
+            requiredScore: {
+                lte: demoScore,
+            },
+        },
+    });
+
+    for (const badge of eligibleDemoBadges) {
+        await prisma.userBadge.upsert({
+            where: {
+                userId_badgeId: {
+                    userId: demoUser.id,
+                    badgeId: badge.id,
+                },
+            },
+            update: {},
+            create: {
+                userId: demoUser.id,
+                badgeId: badge.id,
+            },
         });
     }
 
@@ -403,6 +447,17 @@ async function main() {
     }
 
     console.log("Seed completed successfully.");
+    await prisma.$executeRaw`
+    UPDATE "RegenerativeScore"
+    SET "level" = CASE
+        WHEN "totalScore" >= 500 THEN 'Juara Regeneratif'
+        WHEN "totalScore" >= 250 THEN 'Penggerak Komunitas'
+        WHEN "totalScore" >= 150 THEN 'Pembuat Dampak'
+        WHEN "totalScore" >= 100 THEN 'Pejuang Minim Sampah'
+        WHEN "totalScore" >= 50 THEN 'Pemula Hemat Energi'
+        ELSE 'Perintis Aksi'
+    END
+`;
 }
 
 main()

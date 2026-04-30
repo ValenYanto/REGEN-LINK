@@ -128,9 +128,10 @@ export function combineImpactEstimates(
 }
 
 export function getLevelFromScore(score: number) {
-    if (score >= 500) return "Regenerative Champion";
-    if (score >= 300) return "Impact Builder";
-    if (score >= 150) return "Green Catalyst";
-    if (score >= 50) return "Sprout";
-    return "Seed";
+    if (score >= 500) return "Juara Regeneratif";
+    if (score >= 250) return "Penggerak Komunitas";
+    if (score >= 150) return "Pembuat Dampak";
+    if (score >= 100) return "Pejuang Minim Sampah";
+    if (score >= 50) return "Pemula Hemat Energi";
+    return "Perintis Aksi";
 }

@@ -52,13 +52,13 @@ const navigationItems = [
         title: "Actions",
         href: "/dashboard/actions",
         icon: Flame,
-        status: "soon",
+        status: "active",
     },
     {
         title: "Challenges",
         href: "/dashboard/challenges",
         icon: Trophy,
-        status: "soon",
+        status: "active",
     },
     {
         title: "Leaderboard",
