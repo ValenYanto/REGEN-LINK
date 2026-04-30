@@ -37,9 +37,15 @@ const navigationItems = [
         status: "active",
     },
     {
+        title: "Impact Center",
+        href: "/dashboard/impact",
+        icon: BrainCircuit,
+        status: "active",
+    },
+    {
         title: "AI Recommendations",
         href: "/dashboard/recommendations",
-        icon: BrainCircuit,
+        icon: Leaf,
         status: "soon",
     },
     {
@@ -143,6 +149,16 @@ export function AppSidebar({ activePath = "/dashboard" }: AppSidebarProps) {
                     );
                 })}
             </nav>
+
+            <div className="mt-8 rounded-3xl border border-emerald-900/10 bg-gradient-to-br from-emerald-950 to-lime-900 p-4 text-white">
+                <div className="flex items-center gap-2">
+                    <Leaf className="size-4 text-lime-300" />
+                    <p className="text-sm font-semibold">Phase 6B Active</p>
+                </div>
+                <p className="mt-2 text-xs leading-5 text-emerald-50/75">
+                    Impact calculator and rule-based AI recommendation are now connected.
+                </p>
+            </div>
 
             <div className="mt-4 flex items-center gap-2 px-2 text-xs text-muted-foreground">
                 <Settings className="size-3.5" />

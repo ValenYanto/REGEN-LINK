@@ -42,6 +42,61 @@ enum WasteManagementStatus {
   OTHER
 }
 
+enum CommunityType {
+  CAMPUS
+  CITY
+  UMKM
+  YOUTH_ORGANIZATION
+  ENVIRONMENTAL_COMMUNITY
+  OTHER
+}
+
+enum ActionCategory {
+  ENERGY
+  WASTE
+  CIRCULAR
+  COMMUNITY
+  GENERAL
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum UserActionStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  VERIFIED
+  CANCELLED
+}
+
+enum ChallengeType {
+  ENERGY
+  WASTE
+  CIRCULAR
+  CROSS_CITY
+  COMMUNITY
+}
+
+enum ChallengeParticipantStatus {
+  JOINED
+  IN_PROGRESS
+  COMPLETED
+  DROPPED
+}
+
+enum BadgeCategory {
+  ENERGY
+  WASTE
+  CIRCULAR
+  IMPACT
+  COMMUNITY
+  STREAK
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -53,10 +108,15 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  city              City?              @relation(fields: [cityId], references: [id], onDelete: SetNull)
-  energyRecords     EnergyRecord[]
-  wasteRecords      WasteRecord[]
-  regenerativeScore RegenerativeScore?
+  city                  City?                  @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  energyRecords         EnergyRecord[]
+  wasteRecords          WasteRecord[]
+  regenerativeScore     RegenerativeScore?
+  communityMemberships  CommunityMember[]
+  userActions           UserAction[]
+  aiRecommendations     AiRecommendation[]
+  challengeParticipants ChallengeParticipant[]
+  userBadges            UserBadge[]
 
   @@index([cityId])
 }
@@ -69,9 +129,39 @@ model City {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users User[]
+  users       User[]
+  communities Community[]
 
   @@unique([name, province])
+}
+
+model Community {
+  id        String        @id @default(cuid())
+  name      String
+  type      CommunityType @default(OTHER)
+  cityId    String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  city    City              @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  members CommunityMember[]
+
+  @@unique([name, cityId])
+  @@index([cityId])
+}
+
+model CommunityMember {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  memberRole  String   @default("Member")
+  joinedAt    DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+  @@index([communityId])
 }
 
 model EnergyRecord {
@@ -112,6 +202,76 @@ model WasteRecord {
   @@index([wasteType])
 }
 
+model Action {
+  id              String         @id @default(cuid())
+  name            String         @unique
+  category        ActionCategory
+  difficultyLevel DifficultyLevel
+  description     String
+  baseImpactScore Float
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  userActions       UserAction[]
+  aiRecommendations AiRecommendation[]
+
+  @@index([category])
+  @@index([difficultyLevel])
+}
+
+model UserAction {
+  id          String           @id @default(cuid())
+  userId      String
+  actionId    String
+  status      UserActionStatus @default(PLANNED)
+  startedAt   DateTime         @default(now())
+  completedAt DateTime?
+  proofUrl    String?
+  notes       String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action            Action             @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  impactEstimation  ImpactEstimation?
+
+  @@index([userId])
+  @@index([actionId])
+  @@index([status])
+}
+
+model AiRecommendation {
+  id                   String   @id @default(cuid())
+  userId               String
+  actionId             String
+  recommendationReason String
+  confidenceScore      Float
+  generatedAt          DateTime @default(now())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action Action @relation(fields: [actionId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([actionId])
+  @@index([generatedAt])
+}
+
+model ImpactEstimation {
+  id                     String   @id @default(cuid())
+  userActionId            String   @unique
+  estimatedEnergySavedKwh Float    @default(0)
+  estimatedWasteReducedKg Float    @default(0)
+  estimatedCo2ReducedKg   Float    @default(0)
+  estimatedCostSaved      Float    @default(0)
+  calculatedAt            DateTime @default(now())
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  userAction UserAction @relation(fields: [userActionId], references: [id], onDelete: Cascade)
+}
+
 model RegenerativeScore {
   id         String   @id @default(cuid())
   userId     String   @unique
@@ -122,4 +282,66 @@ model RegenerativeScore {
   updatedAt  DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  description   String
+  category      BadgeCategory
+  requiredScore Float
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  userBadges UserBadge[]
+
+  @@index([category])
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@index([badgeId])
+}
+
+model Challenge {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  type        ChallengeType
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  targetValue Float
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  participants ChallengeParticipant[]
+
+  @@index([type])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+model ChallengeParticipant {
+  id             String                     @id @default(cuid())
+  challengeId    String
+  userId         String
+  progressStatus ChallengeParticipantStatus @default(JOINED)
+  progressValue  Float                      @default(0)
+  joinedAt       DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, userId])
+  @@index([userId])
+  @@index([challengeId])
 }
