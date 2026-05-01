@@ -143,7 +143,7 @@ export function ScoreProgressChart({ score, level }: ScoreProgressChartProps) {
                             </div>
                             <div className="h-2 overflow-hidden rounded-full bg-white dark:bg-white/10">
                                 <div
-                                    className="h-full rounded-full bg-emerald-950 transition-all dark:bg-emerald-300"
+                                    className="h-full rounded-full bg-emerald-950 transition-[width] duration-500 ease-out dark:bg-emerald-300"
                                     style={{
                                         width: `${progress}%`,
                                     }}

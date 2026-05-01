@@ -152,14 +152,17 @@ export default async function AdminCommunitiesPage() {
 
     return (
         <main className="w-full min-w-0 space-y-6 overflow-x-hidden">
-            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_52%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 sm:p-5 md:rounded-[2rem] md:p-7">
-                <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:p-5 md:rounded-[2rem] md:p-7">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl dark:bg-emerald-500/10" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl dark:bg-lime-500/10" />
+
+                <div className="relative flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                     <div className="min-w-0">
                         <Button
                             asChild
                             variant="outline"
                             size="sm"
-                            className="mb-4 border-white/15 bg-white/10 text-white hover:bg-white/15 hover:text-white"
+                            className="mb-4 border-emerald-900/10 bg-white text-emerald-950 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/15"
                         >
                             <Link href="/dashboard/admin">
                                 <ArrowLeft className="mr-2 size-4" />
@@ -167,39 +170,39 @@ export default async function AdminCommunitiesPage() {
                             </Link>
                         </Button>
 
-                        <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-300/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-emerald-100">
+                        <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-900/10 bg-white px-3 py-1.5 text-xs font-medium text-emerald-800 shadow-sm transition-colors dark:border-white/10 dark:bg-white/10 dark:text-emerald-200 dark:shadow-none">
                             <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
                             <span className="truncate">Admin Community Nodes</span>
                         </div>
 
-                        <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+                        <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50 sm:text-3xl md:text-4xl">
                             Kelola Community
                         </h1>
 
-                        <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-50/75">
+                        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
                             Buat dan pantau komunitas REGEN-LINK sebagai penghubung aksi
                             kolaboratif antar user, city node, kampus, UMKM, dan komunitas
                             lingkungan.
                         </p>
 
                         <div className="mt-4 flex flex-wrap gap-2">
-                            <Badge className="border-emerald-300/20 bg-emerald-400/15 text-emerald-100 hover:bg-emerald-400/15">
+                            <Badge className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
                                 Admin: {admin.name}
                             </Badge>
-                            <Badge className="border-white/15 bg-white/10 text-white hover:bg-white/10">
+                            <Badge className="border-emerald-900/10 bg-white text-slate-700 hover:bg-white dark:border-white/10 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/10">
                                 {totalCommunities} community
                             </Badge>
                         </div>
                     </div>
 
-                    <div className="w-full min-w-0 rounded-3xl border border-white/10 bg-white/10 p-4 backdrop-blur lg:w-[300px]">
-                        <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/65">
+                    <div className="w-full min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur transition-colors dark:border-white/10 dark:bg-white/[0.07] dark:shadow-none lg:w-[320px]">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                             Community Members
                         </p>
-                        <p className="mt-2 text-3xl font-semibold">
+                        <p className="mt-2 text-3xl font-semibold text-emerald-950 dark:text-emerald-50">
                             {formatNumber(totalMembers)}
                         </p>
-                        <p className="mt-1 text-xs leading-5 text-emerald-50/70">
+                        <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
                             Total membership di seluruh community.
                         </p>
                     </div>

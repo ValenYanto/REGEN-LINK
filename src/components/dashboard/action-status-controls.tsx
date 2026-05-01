@@ -103,7 +103,7 @@ export function ActionStatusControls({
                         type="button"
                         onClick={() => updateStatus("COMPLETED")}
                         disabled={isPending}
-                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 sm:w-fit"
+                        className="w-full bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200 sm:w-fit"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />

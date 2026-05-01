@@ -166,7 +166,7 @@ export default async function ChallengesPage() {
 
                         <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                             <div
-                                className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
+                                className="h-full rounded-full bg-emerald-950 transition-[width] duration-500 ease-out dark:bg-emerald-300"
                                 style={{
                                     width: `${averageProgress}%`,
                                 }}
@@ -293,8 +293,8 @@ export default async function ChallengesPage() {
 
                                     <CardContent className="min-w-0 space-y-5 px-4 pt-5 pb-4 sm:px-6">
                                         <div className="grid min-w-0 gap-3 md:grid-cols-3">
-                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
-                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-emerald-300">
                                                     Timeline
                                                 </p>
                                                 <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950 dark:text-emerald-50">
@@ -303,8 +303,8 @@ export default async function ChallengesPage() {
                                                 </p>
                                             </div>
 
-                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
-                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-lime-50/50 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-emerald-300">
                                                     Target
                                                 </p>
                                                 <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950 dark:text-emerald-50">
@@ -313,8 +313,8 @@ export default async function ChallengesPage() {
                                                 </p>
                                             </div>
 
-                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.04]">
-                                                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground dark:text-slate-400">
+                                            <div className="min-w-0 rounded-2xl border border-emerald-900/10 bg-white p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-emerald-300">
                                                     Progress Kamu
                                                 </p>
                                                 <p className="mt-2 text-sm font-semibold leading-5 text-emerald-950 dark:text-emerald-50">
@@ -331,7 +331,7 @@ export default async function ChallengesPage() {
                                             </div>
                                             <div className="h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                                                 <div
-                                                    className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300 transition-all dark:bg-emerald-300"
+                                                    className="h-full rounded-full bg-emerald-950 transition-[width] duration-500 ease-out dark:bg-emerald-300"
                                                     style={{
                                                         width: `${progressPercentage}%`,
                                                     }}
@@ -355,36 +355,40 @@ export default async function ChallengesPage() {
                 </div>
 
                 <aside className="min-w-0 space-y-5">
-                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
-                        <CardHeader>
-                            <Badge className="mb-3 w-fit max-w-full bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                            <Badge className="mb-3 w-fit max-w-full border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
                                 <Flame className="mr-1.5 size-3 shrink-0" />
                                 <span className="truncate">Progress Tantangan</span>
                             </Badge>
-                            <CardTitle className="break-words text-white">
+
+                            <CardTitle className="break-words text-emerald-950 dark:text-emerald-50">
                                 Aksi Kolektif
                             </CardTitle>
-                            <CardDescription className="text-emerald-50/70">
+
+                            <CardDescription className="text-slate-600 dark:text-slate-400">
                                 Progress challenge dihitung dari aksi yang sudah kamu
                                 selesaikan.
                             </CardDescription>
                         </CardHeader>
 
-                        <CardContent>
-                            <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-                                <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
+                        <CardContent className="p-5">
+                            <div className="rounded-3xl border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none">
+                                <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                                     Total Progress
                                 </p>
-                                <p className="mt-3 break-words text-4xl font-semibold">
+
+                                <p className="mt-3 break-words text-4xl font-semibold text-emerald-950 dark:text-emerald-50">
                                     {formatNumber(totalProgress)}
                                 </p>
-                                <p className="mt-2 text-sm text-emerald-50/70">
+
+                                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                                     Akumulasi progress dari semua challenge yang diikuti.
                                 </p>
 
-                                <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
+                                <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                                     <div
-                                        className="h-full rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]"
+                                        className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 transition-[width] duration-500 ease-out dark:from-emerald-300 dark:to-lime-300"
                                         style={{
                                             width: `${averageProgress}%`,
                                         }}

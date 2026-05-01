@@ -200,19 +200,22 @@ export default async function RecommendationsPage() {
 
     return (
         <main className="min-h-screen w-full min-w-0 space-y-6 overflow-x-hidden">
-            <section className="w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.20),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_55%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 sm:p-5 md:rounded-[2rem] md:p-7">
-                <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:p-5 md:rounded-[2rem] md:p-7">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl dark:bg-emerald-500/10" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl dark:bg-lime-500/10" />
+
+                <div className="relative flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                     <div className="min-w-0">
-                        <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-300/20 bg-white/8 px-3 py-1.5 text-xs font-medium text-emerald-100">
-                            <Bot className="h-3.5 w-3.5" />
+                        <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-900/10 bg-white px-3 py-1.5 text-xs font-medium text-emerald-800 shadow-sm transition-colors dark:border-white/10 dark:bg-white/10 dark:text-emerald-200">
+                            <Bot className="h-3.5 w-3.5 shrink-0" />
                             <span className="truncate">Sistem Rekomendasi AI</span>
                         </div>
 
-                        <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+                        <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50 sm:text-3xl md:text-4xl">
                             Rekomendasi AI
                         </h1>
 
-                        <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-50/72">
+                        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
                             Daftar aksi prioritas yang dihasilkan dari data energi, data
                             limbah, histori aksi, dan profil kontribusi pengguna.
                         </p>
@@ -221,8 +224,7 @@ export default async function RecommendationsPage() {
                     <div className="flex min-w-0 flex-col gap-2 sm:flex-row">
                         <Button
                             asChild
-                            variant="secondary"
-                            className="bg-white text-emerald-950 hover:bg-emerald-50 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
+                            className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
                         >
                             <Link href="/dashboard/impact">
                                 Generate Rekomendasi
@@ -232,7 +234,8 @@ export default async function RecommendationsPage() {
 
                         <Button
                             asChild
-                            className="border border-white/15 bg-emerald-500/20 text-white hover:bg-emerald-500/30"
+                            variant="outline"
+                            className="border-emerald-900/10 bg-white text-emerald-900 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.04] dark:text-emerald-50 dark:hover:bg-white/[0.08]"
                         >
                             <Link href="/dashboard/actions">
                                 Lihat Aksi
@@ -381,7 +384,7 @@ export default async function RecommendationsPage() {
                                                                 Alasan Rekomendasi
                                                             </div>
 
-                                                            <p className="text-sm leading-6 text-emerald-950 dark:text-emerald-50/75">
+                                                            <p className="text-sm leading-6 text-emerald-950 dark:text-emerald-50/80">
                                                                 {recommendation.reason ??
                                                                     recommendation.recommendationReason ??
                                                                     recommendation.explanation ??

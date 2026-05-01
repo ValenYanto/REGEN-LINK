@@ -32,53 +32,62 @@ export function InputCenterPanel({
     highlights,
     children,
 }: InputCenterPanelProps) {
+    const isActive =
+        scoreValue.toLowerCase() === "active" ||
+        scoreValue.toLowerCase() === "strong";
+
     return (
-        <aside className="space-y-5">
-            <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm dark:border-white/10 dark:bg-emerald-950/80">
-                <CardHeader className="relative pb-4">
-                    <div className="absolute right-[-60px] top-[-70px] size-44 rounded-full bg-emerald-400/20 blur-3xl" />
-                    <div className="absolute bottom-[-80px] left-[-70px] size-44 rounded-full bg-lime-300/10 blur-3xl" />
+        <aside className="min-w-0 space-y-5">
+            <Card className="overflow-hidden border-emerald-900/10 bg-[#f7faf6] shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                <CardHeader className="relative border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/70 pb-4 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                    <div className="absolute right-[-60px] top-[-70px] size-44 rounded-full bg-emerald-200/60 blur-3xl dark:bg-emerald-400/10" />
+                    <div className="absolute bottom-[-80px] left-[-70px] size-44 rounded-full bg-lime-200/50 blur-3xl dark:bg-lime-300/10" />
 
                     <div className="relative flex items-start justify-between gap-4">
                         <div className="min-w-0">
-                            <Badge className="mb-4 bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                            <Badge className="mb-4 border-emerald-200 bg-white text-emerald-800 shadow-sm hover:bg-white dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
                                 <Sparkles className="mr-1.5 size-3" />
                                 Live Climate Signal
                             </Badge>
 
-                            <CardTitle className="text-xl text-white">
+                            <CardTitle className="text-xl text-emerald-950 dark:text-emerald-50">
                                 {title}
                             </CardTitle>
 
-                            <p className="mt-2 text-sm leading-6 text-emerald-50/70">
+                            <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
                                 {subtitle}
                             </p>
                         </div>
 
-                        <div className="shrink-0 rounded-2xl border border-white/10 bg-white/10 p-2">
-                            <ArrowUpRight className="size-4 text-emerald-200" />
+                        <div className="shrink-0 rounded-2xl border border-emerald-900/10 bg-white/80 p-2 text-emerald-700 shadow-sm dark:border-white/10 dark:bg-white/[0.06] dark:text-emerald-300 dark:shadow-none">
+                            <ArrowUpRight className="size-4" />
                         </div>
                     </div>
                 </CardHeader>
 
-                <CardContent className="relative">
-                    <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-                        <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
+                <CardContent className="relative p-5">
+                    <div className="rounded-3xl border border-emerald-900/10 bg-white/80 p-5 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                             {scoreLabel}
                         </p>
 
                         <div className="mt-3 flex items-end gap-2">
-                            <p className="text-4xl font-semibold tracking-tight">
+                            <p className="text-4xl font-semibold tracking-tight text-emerald-950 dark:text-emerald-50">
                                 {scoreValue}
                             </p>
                         </div>
 
-                        <p className="mt-2 text-sm text-emerald-50/70">
+                        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                             {scoreCaption}
                         </p>
 
-                        <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
-                            <div className="h-full w-[72%] rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]" />
+                        <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
+                            <div
+                                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 shadow-[0_0_24px_rgba(16,185,129,0.30)] dark:from-emerald-300 dark:to-lime-300 dark:shadow-[0_0_24px_rgba(110,231,183,0.45)]"
+                                style={{
+                                    width: isActive ? "100%" : "42%",
+                                }}
+                            />
                         </div>
                     </div>
                 </CardContent>

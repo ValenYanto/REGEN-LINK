@@ -5,16 +5,20 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
     BarChart3,
+    BadgeCheck,
     BrainCircuit,
     Flame,
     Home,
+    MapPinned,
     Medal,
     Menu,
+    Network,
     Recycle,
     ShieldCheck,
     Sparkles,
     Trophy,
     UserCircle,
+    Users,
     X,
     Zap,
 } from "lucide-react";
@@ -32,29 +36,29 @@ type MobileNavigationItem = {
     adminOnly?: boolean;
 };
 
-const mobileNavigationItems: MobileNavigationItem[] = [
+const mainNavigationItems: MobileNavigationItem[] = [
     {
         title: "Overview",
         href: "/dashboard",
         icon: Home,
     },
     {
-        title: "Energy",
+        title: "Energy Records",
         href: "/dashboard/energy",
         icon: Zap,
     },
     {
-        title: "Waste",
+        title: "Waste Records",
         href: "/dashboard/waste",
         icon: Recycle,
     },
     {
-        title: "Impact",
+        title: "Impact Center",
         href: "/dashboard/impact",
         icon: BrainCircuit,
     },
     {
-        title: "AI Recs",
+        title: "AI Recommendations",
         href: "/dashboard/recommendations",
         icon: Sparkles,
     },
@@ -83,10 +87,49 @@ const mobileNavigationItems: MobileNavigationItem[] = [
         href: "/dashboard/profile",
         icon: UserCircle,
     },
+];
+
+const adminNavigationItems: MobileNavigationItem[] = [
     {
-        title: "Admin",
+        title: "Admin Overview",
         href: "/dashboard/admin",
         icon: ShieldCheck,
+        adminOnly: true,
+    },
+    {
+        title: "Users & Roles",
+        href: "/dashboard/admin/users",
+        icon: Users,
+        adminOnly: true,
+    },
+    {
+        title: "Action Master",
+        href: "/dashboard/admin/actions",
+        icon: Flame,
+        adminOnly: true,
+    },
+    {
+        title: "Challenges",
+        href: "/dashboard/admin/challenges",
+        icon: Trophy,
+        adminOnly: true,
+    },
+    {
+        title: "Badges",
+        href: "/dashboard/admin/badges",
+        icon: BadgeCheck,
+        adminOnly: true,
+    },
+    {
+        title: "Cities",
+        href: "/dashboard/admin/cities",
+        icon: MapPinned,
+        adminOnly: true,
+    },
+    {
+        title: "Communities",
+        href: "/dashboard/admin/communities",
+        icon: Network,
         adminOnly: true,
     },
 ];
@@ -98,21 +141,14 @@ type MobileDashboardNavProps = {
 export function MobileDashboardNav({ role }: MobileDashboardNavProps) {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
-
-    const visibleNavigationItems = mobileNavigationItems.filter((item) => {
-        if (item.adminOnly) {
-            return role === "ADMIN";
-        }
-
-        return true;
-    });
+    const isAdmin = role === "ADMIN";
 
     function isItemActive(href: string) {
-        if (href === "/dashboard") {
-            return pathname === "/dashboard";
-        }
-
-        return pathname === href || pathname.startsWith(`${href}/`);
+        return href === "/dashboard"
+            ? pathname === "/dashboard"
+            : href === "/dashboard/admin"
+                ? pathname === "/dashboard/admin"
+                : pathname === href || pathname.startsWith(`${href}/`);
     }
 
     return (
@@ -140,7 +176,7 @@ export function MobileDashboardNav({ role }: MobileDashboardNavProps) {
                     type="button"
                     size="icon"
                     variant="outline"
-                    className="h-10 w-10 rounded-2xl border-emerald-900/10 bg-white/70 text-emerald-950 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
+                    className="h-10 w-10 rounded-2xl border-emerald-900/10 bg-white/70 text-emerald-950 transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
                     onClick={() => setOpen((value) => !value)}
                     aria-label="Toggle mobile navigation"
                 >
@@ -149,32 +185,81 @@ export function MobileDashboardNav({ role }: MobileDashboardNavProps) {
             </div>
 
             {open ? (
-                <div className="border-t border-emerald-900/10 bg-white px-4 py-4 shadow-xl shadow-emerald-950/5 transition-colors dark:border-white/10 dark:bg-slate-950 dark:shadow-none">
-                    <nav className="grid grid-cols-2 gap-2">
-                        {visibleNavigationItems.map((item) => {
-                            const Icon = item.icon;
-                            const active = isItemActive(item.href);
-
-                            return (
-                                <Link
+                <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-emerald-900/10 bg-[#f7faf6] px-3 py-4 shadow-xl shadow-emerald-950/5 transition-colors dark:border-white/10 dark:bg-slate-950 dark:shadow-none">
+                    <div className="space-y-5">
+                        <MobileNavSection title="Main Platform">
+                            {mainNavigationItems.map((item) => (
+                                <MobileNavLink
                                     key={item.href}
-                                    href={item.href}
-                                    onClick={() => setOpen(false)}
-                                    className={cn(
-                                        "flex items-center gap-2 rounded-2xl border px-3 py-3 text-sm font-medium transition",
-                                        active
-                                            ? "border-emerald-950 bg-emerald-950 text-emerald-50 dark:border-emerald-300 dark:bg-emerald-300 dark:text-emerald-950"
-                                            : "border-emerald-900/10 bg-emerald-50/50 text-emerald-950/75 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-emerald-50"
-                                    )}
-                                >
-                                    <Icon className="h-4 w-4 shrink-0" />
-                                    <span className="truncate">{item.title}</span>
-                                </Link>
-                            );
-                        })}
-                    </nav>
+                                    item={item}
+                                    active={isItemActive(item.href)}
+                                    onNavigate={() => setOpen(false)}
+                                />
+                            ))}
+                        </MobileNavSection>
+
+                        {isAdmin ? (
+                            <MobileNavSection title="Admin Control">
+                                {adminNavigationItems.map((item) => (
+                                    <MobileNavLink
+                                        key={item.href}
+                                        item={item}
+                                        active={isItemActive(item.href)}
+                                        onNavigate={() => setOpen(false)}
+                                    />
+                                ))}
+                            </MobileNavSection>
+                        ) : null}
+                    </div>
                 </div>
             ) : null}
         </div>
+    );
+}
+
+function MobileNavSection({
+    title,
+    children,
+}: {
+    title: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <section className="min-w-0 space-y-2">
+            <p className="px-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-700/70 dark:text-emerald-300/60">
+                {title}
+            </p>
+            <nav className="grid min-w-0 grid-cols-1 gap-2 min-[380px]:grid-cols-2">
+                {children}
+            </nav>
+        </section>
+    );
+}
+
+function MobileNavLink({
+    item,
+    active,
+    onNavigate,
+}: {
+    item: MobileNavigationItem;
+    active: boolean;
+    onNavigate: () => void;
+}) {
+    const Icon = item.icon;
+
+    return (
+        <Link
+            href={item.href}
+            onClick={onNavigate}
+            className={cn(
+                "flex min-w-0 items-center gap-2 rounded-2xl border px-3 py-2.5 text-sm font-medium transition duration-200",
+                active
+                    ? "border-emerald-950 bg-emerald-950 text-emerald-50 dark:border-emerald-300 dark:bg-emerald-300 dark:text-emerald-950"
+                    : "border-emerald-900/10 bg-white text-emerald-950/70 hover:-translate-y-0.5 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-emerald-50"
+            )}
+        >
+            <Icon className="size-4 shrink-0" />
+            <span className="truncate">{item.title}</span>
+        </Link>
     );
 }

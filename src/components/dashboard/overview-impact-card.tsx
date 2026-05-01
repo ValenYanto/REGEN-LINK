@@ -30,7 +30,7 @@ export function OverviewImpactCard({
                     </p>
                 </div>
 
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-800 transition-colors dark:bg-emerald-400/10 dark:text-emerald-300">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-800 transition-colors duration-200 dark:bg-emerald-400/10 dark:text-emerald-300">
                     {icon}
                 </div>
             </div>

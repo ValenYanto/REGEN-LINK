@@ -300,7 +300,7 @@ export default async function DashboardPage() {
 
                         <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                             <div
-                                className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
+                                className="h-full rounded-full bg-emerald-950 transition-[width] duration-500 ease-out dark:bg-emerald-300"
                                 style={{
                                     width: `${scoreProgress}%`,
                                 }}
@@ -502,16 +502,16 @@ export default async function DashboardPage() {
                 </div>
 
                 <aside className="min-w-0 space-y-5">
-                    <Card className="overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm dark:border-white/10 dark:bg-emerald-950/80">
-                        <CardHeader>
-                            <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                    <Card className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                            <Badge className="mb-3 w-fit border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-50 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
                                 <BrainCircuit className="mr-1.5 size-3" />
                                 MVP Intelligence
                             </Badge>
-                            <CardTitle className="text-white">
+                            <CardTitle className="text-emerald-950 dark:text-emerald-50">
                                 Next Best Action
                             </CardTitle>
-                            <CardDescription className="text-emerald-50/70">
+                            <CardDescription className="text-slate-600 dark:text-slate-400">
                                 Lanjutkan alur dari input data sampai aksi selesai.
                             </CardDescription>
                         </CardHeader>
@@ -529,7 +529,7 @@ export default async function DashboardPage() {
                             <Button
                                 asChild
                                 variant="outline"
-                                className="w-full border-white/20 bg-white/10 text-white hover:bg-white/15 hover:text-white"
+                                className="w-full border-emerald-900/10 bg-white text-emerald-950 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-200 dark:hover:bg-white/10"
                             >
                                 <Link href="/dashboard/actions">Complete Actions</Link>
                             </Button>
@@ -537,7 +537,7 @@ export default async function DashboardPage() {
                             <Button
                                 asChild
                                 variant="outline"
-                                className="w-full border-white/20 bg-white/10 text-white hover:bg-white/15 hover:text-white"
+                                className="w-full border-emerald-900/10 bg-white text-emerald-950 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-200 dark:hover:bg-white/10"
                             >
                                 <Link href="/dashboard/challenges">Join Challenge</Link>
                             </Button>
@@ -579,7 +579,7 @@ export default async function DashboardPage() {
                                                     <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                                                         {userBadge.badge.name}
                                                     </p>
-                                                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground dark:text-slate-400">
+                                                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-600 dark:text-slate-300">
                                                         {userBadge.badge.description}
                                                     </p>
                                                 </div>
@@ -637,7 +637,7 @@ export default async function DashboardPage() {
 
                                                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                                                     <div
-                                                        className="h-full rounded-full bg-emerald-950 dark:bg-emerald-300"
+                                                        className="h-full rounded-full bg-emerald-950 transition-[width] duration-500 ease-out dark:bg-emerald-300"
                                                         style={{
                                                             width: `${progress}%`,
                                                         }}

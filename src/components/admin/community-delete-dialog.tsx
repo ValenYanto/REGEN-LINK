@@ -107,7 +107,7 @@ export function CommunityDeleteDialog({
                             {community.name}
                         </p>
 
-                        <div className="mt-4 rounded-xl bg-white p-3 dark:bg-white/[0.04] ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                        <div className="mt-4 rounded-xl bg-white p-3 ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
                             <p className="text-xs text-muted-foreground dark:text-slate-400">
                                 Members
                             </p>

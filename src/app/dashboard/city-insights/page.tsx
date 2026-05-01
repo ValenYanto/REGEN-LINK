@@ -471,39 +471,43 @@ export default async function CityInsightsPage() {
                 </Card>
 
                 <aside className="min-w-0 space-y-4">
-                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
-                        <CardHeader>
-                            <Badge className="mb-3 w-fit max-w-full bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                        <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                            <Badge className="mb-3 w-fit max-w-full border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
                                 <MapPin className="mr-1.5 size-3 shrink-0" />
                                 <span className="truncate">Your City Node</span>
                             </Badge>
-                            <CardTitle className="break-words text-white">
+
+                            <CardTitle className="break-words text-emerald-950 dark:text-emerald-50">
                                 {currentCityInsight
                                     ? `Rank #${currentCityInsight.rank}`
                                     : "No City Node"}
                             </CardTitle>
-                            <CardDescription className="text-emerald-50/70">
+
+                            <CardDescription className="text-slate-600 dark:text-slate-400">
                                 Posisi kota kamu berdasarkan kontribusi kolektif.
                             </CardDescription>
                         </CardHeader>
 
-                        <CardContent>
-                            <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-                                <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
+                        <CardContent className="p-5">
+                            <div className="rounded-3xl border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none">
+                                <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                                     City Score
                                 </p>
-                                <p className="mt-3 break-words text-3xl font-semibold sm:text-4xl">
+
+                                <p className="mt-3 break-words text-3xl font-semibold text-emerald-950 dark:text-emerald-50 sm:text-4xl">
                                     {currentCityInsight?.totalScore ?? 0}
                                 </p>
-                                <p className="mt-2 truncate text-sm text-emerald-50/70">
+
+                                <p className="mt-2 truncate text-sm text-slate-600 dark:text-slate-400">
                                     {currentCityInsight
                                         ? `${currentCityInsight.name}, ${currentCityInsight.province}`
                                         : "Belum ada kota terhubung."}
                                 </p>
 
-                                <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
+                                <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                                     <div
-                                        className="h-full rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]"
+                                        className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 transition-[width] duration-500 ease-out dark:from-emerald-300 dark:to-lime-300"
                                         style={{
                                             width: `${Math.min(
                                                 ((currentCityInsight?.totalScore ?? 0) /
@@ -532,7 +536,7 @@ export default async function CityInsightsPage() {
                                     Belum ada data kota.
                                 </p>
                             ) : (
-                                <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
                                     <div className="flex min-w-0 items-center gap-3">
                                         <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                                             <Crown className="size-5" />
@@ -541,7 +545,7 @@ export default async function CityInsightsPage() {
                                             <p className="max-w-[190px] truncate text-sm font-semibold text-emerald-950 dark:text-emerald-50">
                                                 {topCity.name}
                                             </p>
-                                            <p className="truncate text-xs text-muted-foreground dark:text-slate-400">
+                                            <p className="truncate text-xs text-slate-600 dark:text-slate-300">
                                                 {topCity.province}
                                             </p>
                                         </div>

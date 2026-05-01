@@ -280,7 +280,7 @@ export default async function LeaderboardPage() {
                                                             ) : null}
 
                                                             {user.rank <= 3 ? (
-                                                                <Badge className={`${rankBadge.className} dark:bg-white/10 dark:text-emerald-100 dark:hover:bg-white/10`}>
+                                                                <Badge className={rankBadge.className}>
                                                                     <span className="mr-1">{rankBadge.icon}</span>
                                                                     {rankBadge.label}
                                                                 </Badge>
@@ -341,116 +341,143 @@ export default async function LeaderboardPage() {
                 </Card>
 
                 <aside className="min-w-0 space-y-4">
-                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
-                        <CardHeader>
-                            <Badge className="mb-3 w-fit bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
-                                <Crown className="mr-1.5 size-3" />
-                                Your Position
-                            </Badge>
-                            <CardTitle className="text-white">
-                                {currentUserRank
-                                    ? `Rank #${currentUserRank.rank}`
-                                    : "No Rank Yet"}
-                            </CardTitle>
-                            <CardDescription className="text-emerald-50/70">
-                                Posisi kamu dihitung berdasarkan regenerative score.
-                            </CardDescription>
-                        </CardHeader>
+                    <aside className="min-w-0 space-y-4">
+                        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                                <Badge className="mb-3 w-fit border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
+                                    <Crown className="mr-1.5 size-3" />
+                                    Your Position
+                                </Badge>
 
-                        <CardContent>
-                            <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-                                <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/70">
-                                    Current Score
-                                </p>
-                                <p className="mt-3 break-words text-3xl font-semibold sm:text-4xl">
-                                    {currentUserRank?.score ?? 0}
-                                </p>
-                                <p className="mt-2 text-sm text-emerald-50/70">
-                                    {currentUserRank?.level ?? "Perintis Aksi"}
-                                </p>
+                                <CardTitle className="text-emerald-950 dark:text-emerald-50">
+                                    {currentUserRank
+                                        ? `Rank #${currentUserRank.rank}`
+                                        : "No Rank Yet"}
+                                </CardTitle>
 
-                                <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
-                                    <div
-                                        className="h-full rounded-full bg-emerald-300 shadow-[0_0_24px_rgba(110,231,183,0.65)]"
-                                        style={{
-                                            width: `${Math.min(
-                                                ((currentUserRank?.score ?? 0) / 500) * 100,
-                                                100
-                                            )}%`,
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                                <CardDescription className="text-slate-600 dark:text-slate-400">
+                                    Posisi kamu dihitung berdasarkan regenerative score.
+                                </CardDescription>
+                            </CardHeader>
 
-                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-base">Leaderboard Rules</CardTitle>
-                            <CardDescription>
-                                Cara sistem menentukan ranking user.
-                            </CardDescription>
-                        </CardHeader>
+                            <CardContent className="p-5">
+                                <div className="rounded-3xl border border-emerald-900/10 bg-[#f7faf6] p-5 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none">
+                                    <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
+                                        Current Score
+                                    </p>
 
-                        <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground dark:text-slate-400">
-                            <p>1. Score tertinggi mendapat ranking paling atas.</p>
-                            <p>2. Jika score sama, completed action menjadi pembeda.</p>
-                            <p>3. Jika masih sama, jumlah badge menjadi pembeda.</p>
-                            <p>4. Complete action dan challenge untuk menaikkan posisi.</p>
-                        </CardContent>
-                    </Card>
+                                    <p className="mt-3 break-words text-3xl font-semibold text-emerald-950 dark:text-emerald-50 sm:text-4xl">
+                                        {currentUserRank?.score ?? 0}
+                                    </p>
 
-                    <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-emerald-950 text-white shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-base">Top User</CardTitle>
-                            <CardDescription>
-                                Kontributor dengan score tertinggi saat ini.
-                            </CardDescription>
-                        </CardHeader>
+                                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                                        {currentUserRank?.level ?? "Perintis Aksi"}
+                                    </p>
 
-                        <CardContent>
-                            {!topUser ? (
-                                <p className="text-sm text-muted-foreground dark:text-slate-400">
-                                    Belum ada data.
-                                </p>
-                            ) : (
-                                <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 dark:border-white/10 dark:bg-white/[0.04]">
-                                    <div className="flex min-w-0 items-start gap-3">
-                                        <div className="flex size-10 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
-                                            <Crown className="size-5" />
-                                        </div>
-                                        <div>
-                                            <p className="max-w-[190px] truncate text-sm font-semibold text-emerald-950 dark:text-emerald-50">
-                                                {topUser.name}
-                                            </p>
-                                            <p className="text-xs text-muted-foreground dark:text-slate-400">
-                                                {topUser.city?.name ?? "No City Node"}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 grid grid-cols-2 gap-2">
-                                        <div className="rounded-2xl bg-white p-3 dark:bg-white/[0.04]">
-                                            <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
-                                                {topUser.score}
-                                            </p>
-                                            <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
-                                                Score
-                                            </p>
-                                        </div>
-                                        <div className="rounded-2xl bg-white p-3 dark:bg-white/[0.04]">
-                                            <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
-                                                {topUser.completedActions}
-                                            </p>
-                                            <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
-                                                Actions
-                                            </p>
-                                        </div>
+                                    <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
+                                        <div
+                                            className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 transition-[width] duration-500 ease-out dark:from-emerald-300 dark:to-lime-300"
+                                            style={{
+                                                width: `${Math.min(
+                                                    ((currentUserRank?.score ?? 0) / 500) * 100,
+                                                    100
+                                                )}%`,
+                                            }}
+                                        />
                                     </div>
                                 </div>
-                            )}
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                                <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
+                                    Leaderboard Rules
+                                </CardTitle>
+
+                                <CardDescription className="text-slate-600 dark:text-slate-400">
+                                    Cara sistem menentukan ranking user.
+                                </CardDescription>
+                            </CardHeader>
+
+                            <CardContent className="space-y-3 p-5 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                                <div className="rounded-2xl border border-emerald-900/10 bg-[#f7faf6] p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p>1. Score tertinggi mendapat ranking paling atas.</p>
+                                </div>
+
+                                <div className="rounded-2xl border border-emerald-900/10 bg-[#f7faf6] p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p>2. Jika score sama, completed action menjadi pembeda.</p>
+                                </div>
+
+                                <div className="rounded-2xl border border-emerald-900/10 bg-[#f7faf6] p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p>3. Jika masih sama, jumlah badge menjadi pembeda.</p>
+                                </div>
+
+                                <div className="rounded-2xl border border-emerald-900/10 bg-[#f7faf6] p-4 dark:border-white/10 dark:bg-white/[0.04]">
+                                    <p>4. Complete action dan challenge untuk menaikkan posisi.</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="w-full min-w-0 overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+                                <CardTitle className="text-base text-emerald-950 dark:text-emerald-50">
+                                    Top User
+                                </CardTitle>
+
+                                <CardDescription className="text-slate-600 dark:text-slate-400">
+                                    Kontributor dengan score tertinggi saat ini.
+                                </CardDescription>
+                            </CardHeader>
+
+                            <CardContent className="p-5">
+                                {!topUser ? (
+                                    <div className="rounded-2xl border border-dashed border-emerald-900/15 bg-emerald-50/40 p-5 text-center dark:border-white/10 dark:bg-white/[0.04]">
+                                        <p className="text-sm text-muted-foreground dark:text-slate-400">
+                                            Belum ada data.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50/50 p-4 transition-colors dark:border-white/10 dark:bg-white/[0.04]">
+                                        <div className="flex min-w-0 items-start gap-3">
+                                            <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
+                                                <Crown className="size-5" />
+                                            </div>
+
+                                            <div className="min-w-0">
+                                                <p className="max-w-[190px] truncate text-sm font-semibold text-emerald-950 dark:text-emerald-50">
+                                                    {topUser.name}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground dark:text-slate-400">
+                                                    {topUser.city?.name ?? "No City Node"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-4 grid grid-cols-2 gap-2">
+                                            <div className="rounded-2xl border border-emerald-900/10 bg-white p-3 dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
+                                                    {topUser.score}
+                                                </p>
+                                                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
+                                                    Score
+                                                </p>
+                                            </div>
+
+                                            <div className="rounded-2xl border border-emerald-900/10 bg-white p-3 dark:border-white/10 dark:bg-white/[0.04]">
+                                                <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-50">
+                                                    {topUser.completedActions}
+                                                </p>
+                                                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground dark:text-slate-400">
+                                                    Actions
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </aside>
                 </aside>
             </section>
         </div >

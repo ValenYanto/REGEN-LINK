@@ -30,7 +30,7 @@ export function LatestRecommendationCard({
 }: LatestRecommendationCardProps) {
     return (
         <Card className="overflow-hidden border-emerald-900/10 bg-white/95 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
-            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 transition-colors dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
+            <CardHeader className="border-b border-emerald-900/10 bg-gradient-to-r from-white to-emerald-50/60 transition-colors duration-200 dark:border-white/10 dark:from-white/[0.08] dark:to-emerald-400/[0.08]">
                 <div className="flex items-center gap-3">
                     <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-950 text-emerald-300 dark:bg-emerald-400/10 dark:text-emerald-300">
                         <BrainCircuit className="size-5" />
@@ -88,7 +88,7 @@ export function LatestRecommendationCard({
                             </div>
                         </div>
 
-                        <p className="text-sm leading-6 text-muted-foreground dark:text-slate-400">
+                        <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
                             {recommendation.recommendationReason}
                         </p>
                     </div>

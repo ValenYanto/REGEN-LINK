@@ -210,7 +210,7 @@ export function CommunityEditDialog({
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900"
+                        className="bg-emerald-950 text-emerald-50 hover:bg-emerald-900 dark:bg-emerald-300 dark:text-emerald-950 dark:hover:bg-emerald-200"
                     >
                         {isPending ? (
                             <Loader2 className="mr-2 size-4 animate-spin" />

@@ -48,6 +48,7 @@ export default async function DashboardLayout({
                                 : "Unknown City",
                             level: user.regenerativeScore?.level ?? "Perintis Aksi",
                         }}
+                        role={user.role}
                     />
                 }
             >

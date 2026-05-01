@@ -108,7 +108,7 @@ export function ActionDeleteDialog({ action }: ActionDeleteDialogProps) {
                         </p>
 
                         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                            <div className="rounded-xl bg-white p-3 dark:bg-white/[0.04] ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                            <div className="rounded-xl bg-white p-3 ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
                                 <p className="text-xs text-muted-foreground dark:text-slate-400">
                                     User Actions
                                 </p>
@@ -117,7 +117,7 @@ export function ActionDeleteDialog({ action }: ActionDeleteDialogProps) {
                                 </p>
                             </div>
 
-                            <div className="rounded-xl bg-white p-3 dark:bg-white/[0.04] ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
+                            <div className="rounded-xl bg-white p-3 ring-1 ring-slate-200 dark:bg-white/[0.06] dark:ring-white/10">
                                 <p className="text-xs text-muted-foreground dark:text-slate-400">
                                     AI Recommendations
                                 </p>

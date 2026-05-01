@@ -299,76 +299,87 @@ export default async function ProfilePage() {
 
     return (
         <main className="min-h-screen space-y-6">
-            <section className="w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-500/15 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),linear-gradient(135deg,#06140f,#0a1f17_52%,#07130f)] p-4 text-white shadow-2xl shadow-emerald-950/20 sm:p-5 md:rounded-[2rem] md:p-7">
-                <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <section className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-emerald-900/10 bg-[#f7faf6] p-4 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:p-5 md:rounded-[2rem] md:p-7">
+                <div className="absolute right-[-120px] top-[-120px] size-80 rounded-full bg-emerald-200/50 blur-3xl dark:bg-emerald-500/10" />
+                <div className="absolute bottom-[-160px] left-[20%] size-80 rounded-full bg-lime-200/40 blur-3xl dark:bg-lime-500/10" />
+
+                <div className="relative flex min-w-0 flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex min-w-0 flex-col gap-5 md:flex-row md:items-center">
-                        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-emerald-300/25 bg-white/10 shadow-inner shadow-emerald-950/40 sm:h-24 sm:w-24">
-                            <CircleUserRound className="h-10 w-10 text-emerald-100 sm:h-12 sm:w-12" />
+                        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-emerald-900/10 bg-white/80 text-emerald-700 shadow-sm transition-colors dark:border-white/10 dark:bg-white/[0.08] dark:text-emerald-300 dark:shadow-none sm:h-24 sm:w-24">
+                            <CircleUserRound className="h-10 w-10 sm:h-12 sm:w-12" />
                         </div>
 
                         <div className="min-w-0">
                             <div className="mb-3 flex flex-wrap items-center gap-2">
-                                <Badge className="border-emerald-300/20 bg-emerald-400/15 text-emerald-100 hover:bg-emerald-400/15">
+                                <Badge className="border-emerald-200 bg-white text-emerald-800 shadow-sm hover:bg-white dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/10">
                                     <ShieldCheck className="mr-1 h-3.5 w-3.5" />
                                     Verified Climate Operator
                                 </Badge>
-                                <Badge className="border-lime-300/20 bg-lime-400/15 text-lime-100 hover:bg-lime-400/15">
+
+                                <Badge className="border-lime-200 bg-lime-50 text-lime-800 hover:bg-lime-50 dark:border-lime-300/20 dark:bg-lime-400/10 dark:text-lime-200 dark:hover:bg-lime-400/10">
                                     {user.role}
                                 </Badge>
                             </div>
 
-                            <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+                            <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-950 dark:text-emerald-50 sm:text-3xl md:text-4xl">
                                 {user.name}
                             </h1>
 
-                            <p className="mt-2 max-w-2xl text-sm leading-6 text-emerald-50/72">
+                            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
                                 Profil kontribusi regeneratif untuk memantau aksi hemat energi,
                                 pengurangan limbah, badge, tantangan, dan dampak lintas kota.
                             </p>
 
-                            <div className="mt-4 flex flex-wrap gap-3 text-xs text-emerald-50/70">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/7 px-3 py-1.5">
-                                    <MapPin className="h-3.5 w-3.5 text-emerald-200" />
+                            <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-600 dark:text-slate-400">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-900/10 bg-white/80 px-3 py-1.5 shadow-sm dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                                    <MapPin className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                                     {user.city?.name ?? "City Node belum diatur"}
                                 </span>
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/7 px-3 py-1.5">
-                                    <CalendarDays className="h-3.5 w-3.5 text-emerald-200" />
+
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-900/10 bg-white/80 px-3 py-1.5 shadow-sm dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                                    <CalendarDays className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                                     Bergabung {formatDate(user.createdAt)}
                                 </span>
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/7 px-3 py-1.5">
-                                    <Sparkles className="h-3.5 w-3.5 text-emerald-200" />
+
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-900/10 bg-white/80 px-3 py-1.5 shadow-sm dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none">
+                                    <Sparkles className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                                     {currentLevel}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="w-full min-w-0 rounded-3xl border border-white/10 bg-white/8 p-4 backdrop-blur lg:w-auto lg:min-w-[280px]">
+                    <div className="w-full min-w-0 rounded-3xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm backdrop-blur transition-colors dark:border-white/10 dark:bg-white/[0.07] dark:shadow-none lg:w-auto lg:min-w-[280px]">
                         <div className="flex items-end justify-between gap-4">
                             <div>
-                                <p className="text-xs uppercase tracking-[0.24em] text-emerald-100/60">
+                                <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
                                     Regenerative Score
                                 </p>
-                                <p className="mt-2 text-4xl font-semibold">
+                                <p className="mt-2 text-4xl font-semibold text-emerald-950 dark:text-emerald-50">
                                     {formatNumber(totalScore)}
                                 </p>
                             </div>
-                            <div className="rounded-2xl border border-emerald-300/15 bg-emerald-400/10 px-3 py-2 text-right">
-                                <p className="text-xs text-emerald-100/60">Progress</p>
-                                <p className="text-lg font-semibold">{scoreProgress}%</p>
+
+                            <div className="rounded-2xl border border-emerald-900/10 bg-emerald-50 px-3 py-2 text-right dark:border-emerald-300/20 dark:bg-emerald-400/10">
+                                <p className="text-xs text-slate-500 dark:text-slate-400">
+                                    Progress
+                                </p>
+                                <p className="text-lg font-semibold text-emerald-800 dark:text-emerald-200">
+                                    {scoreProgress}%
+                                </p>
                             </div>
                         </div>
 
-                        <div className="mt-4 h-2 rounded-full bg-white/10">
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-white/10">
                             <div
-                                className="h-2 rounded-full bg-gradient-to-r from-emerald-300 via-lime-300 to-green-400"
+                                className="h-2 rounded-full bg-gradient-to-r from-emerald-500 via-lime-400 to-green-400"
                                 style={{
                                     width: `${scoreProgress}%`,
                                 }}
                             />
                         </div>
 
-                        <p className="mt-3 text-xs leading-5 text-emerald-50/68">
+                        <p className="mt-3 text-xs leading-5 text-slate-500 dark:text-slate-400">
                             {nextMilestone.remaining > 0
                                 ? `${nextMilestone.remaining} poin lagi menuju ${nextMilestone.label}.`
                                 : "Kamu sudah mencapai milestone tertinggi untuk MVP ini."}

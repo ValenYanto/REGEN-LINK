@@ -6,7 +6,20 @@ import { registerSchema } from "@/lib/valdiations/auth";
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
+        let body: unknown;
+
+        try {
+            body = await request.json();
+        } catch {
+            return NextResponse.json(
+                {
+                    message: "Payload request tidak valid.",
+                },
+                {
+                    status: 400,
+                }
+            );
+        }
 
         const parsed = registerSchema.safeParse(body);
 
@@ -22,7 +35,8 @@ export async function POST(request: Request) {
             );
         }
 
-        const { name, email, password, cityId } = parsed.data;
+        const { name, email, password } = parsed.data;
+        const cityId = parsed.data.cityId?.trim();
 
         const existingUser = await prisma.user.findUnique({
             where: {
@@ -41,21 +55,23 @@ export async function POST(request: Request) {
             );
         }
 
-        const city = await prisma.city.findUnique({
-            where: {
-                id: cityId,
-            },
-        });
-
-        if (!city) {
-            return NextResponse.json(
-                {
-                    message: "Kota tidak ditemukan.",
+        if (cityId) {
+            const city = await prisma.city.findUnique({
+                where: {
+                    id: cityId,
                 },
-                {
-                    status: 404,
-                }
-            );
+            });
+
+            if (!city) {
+                return NextResponse.json(
+                    {
+                        message: "Kota tidak ditemukan.",
+                    },
+                    {
+                        status: 404,
+                    }
+                );
+            }
         }
 
         const passwordHash = await bcrypt.hash(password, 10);
@@ -65,11 +81,11 @@ export async function POST(request: Request) {
                 name,
                 email,
                 passwordHash,
-                cityId,
+                ...(cityId ? { cityId } : {}),
                 regenerativeScore: {
                     create: {
                         totalScore: 0,
-                        level: "Seed",
+                        level: "Perintis Aksi",
                     },
                 },
             },
@@ -90,11 +106,11 @@ export async function POST(request: Request) {
             }
         );
     } catch (error) {
-        console.error("REGISTER_ERROR", error);
+        console.error("[REGISTER_ERROR]", error);
 
         return NextResponse.json(
             {
-                message: "Terjadi kesalahan server.",
+                message: "Terjadi kesalahan pada server.",
             },
             {
                 status: 500,
