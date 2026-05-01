@@ -154,7 +154,7 @@ export function RegisterForm() {
                         value={name}
                         onChange={(event) => setName(event.target.value)}
                         className="h-[52px] rounded-none border-[#98a3ad] bg-[#f8fafb] pl-12 text-[15px] font-bold tracking-[0.03em] text-[#111827] shadow-none focus-visible:border-[#005c43] focus-visible:ring-[#005c43]/15 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500 dark:focus-visible:border-emerald-300"
-                        placeholder="VALEN NODE"
+                        placeholder="NAME"
                         required
                     />
                 </div>
@@ -175,7 +175,7 @@ export function RegisterForm() {
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
                         className="h-[52px] rounded-none border-[#98a3ad] bg-[#f8fafb] pl-12 text-[15px] font-bold tracking-[0.03em] text-[#111827] shadow-none focus-visible:border-[#005c43] focus-visible:ring-[#005c43]/15 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-50 dark:placeholder:text-slate-500 dark:focus-visible:border-emerald-300"
-                        placeholder="operator@regenlink.id"
+                        placeholder="EMAIL"
                         required
                     />
                 </div>
