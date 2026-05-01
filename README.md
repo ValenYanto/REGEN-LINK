@@ -1,36 +1,355 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# REGEN-LINK
 
-## Getting Started
+**REGEN-LINK** adalah platform collaborative climate action lintas kota berbasis AI untuk membantu pengguna mencatat konsumsi energi, mencatat limbah, mendapatkan rekomendasi aksi, menghitung estimasi dampak, meningkatkan regenerative score, membuka badge, mengikuti challenge, dan memantau kontribusi lintas kota.
 
-First, run the development server:
+Project ini dibuat sebagai MVP untuk konteks hackathon/kampus dengan fokus pada **energy efficiency**, **circular waste action**, dan **regenerative living**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Table of Contents
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Overview](#overview)
+- [Core Features](#core-features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
+- [Local Development](#local-development)
+- [Database Setup](#database-setup)
+- [Seed Data](#seed-data)
+- [Authentication](#authentication)
+- [Admin Dashboard](#admin-dashboard)
+- [Production Deployment](#production-deployment)
+- [Vercel Deployment Checklist](#vercel-deployment-checklist)
+- [Testing Checklist](#testing-checklist)
+- [Useful Commands](#useful-commands)
+- [Notes](#notes)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Overview
 
-To learn more about Next.js, take a look at the following resources:
+REGEN-LINK mengubah data sederhana seperti konsumsi listrik bulanan dan catatan limbah menjadi aksi iklim yang lebih terukur.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Platform ini dirancang untuk:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Mahasiswa
+- Anak kos
+- Komunitas kampus
+- Komunitas lingkungan
+- UMKM
+- Rumah tangga urban
+- Stakeholder kota atau komunitas
 
-## Deploy on Vercel
+REGEN-LINK tidak hanya menjadi aplikasi pencatatan, tetapi juga menggabungkan:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Input data energi
+- Input data limbah
+- Rekomendasi aksi berbasis AI/rule-based logic
+- Estimasi dampak lingkungan
+- Regenerative score
+- Badge dan gamification
+- Challenge lintas kota
+- Leaderboard
+- City insights
+- Admin control center
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Core Features
+
+### 1. Landing Page
+
+Landing page modern untuk memperkenalkan REGEN-LINK sebagai climate-tech platform.
+
+Isi landing page:
+
+- Hero section
+- Platform explanation
+- Feature highlights
+- Impact preview
+- How it works
+- Cross-city intelligence
+- Admin-ready platform
+- CTA login/register
+
+---
+
+### 2. Authentication
+
+REGEN-LINK menggunakan authentication berbasis:
+
+- NextAuth Credentials
+- bcryptjs
+- Prisma
+- PostgreSQL
+
+Fitur auth:
+
+- Register user baru
+- Login user
+- Logout
+- Session JWT
+- Role-based access
+- Admin-only protection
+
+Role user:
+
+- `USER`
+- `COMMUNITY_LEADER`
+- `ADMIN`
+
+Session menyimpan data penting:
+
+- `id`
+- `role`
+- `cityId`
+- `cityName`
+
+---
+
+### 3. Dashboard Overview
+
+Dashboard utama menampilkan ringkasan aktivitas user:
+
+- Energy records
+- Waste records
+- Actions
+- Badges
+- Impact cards
+- Charts
+- Latest recommendations
+- Latest records
+- Active challenges
+- Next best action
+
+---
+
+### 4. Energy Input Center
+
+User dapat mencatat data konsumsi listrik:
+
+- Monthly kWh
+- Electricity cost
+- Housing type
+- Occupants
+- Dominant devices
+- Notes
+- Record date
+
+Data ini digunakan untuk analisis rekomendasi dan estimasi dampak.
+
+---
+
+### 5. Waste Input Center
+
+User dapat mencatat data limbah:
+
+- Waste type
+- Weight
+- Waste source
+- Management status
+- Notes
+- Record date
+
+Data limbah digunakan untuk rekomendasi circular action dan waste reduction.
+
+---
+
+### 6. Impact Center
+
+Impact Center membaca data energi dan limbah terbaru untuk menghasilkan:
+
+- AI recommendations
+- User actions
+- Impact estimations
+- Energy saved
+- Waste reduced
+- CO₂ avoided
+- Cost saved
+
+---
+
+### 7. AI Recommendations
+
+Halaman rekomendasi menampilkan daftar aksi prioritas yang dibuat berdasarkan data user.
+
+Informasi yang ditampilkan:
+
+- Action name
+- Category
+- Difficulty
+- Confidence score
+- Recommendation reason
+- Related impact estimation
+- Action status
+
+---
+
+### 8. Actions Center
+
+User dapat menjalankan aksi yang dibuat dari rekomendasi.
+
+Status action:
+
+- `PLANNED`
+- `IN_PROGRESS`
+- `COMPLETED`
+- `VERIFIED`
+- `CANCELLED`
+
+Ketika action selesai, sistem dapat memperbarui:
+
+- Regenerative score
+- Badge unlock
+- Challenge progress
+
+---
+
+### 9. Challenges
+
+User dapat mengikuti challenge:
+
+- Energy challenge
+- Waste challenge
+- Circular challenge
+- Community challenge
+- Cross-city challenge
+
+Progress challenge dihitung dari aksi yang sudah diselesaikan.
+
+---
+
+### 10. Leaderboard
+
+Leaderboard menampilkan ranking user berdasarkan:
+
+1. Total regenerative score
+2. Completed actions
+3. Badge count
+
+Leaderboard juga menampilkan posisi user saat ini.
+
+---
+
+### 11. City Insights
+
+City Insights menampilkan agregasi kontribusi per kota:
+
+- Total users
+- Total score
+- Total energy recorded
+- Total waste recorded
+- Completed actions
+- Badge count
+- City ranking
+
+---
+
+### 12. Profile
+
+Profile menampilkan identitas dan kontribusi user:
+
+- Name
+- Email
+- City node
+- Role
+- Joined date
+- Regenerative score
+- Current level
+- Badges
+- Impact summary
+- Community membership
+- Next steps
+
+---
+
+### 13. Admin Control Center
+
+Admin dapat mengelola data master dan aktivitas platform.
+
+Admin pages:
+
+- Admin Overview
+- Users & Roles
+- Action Master
+- Challenges
+- Badges
+- Cities
+- Communities
+
+Admin features:
+
+- Manage user role
+- Create/edit/delete action master
+- Create/edit/delete challenges
+- Create/edit/delete badges
+- Create cities
+- Create/edit/delete communities
+- Add/remove community members
+- Safety check before deleting used data
+
+---
+
+## Tech Stack
+
+### Frontend
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- lucide-react
+- Framer Motion
+- Recharts
+- next-themes
+
+### Backend
+
+- Next.js API Routes
+- Prisma ORM
+- PostgreSQL
+- NextAuth Credentials
+- bcryptjs
+- Zod validation
+
+### Deployment
+
+- Vercel
+- PostgreSQL provider such as Neon, Supabase, Railway, or Vercel Postgres
+
+---
+
+## Project Structure
+
+```txt
+.
+├── prisma
+│   ├── schema.prisma
+│   └── seed.ts
+├── public
+│   └── logo.png
+├── src
+│   ├── app
+│   │   ├── api
+│   │   ├── dashboard
+│   │   ├── login
+│   │   ├── register
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── admin
+│   │   ├── auth
+│   │   ├── dashboard
+│   │   ├── landing
+│   │   ├── motion
+│   │   ├── providers
+│   │   └── ui
+│   ├── lib
+│   │   ├── auth
+│   │   ├── impact
+│   │   ├── prisma.ts
+│   │   └── valdiations
+│   └── auth.ts
+├── .env.example
+├── package.json
+└── README.md
