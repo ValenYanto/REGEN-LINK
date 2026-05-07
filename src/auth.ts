@@ -6,12 +6,30 @@ import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/valdiations/auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    trustHost: true,
+
     session: {
         strategy: "jwt",
     },
 
     pages: {
         signIn: "/login",
+    },
+
+    logger: {
+        error(error) {
+            const errorName = error.name ?? "";
+            const errorMessage = error.message ?? "";
+
+            if (
+                errorName === "CredentialsSignin" ||
+                errorMessage.includes("CredentialsSignin")
+            ) {
+                return;
+            }
+
+            console.error("[AUTH_ERROR]", error);
+        },
     },
 
     providers: [
@@ -29,44 +47,54 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
 
             async authorize(credentials) {
-                const parsed = loginSchema.safeParse(credentials);
+                try {
+                    const parsed = loginSchema.safeParse(credentials);
 
-                if (!parsed.success) {
+                    if (!parsed.success) {
+                        return null;
+                    }
+
+                    const email = parsed.data.email.trim().toLowerCase();
+                    const password = parsed.data.password;
+
+                    if (!email || !password) {
+                        return null;
+                    }
+
+                    const user = await prisma.user.findUnique({
+                        where: {
+                            email,
+                        },
+                        include: {
+                            city: true,
+                        },
+                    });
+
+                    if (!user || !user.passwordHash) {
+                        return null;
+                    }
+
+                    const isPasswordValid = await bcrypt.compare(
+                        password,
+                        user.passwordHash
+                    );
+
+                    if (!isPasswordValid) {
+                        return null;
+                    }
+
+                    return {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        cityId: user.cityId,
+                        cityName: user.city?.name ?? null,
+                    };
+                } catch (error) {
+                    console.error("[AUTH_AUTHORIZE_ERROR]", error);
                     return null;
                 }
-
-                const { email, password } = parsed.data;
-
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email,
-                    },
-                    include: {
-                        city: true,
-                    },
-                });
-
-                if (!user || !user.passwordHash) {
-                    return null;
-                }
-
-                const isPasswordValid = await bcrypt.compare(
-                    password,
-                    user.passwordHash
-                );
-
-                if (!isPasswordValid) {
-                    return null;
-                }
-
-                return {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    cityId: user.cityId,
-                    cityName: user.city?.name ?? null,
-                };
             },
         }),
     ],
